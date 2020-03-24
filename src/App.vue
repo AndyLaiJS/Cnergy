@@ -1,24 +1,18 @@
 <template>
   <v-app id="app">
-    <div id="nav">
-      <div class="navLogo">
-        <img src="./assets/CUHK.png">
-        <b>CUHK</b> MeePo
-      </div>
-      <div class="navLink">
-        <router-link to="/">Clubs</router-link> 
-        <router-link to="/">Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
-        <router-link to="/">Profile</router-link>
-      </div>
-    </div>
-    <router-view/>
+    <Login/>
+    
   </v-app>
 </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld';
+import Login from './views/Login';
 
 export default {
+  components: {
+    Login,
+  }
 
 }
 </script>

@@ -59,6 +59,7 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import thefooter from "./Footer"
 export default {
+  name: 'home',
   data() {
     return {
       testvalues: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
