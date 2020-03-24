@@ -1,30 +1,31 @@
 <template>
-  <div class="home">
-    <div class="homeContainer">
-      <h1 id="title"> BASED ON YOUR INTERESTS</h1>
+  <v-app>
+        <div class="home">
+      <div class="homeContainer">
+        <h1 id="title"> BASED ON YOUR INTERESTS</h1>
 
-      <div class="CardContainer">
-        <div class="cna">
-          <h1>Clubs</h1>
+        <div class="CardContainer">
+          <div class="cna">
+            <h1>Clubs</h1>
+          </div>
+          <div class="Card" v-for="(value, index) in testvalues" v-bind:key = "index">
+            {{ value }}
+          </div>
         </div>
-        <div class="Card" v-for="(value, index) in testvalues" v-bind:key = "index">
-          {{ value }}
+
+        <div class="CardContainer">
+          <div class="cna">
+            <h1>Activities</h1>
+          </div>
+          <div class="Card" v-for="(value, index) in testvalues" v-bind:key = "index">
+            {{ index }}
+          </div>
         </div>
+
       </div>
-
-      <div class="CardContainer">
-        <div class="cna">
-          <h1>Activities</h1>
-        </div>
-        <div class="Card" v-for="(value, index) in testvalues" v-bind:key = "index">
-          {{ index }}
-        </div>
-      </div>
-
+      <thefooter/>
     </div>
-    <thefooter/>
-  </div>
-  
+  </v-app>
 </template>
 
 <script>

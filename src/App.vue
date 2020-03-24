@@ -1,56 +1,33 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+    <div id="app">
+      <div id="nav">
+        <div class="navLogo">
+          <img src="./assets/CUHK.png">
+          <b>CUHK</b> MeePo
+        </div>
+        <div class="navLink">
+          <router-link to="/">Clubs</router-link> 
+          <router-link to="/">Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
+          <router-link to="/">Profile</router-link>
+        </div>
       </div>
+      <router-view/>
+      
+    </div>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <HelloWorld/>
-    </v-content>
+    <router-view/>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+//import HelloWorld from './components/HelloWorld';
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    
   },
 
   data: () => ({
@@ -58,3 +35,66 @@ export default {
   }),
 };
 </script>
+
+<style lang="scss">
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,600,700,800,900&display=swap');
+body {
+  margin: 0;
+}
+#app {
+  font-family: 'Poppins', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+#nav {
+  font-size: 25px;
+  line-height: 80px;
+  height: 80px;
+  background-color: white;
+  box-shadow: 0px 4px 4px -2px rgba(0,0,0,0.10);
+  top: 0;
+  position: sticky;
+  position:-webkit-sticky;
+  z-index: 9999;
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+    text-decoration: None;
+  }
+  a:hover {
+    color: black;
+  }
+}
+.navLogo {
+  cursor: pointer;
+  img {
+    height: 30px;
+    margin-top: 25px;
+  }
+  display: grid;
+  grid-template-columns: 40px 78px 200px;
+  justify-content: center;
+  text-align: left;
+  height: 60px;
+  float: left;
+  margin-left: 200px;
+  transition: linear 0.1s;
+}
+.navLogo:active {
+  transform: scale(0.97);
+  transition: linear 0.1s;
+}
+.navLink {
+  cursor: pointer;
+  display: grid;
+  text-align: center;
+  grid-template-columns: 90px 150px 20px 120px;
+  font-size: 18px;
+  float: right;
+  margin-right: 200px;
+}
+
+</style>
