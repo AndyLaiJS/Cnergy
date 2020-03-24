@@ -30,16 +30,21 @@
 
                     <a href="#">Forgot Password?</a>
                     <!-- <button type="submit" class="btn">Login</button> -->
+                    <!-- Link to home page -->
                     <router-link to="/home"> <button class="btn">Login</button> </router-link>
 
                 </form>
 
             </div>
 
+            <!-- Link to register -->
+            
             <div class="registration">
-                <span>Do not have account yet?</span>
-                <a style="display: inline" href="Reg.html">Register Here</a>
+                Do not have account yet?
+                <router-link to="/register">Register Here</router-link>
             </div>
+            
+
         </div>
     </v-app>
 </template>
@@ -48,8 +53,6 @@
 export default {
     mounted() {
         const inputs = document.querySelectorAll(".input");
-
-
         function addcl(){
             let parent = this.parentNode.parentNode;
             parent.classList.add("focus");
@@ -68,10 +71,14 @@ export default {
             input.addEventListener("blur", remcl);
         });
     }
-    
 }
 </script>
 
 <style scoped lang="scss">
 @import '../css/Page.css';
+.registration {
+    a {
+        display: inline-block;
+    }
+}
 </style>

@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <Nav/>
     <div class="home">
       <div class="homeContainer">
         <h1 id="title"> BASED ON YOUR INTERESTS</h1>
@@ -57,6 +58,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+import Nav from "./Navi"
 import thefooter from "./Footer"
 export default {
   name: 'home',
@@ -80,6 +82,7 @@ export default {
     }
   },
   components: {
+    Nav,
     thefooter,
   }
 }
@@ -117,6 +120,7 @@ h1, h2, h3 {
   top: 0;
   position: sticky;
   z-index: 999;
+  width: 100%;
   background-color: white;
 }
 .Card {
