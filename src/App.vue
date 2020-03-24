@@ -1,21 +1,16 @@
 <template>
-  <v-app>
-    <div id="app">
-      <div id="nav">
-        <div class="navLogo">
-          <img src="./assets/CUHK.png">
-          <b>CUHK</b> MeePo
-        </div>
-        <div class="navLink">
-          <router-link to="/">Clubs</router-link> 
-          <router-link to="/">Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
-          <router-link to="/">Profile</router-link>
-        </div>
+  <v-app id="app">
+    <div id="nav">
+      <div class="navLogo">
+        <img src="./assets/CUHK.png">
+        <b>CUHK</b> MeePo
       </div>
-      <router-view/>
-      
+      <div class="navLink">
+        <router-link to="/">Clubs</router-link> 
+        <router-link to="/">Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
+        <router-link to="/">Profile</router-link>
+      </div>
     </div>
-
     <router-view/>
   </v-app>
 </template>
@@ -24,19 +19,14 @@
 //import HelloWorld from './components/HelloWorld';
 
 export default {
-  name: 'App',
 
-  components: {
-    
-  },
-
-  data: () => ({
-    //
-  }),
-};
+}
 </script>
 
 <style lang="scss">
+.v-application--wrap {
+  min-height: 0 !important;
+}
 
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,600,700,800,900&display=swap');
 body {
