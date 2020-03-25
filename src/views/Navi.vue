@@ -68,5 +68,6 @@ export default {
   font-size: 18px;
   float: right;
   margin-right: 200px;
+  justify-items: center;
 }
 </style>
