@@ -40,9 +40,13 @@ h2 {
 #right {
     text-align: right;
     a {
+        display: inline-block;
         text-decoration: none;
         color: white;
         font-weight: bolder;
+    }
+    a:hover {
+        color: #dffb4d;
     }
 }
 .footerBody {
