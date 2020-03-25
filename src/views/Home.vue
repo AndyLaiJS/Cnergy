@@ -96,7 +96,7 @@ h1, h2, h3 {
 }
 #title {
   margin: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   width: 100%;
   font-weight: 600;
   color: black;
@@ -107,7 +107,7 @@ h1, h2, h3 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 30px 0 100px 0;
+  padding: 10px 0 100px 0;
   background-image: url("../assets/bolt.png");
   background-repeat: no-repeat;
 }
