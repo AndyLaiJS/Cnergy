@@ -18,3 +18,11 @@ export async function handleSignIn(email, password) {
      });
 }
 
+export function userHasLoggedIn() {
+     var user = firebase.auth().currentUser;
+     if (user) {
+          return true;
+     }
+     return false;
+}
+

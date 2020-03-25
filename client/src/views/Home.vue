@@ -60,6 +60,9 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import Nav from "./Navi"
 import thefooter from "./Footer"
+
+import { userHasLoggedIn } from "../handler";
+
 export default {
   name: 'home',
   data() {
@@ -84,6 +87,12 @@ export default {
   components: {
     Nav,
     thefooter,
+  },
+  beforeCreate() {
+    // TODO: Use token/session to identify whether user has logged in or the it has expired
+    if (!userHasLoggedIn()) {
+      this.$router.push("/")
+    }
   }
 }
 </script>
