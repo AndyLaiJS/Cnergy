@@ -107,18 +107,23 @@ h1, h2, h3 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 10px 0 100px 0;
+  padding: 10px 0 10px 0;
   background-image: url("../assets/bolt.png");
   background-repeat: no-repeat;
 }
 .CardContainer {
-  min-height: 300px;
-  max-height: 510px;
+  border-radius: 20px;
+  margin: 50px 25px;
+  padding-bottom: 10px;
+  max-height: 525px;
   overflow: auto;
+  background-color: white;
+  box-shadow: 0 0 3px rgba(0,0,0,0.10);
 }
 .cna {
   top: 0;
   position: sticky;
+  padding-top: 15px;
   z-index: 999;
   width: 100%;
   background-color: white;
