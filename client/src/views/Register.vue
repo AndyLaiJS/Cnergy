@@ -141,4 +141,8 @@ export default {
   padding-top: 45px;
 }
 
+.login-content {
+  margin-top: 0;
+  display: flex;
+}
 </style>
