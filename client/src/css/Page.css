@@ -70,14 +70,14 @@ form{
 		height: 45px;
 }
 
-.input-div > div > h5{
+.input-div > div > h5, .theme--light.v-label {
 	position: absolute;
 	left: 10px;
 	top: 50%;
 	transform: translateY(-50%);
 	color: #999;
 	font-size: 18px;
-  font-weight: 300;
+  	font-weight: 300;
 	transition: .3s;
 }
 
@@ -212,6 +212,9 @@ a:hover{
 	}
 }
 
+.theme--light.v-label {
+	margin-left: 25px;
+}
 @media screen and (max-width: 900px){
 	.container{
 		grid-template-columns: 1fr;
