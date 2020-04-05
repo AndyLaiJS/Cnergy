@@ -1,4 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity } from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity, OneToMany } from "typeorm";
+import { Activity } from "./Activity";
 
 @Entity({ name: "users" })
 export class User extends BaseEntity {
@@ -16,6 +17,12 @@ export class User extends BaseEntity {
 
     @Column()
     password: string;
+
+    @Column()
+    college: string;
+
+    @OneToMany(type => Activity, activity => activity.creator, { nullable: true })
+    activities: Activity[];
 
     @CreateDateColumn({
         default: () => "CURRENT_TIMESTAMP(6)",

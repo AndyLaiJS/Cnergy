@@ -1,7 +1,10 @@
 import "reflect-metadata";
-import {createConnection, getConnectionOptions } from "typeorm";
-import AuthenticationController from "./controllers/authenticationController";
+import { createConnection, getConnectionOptions } from "typeorm";
+
 import App from "./app";
+
+import AuthenticationController from "./controllers/authenticationController";
+import ActivityController from "./controllers/activityController";
 
 async function main() {
     const config = await getConnectionOptions(process.env.NODE_ENV);
@@ -10,9 +13,9 @@ async function main() {
         name: "default"
     });
     // await db.runMigrations();
-   
     const app = new App([
-        new AuthenticationController()
+        new AuthenticationController(),
+        new ActivityController(),
     ],3000);
     app.listen();
 }

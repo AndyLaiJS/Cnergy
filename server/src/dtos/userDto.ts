@@ -1,4 +1,5 @@
-import { IsString } from "class-validator"
+import { IsString, IsOptional, ValidateNested } from "class-validator"
+import ActivityDto from "./activityDto";
 
 class UserDto {
      @IsString()
@@ -15,6 +16,10 @@ class UserDto {
 
      @IsString()
      public college: string;
+     
+     @IsOptional()
+     @ValidateNested()
+     public activities: ActivityDto[];
 }
 
 export default UserDto;

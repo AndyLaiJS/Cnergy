@@ -21,4 +21,22 @@ function createCookie(tokenData: TokenData) {
      return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`;
 }
 
-export default { createToken, createCookie };
+// --------------------------------------------------------------------------------
+const cuhkSidRegex = "^115511[0-9]{4,4}$";
+
+function isValidSid(text: string) {
+     const regExp = new RegExp(cuhkSidRegex);
+     return regExp.test(text);
+}
+
+function getEmail(sid: string) {
+     if (isValidSid(sid)) {
+          return `${sid}@link.cuhk.edu.hk`;
+     } else {
+          throw new Error(`Invalid SID, please enter a different SID`);
+     }
+}
+
+// --------------------------------------------------------------------------------
+
+export default { createToken, createCookie, getEmail };
