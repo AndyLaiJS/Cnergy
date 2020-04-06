@@ -4,7 +4,9 @@ import ActivityService from "../services/activityService";
 import RequestWithUser from "../interfaces/requestWithUserInterface";
 import Controller from "../interfaces/controllerInterface";
 import ActivityDto from "../dtos/activityDto";
+import UpdateActivityDto from "../dtos/updateActivityDto";
 import WrongParameterException from "../exceptions/wrongParameterException";
+import UnauthorizedException from "../exceptions/unauthorizedException";
 
 import authenticationMiddleware from "../middlewares/authenticationMiddleware";
 import validationMiddleware from "../middlewares/validationMiddleware";
@@ -23,8 +25,12 @@ class ActivityController implements Controller {
           this.router
               .all(`${this.path}`, authenticationMiddleware)
               .get(`${this.path}`, this.getAllActivities)
-              .post(`${this.path}`, validationMiddleware(ActivityDto), this.createActivity)
-          this.router.get(`${this.path}/:id`, authenticationMiddleware, this.getUserActivities)
+              .post(`${this.path}`, validationMiddleware(ActivityDto), this.createActivity);
+          
+          this.router
+               .all(`${this.path}/:sid`, authenticationMiddleware)
+               .get(`${this.path}/:sid`, this.getUserActivities)
+               .patch(`${this.path}/:sid`, validationMiddleware(UpdateActivityDto), this.updateUserActivity)
      }
 
      private getAllActivities = async (_: Request, response: Response, next: NextFunction) => {
@@ -38,12 +44,13 @@ class ActivityController implements Controller {
      }
 
      private getUserActivities = async (request: Request, response: Response, next: NextFunction) => {
-          const userSid = request.params.id;
+          const userSid = request.params.sid;
           try {
                const userEmail = utils.getEmail(userSid);
                try {
                     const activities = await this.activityService
                                         .getActivitiesByUserEmail(userEmail);
+                    console.log(activities);
                     response.send({ activities: activities });
                } catch(e) {
                     next(e);
@@ -62,6 +69,24 @@ class ActivityController implements Controller {
                response.send(result);
           } catch(e) {
                next(e);
+          }
+     }
+
+     private updateUserActivity = async (request: RequestWithUser, response: Response, next: NextFunction) => {
+          const creator = request.user;
+          const activityData: UpdateActivityDto = request.body;
+
+          // Only the creator of the activity can update the activity field
+          if (creator.id == activityData.creator.id) {
+               try {
+                    const result = await this.activityService
+                                        .updateActivity(activityData);
+                    response.send(result);
+               } catch(e) {
+                    next(e);
+               }
+          } else {
+               next(new UnauthorizedException());
           }
      }
 }

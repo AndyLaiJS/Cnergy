@@ -2,6 +2,7 @@ import { getRepository } from "typeorm";
 import { Activity } from "../entity/Activity";
 import ActivityDto from "src/dtos/activityDto";
 import User from "src/interfaces/userInterface";
+import UpdateActivityDto from "src/dtos/updateActivityDto";
 
 class ActivityService {
      private activityRepository = getRepository(Activity);
@@ -14,7 +15,7 @@ class ActivityService {
      public getActivitiesByUserEmail = async (userEmail: string) => {
           const activities = await this.activityRepository
                                    .createQueryBuilder("activity")
-                                   .innerJoin("activity.creator", "creator")
+                                   .innerJoinAndSelect("activity.creator", "creator")
                                    .where("creator.email=:email", { email: userEmail })
                                    .getMany();
           return activities;
@@ -27,6 +28,14 @@ class ActivityService {
           });
           await this.activityRepository.save(activity);
           
+          return activity;
+     }
+
+     public updateActivity = async (activityData: UpdateActivityDto) => {
+          const activity = await this.activityRepository
+                              .save({
+                                   ...activityData
+                              });
           return activity;
      }
 }
