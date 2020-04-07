@@ -1,7 +1,5 @@
-import { IsString, IsNumber, ValidateNested, IsJSON, IsObject } from "class-validator"
-import UserDto from "./userDto";
-import ActivityDto from "./activityDto";
-import { isObject } from "util";
+import { IsNumber, IsObject } from "class-validator"
+import ActivityDto from "./createActivityDto";
 
 class UpdateActivityDto extends ActivityDto {
      @IsNumber()

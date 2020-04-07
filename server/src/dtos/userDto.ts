@@ -1,5 +1,5 @@
 import { IsString, IsOptional, ValidateNested } from "class-validator"
-import ActivityDto from "./activityDto";
+import ActivityDto from "./createActivityDto";
 
 class UserDto {
      @IsString()

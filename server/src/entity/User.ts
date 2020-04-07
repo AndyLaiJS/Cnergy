@@ -1,5 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity, OneToMany } from "typeorm";
 import { Activity } from "./Activity";
+import { JoinActivity } from "./JoinActivity";
 
 @Entity({ name: "users" })
 export class User extends BaseEntity {
@@ -23,6 +24,9 @@ export class User extends BaseEntity {
 
     @OneToMany(type => Activity, activity => activity.creator, { nullable: true })
     activities: Activity[];
+
+    @OneToMany(tyoe => JoinActivity, joinActivity => joinActivity.user)
+    joinedActivities: JoinActivity[];
 
     @CreateDateColumn({
         default: () => "CURRENT_TIMESTAMP(6)",

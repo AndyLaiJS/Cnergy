@@ -8,11 +8,13 @@ import ActivityController from "./controllers/activityController";
 
 async function main() {
     const config = await getConnectionOptions(process.env.NODE_ENV);
-    await createConnection({
+    const db = await createConnection({
         ...config,
         name: "default"
     });
-    // await db.runMigrations();
+    await db.runMigrations();
+    console.log("Done migrating");
+    
     const app = new App([
         new AuthenticationController(),
         new ActivityController(),

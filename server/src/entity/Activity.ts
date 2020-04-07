@@ -1,5 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity, ManyToOne, JoinColumn, DeleteDateColumn } from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity, ManyToOne, JoinColumn, DeleteDateColumn, OneToMany } from "typeorm";
 import { User } from "./User";
+import { JoinActivity } from "./JoinActivity";
 
 @Entity({ name: "activities" })
 export class Activity extends BaseEntity {
@@ -8,6 +9,9 @@ export class Activity extends BaseEntity {
     
     @ManyToOne(type => User, user => user.activities)
     creator: User;
+
+    @OneToMany(type => JoinActivity, joinActivity => joinActivity.activity)
+    participants: JoinActivity[];
 
     @Column()
     name: string;
@@ -24,13 +28,23 @@ export class Activity extends BaseEntity {
     @Column()
     minParticipants: number;
 
+    @Column()
+    participantsCount: number;
+
+    // Type can be either "Public" or "Private"
+    @Column({
+        default: "Public",
+        nullable: false
+    })
+    type: string;
+
     @CreateDateColumn({
-         default: () => "CURRENT_TIMESTAMP(6)",
+        default: () => "CURRENT_TIMESTAMP(6)",
     })
     createdAt: Date;
 
     @UpdateDateColumn({
-         default: () => "CURRENT_TIMESTAMP(6)",
+        default: () => "CURRENT_TIMESTAMP(6)",
         onUpdate: "CURRENT_TIMESTAMP(6)"
     })
     updatedAt: Date;
