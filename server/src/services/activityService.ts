@@ -23,6 +23,14 @@ class ActivityService {
           return activities;
      }
 
+     public getActivityById = async (activityId: number) => {
+          const activity = await this.activityRepository
+                              .findOne({
+                                   where: { id: activityId }
+                              });
+          return activity;
+     }
+
      public postActivity = async (activityData: ActivityDto, creator: User) => {
           const activity = await this.activityRepository.create({
                ...activityData,
@@ -41,23 +49,23 @@ class ActivityService {
           return activity;
      }
 
-     public updateActivityParticipantsCount = async (activityData: ActivityDto, count: number) => {
+     public updateActivityParticipantsCount = async (activityId: number, count: number) => {
           const result = await this.activityRepository
                               .createQueryBuilder("activity")
                               .update(Activity)
                               .set({ participantsCount: () => `participantsCount + ${count}` })
-                              .where("id = :id", { id: activityData.id })
+                              .where("id = :id", { id: activityId })
                               .execute();
           return result;
      }
 
      // TODO: Think of a better function name
-     public getUserStatus = async (activityData: ActivityDto, user: User) => {
+     public getJoinActivityCount = async (activityId: number, userId: string) => {
           const isExists = await this.joinActivityRepository
                               .count({
                                    where: {
-                                        userId: user.id,
-                                        activityId: activityData.id,
+                                        userId: userId,
+                                        activityId: activityId,
                                    }
                               })
           return isExists;
@@ -74,29 +82,56 @@ class ActivityService {
           return result;
      }
 
-     public deleteUserJoinActivity = async (activityData: ActivityDto, user: User) => {
+     public deleteUserJoinActivity = async (activityId: number, userId: string) => {
           const result = await this.joinActivityRepository
                               .createQueryBuilder()
                               .delete()
                               .from(JoinActivity)
                               .where("userId =:userId AND activityId =:activityId", {
-                                   userId: user.id,
-                                   activityId: activityData.id
+                                   userId: userId,
+                                   activityId: activityId
                               })
                               .execute();
           return result;
      }
 
-     public getUserJoinActivityHasApprovedStatus = async (activityData: ActivityDto, user: User) => {
+     public getUserJoinActivityHasApprovedStatus = async (activityId: number, userId: string) => {
           const userHasBeenApproved = await this.joinActivityRepository
                                         .createQueryBuilder("joinActivity")
                                         .where(`joinActivity.userId = :userId AND 
                                                 joinActivity.activityId = :activityId`, {
-                                             userId: user.id,
-                                             activityId: activityData.id
+                                             userId: userId,
+                                             activityId: activityId
                                         })
                                         .getOne();
           return userHasBeenApproved?.hasApproved;
+     }
+
+     public updateJoinActivityApprovedStatus = async (activityId: number, userId: string) => {
+          const result = await this.joinActivityRepository
+                              .createQueryBuilder()
+                              .update(JoinActivity)
+                              .set({ hasApproved: true })
+                              .where(`userId = :userId AND
+                                      activityId = :activityId`, {
+                                           userId: userId,
+                                           activityId: activityId
+                                      })
+                              .execute();
+          return result;
+     }
+
+     public getPendingRequestByUID = async (user: User) => {
+          const result = await this.joinActivityRepository
+                              .createQueryBuilder("joinActivity")
+                              .innerJoin("joinActivity.activity", "activity")
+                              .innerJoin("joinActivity.user", "user")
+                              .where(`activity.creatorId = :userId AND
+                                      joinActivity.hasApproved = false`, {
+                                   userId: user.id
+                              })
+                              .getMany();
+          return result;
      }
 }
 

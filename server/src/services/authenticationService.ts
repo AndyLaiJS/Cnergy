@@ -4,27 +4,24 @@ import { getRepository } from "typeorm";
 import { User } from "../entity/User";
 import UserDto from "../dtos/userDto";
 
+import UserService from "./userService";
 import UserWithEmailExistsException from "../exceptions/userWithSameEmailExistsException";
 import utils from "../utils";
 
 class AuthenticationService {
-     private userRepository = getRepository(User);
+     private userService = new UserService();
 
      public register = async (userData: UserDto) => {
-          if (await this.userRepository.findOne({
-               email: userData.email
-          })) {
+          const userHasExisted = await this.userService
+                                   .getUserByEmail(userData.email);
+          if (userHasExisted) {
                throw new UserWithEmailExistsException(userData.email);
           }
           // TODO: Implement SendEmailVerification
 
           const hashedPassword = await bcrypt.hash(userData.password, 10);
-          const user = this.userRepository.create({
-               ...userData,
-               password: hashedPassword
-          });
-
-          await this.userRepository.save(user);
+          const user = await this.userService
+                              .insertUser(userData, hashedPassword);
           user.password = "";
 
           const secret = process.env.JWT_SECRET!

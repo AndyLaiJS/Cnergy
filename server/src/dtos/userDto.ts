@@ -2,6 +2,9 @@ import { IsString, IsOptional, ValidateNested } from "class-validator"
 import ActivityDto from "./createActivityDto";
 
 class UserDto {
+     @IsOptional()
+     public id: string;
+
      @IsString()
      public firstName: string;
      
