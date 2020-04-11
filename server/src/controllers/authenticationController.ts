@@ -1,13 +1,12 @@
 import { Router, Response, Request, NextFunction } from "express";
-import { getRepository } from "typeorm";
 import * as bcrypt from "bcrypt";
 
 import UserDto from "../dtos/userDto";
 import LoginDto from "../dtos/loginDto";
-import { User } from "../entity/User";
 
 import Controller from "../interfaces/controllerInterface";
 import AuthenticationService from "../services/authenticationService";
+import UserService from "../services/userService";
 import validationMiddleware from "../middlewares/validationMiddleware";
 import WrongCredentialsException from "../exceptions/wrongCredentialsException";
 import UserNotFoundException from "../exceptions/userNotFoundException";
@@ -17,7 +16,7 @@ class AuthenticationController implements Controller {
      public path = "/auth";
      public router = Router();
      private authenticationService = new AuthenticationService();
-     private userRepository = getRepository(User);
+     private userService = new UserService();
 
      constructor() {
           this.initRoutes();
@@ -32,7 +31,8 @@ class AuthenticationController implements Controller {
      private handleRegistration = async(request: Request, response: Response, next: NextFunction) => {
           const userData: UserDto = request.body;
           try {
-               const { cookie, user } = await this.authenticationService.register(userData);
+               const { cookie, user } = await this.authenticationService
+                                                  .register(userData);
                console.log(`Cookie = ${cookie}`)
                response.setHeader("Set-Cookie", [cookie]);
                response.send(user);
@@ -44,10 +44,8 @@ class AuthenticationController implements Controller {
      private handleLogin = async(request: Request, response: Response, next: NextFunction) => {
           const loginData: LoginDto = request.body;
           
-          // TODO: Change this line of code
-          const user = await this.userRepository.findOne({
-               email: loginData.email
-          });
+          const user = await this.userService
+                                 .getUserByEmail(loginData.email);
           if (user) {
                const passwordIsMatch = await bcrypt.compare(
                     loginData.password,

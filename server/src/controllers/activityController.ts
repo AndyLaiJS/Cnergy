@@ -42,9 +42,9 @@ class ActivityController implements Controller {
           this.router
               .post(`${this.path}/accept`, authenticationMiddleware, this.acceptActivityRequest);
           this.router
-              .delete(`${this.path}/reject`, authenticationMiddleware, this.rejectActivityRequest);
+              .delete(`${this.path}/reject`, authenticationMiddleware, validationMiddleware(JoinActivityDto), this.rejectActivityRequest);
           this.router
-              .get(`${this.path}/pending`, authenticationMiddleware, this.getPendingActivityRequests);
+              .get(`${this.path}/pending`, authenticationMiddleware, validationMiddleware(JoinActivityDto), this.getPendingActivityRequests);
      }
 
      // TODO: Should not return finished activities.
@@ -59,10 +59,10 @@ class ActivityController implements Controller {
                if (userSid) {
                     const userEmail = utils.getEmail(userSid);
                     activities = await this.activityService
-                                        .getActivitiesByUserEmail(userEmail);
+                                           .getActivitiesByUserEmail(userEmail);
                } else {
                     activities = await this.activityService
-                                        .getAllActivities();
+                                           .getAllActivities();
                }
                response.send({
                     activities: activities
@@ -79,7 +79,7 @@ class ActivityController implements Controller {
           const creator = request.user;
           try {
                const result = await this.activityService
-                                   .postActivity(activityData, creator);
+                                        .postActivity(activityData, creator);
                response.send(result);
           } catch(e) {
                next(e);
@@ -95,7 +95,7 @@ class ActivityController implements Controller {
           if (creator.id == activityData.creator.id) {
                try {
                     const result = await this.activityService
-                                        .updateActivity(activityData);
+                                             .updateActivity(activityData);
                     response.send(result);
                } catch(e) {
                     next(e);
@@ -113,7 +113,7 @@ class ActivityController implements Controller {
           const activityData: ActivityDto = request.body;
 
           const hasSignedUp = await this.activityService
-                                   .getJoinActivityCount(activityData.id, user.id);
+                                        .getJoinActivityCount(activityData.id, user.id);
 
           // If the user request is recorded, then he/she can't request to join the activity again
           if (hasSignedUp != 0) {
@@ -121,14 +121,14 @@ class ActivityController implements Controller {
           } else {
                try {
                     await this.activityService
-                         .postUserJoinActivity(activityData, user);
+                              .postUserJoinActivity(activityData, user);
                     
                     var additionalMsg: string = "";
                     if (activityData.type == "Private") {
                          additionalMsg = " Please wait for the confirmation from the activity creator";
                     } else {
-                         this.activityService
-                              .updateActivityParticipantsCount(activityData.id, 1);
+                         await this.activityService
+                                   .updateActivityParticipantsCount(activityData.id, 1);
                     }
 
                     response.send({
@@ -148,22 +148,22 @@ class ActivityController implements Controller {
           const activityData: ActivityDto = request.body;
 
           const hasSignedUp = await this.activityService
-                                   .getJoinActivityCount(activityData.id, user.id);
+                                        .getJoinActivityCount(activityData.id, user.id);
           if (hasSignedUp == 0) {
                next(new UserHasNotSignedUpActivityException())
           } else {
                try {
                     const hasApproved = await this.activityService
-                                             .getUserJoinActivityHasApprovedStatus(activityData.id, user.id);
+                                                  .getUserJoinActivityHasApprovedStatus(activityData.id, user.id);
 
                     await this.activityService
-                         .deleteUserJoinActivity(activityData.id, user.id);
+                              .deleteUserJoinActivity(activityData.id, user.id);
                          
                     if ( activityData.type == "Public" || (
                          activityData.type == "Private" && hasApproved
                     )) {
-                         await this.activityService.
-                              updateActivityParticipantsCount(activityData.id, -1);
+                         await this.activityService
+                                   .updateActivityParticipantsCount(activityData.id, -1);
                     }
                     response.send({
                          message: "You have successfully unregistered the activity",
@@ -181,13 +181,13 @@ class ActivityController implements Controller {
      private getPendingActivityRequests = async (request: RequestWithUser, response: Response) => {
           const user = request.user;
           const results = await this.activityService
-                              .getPendingRequestByUID(user);
+                                    .getPendingRequestByUID(user);
 
           for (let i = 0; i < results.length; i ++) {
                results[i]["activity"] = ( await this.activityService
-                                             .getActivityById(results[i].activityId) )!;
+                                                    .getActivityById(results[i].activityId) )!;
                results[i]["user"] = ( await this.userService
-                                            .getUserNameByUID(results[i].userId) )!;
+                                                .getUserNameByUID(results[i].userId) )!;
           }
 
           response.send(results);

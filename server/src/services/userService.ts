@@ -7,27 +7,27 @@ class UserService {
 
      public getUserNameByUID = async (userId: string) => {
           const user = await this.userRepository
-                              .findOne({
-                                   where: { id: userId }
-                              });
+                                 .findOne({
+                                      where: { id: userId }
+                                 });
           return user;
      }
 
      public getUserByEmail = async (userEmail: string) => {
           const user = await this.userRepository
-                              .findOne({
-                                   email: userEmail
-                              });
+                                 .findOne({
+                                      email: userEmail
+                                 });
           return user;
      }
 
      public insertUser = async (userData: UserDto, hashedPassword: string) => {
           const user = await this.userRepository
-                              .create({
-                                   ...userData,
-                                   password: hashedPassword
-                              })
-                              .save();
+                                 .create({
+                                      ...userData,
+                                      password: hashedPassword
+                                 })
+                                 .save();
           return user;
      }
 }

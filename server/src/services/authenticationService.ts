@@ -1,7 +1,5 @@
 import * as bcrypt from "bcrypt";
-import { getRepository } from "typeorm";
 
-import { User } from "../entity/User";
 import UserDto from "../dtos/userDto";
 
 import UserService from "./userService";
@@ -13,7 +11,7 @@ class AuthenticationService {
 
      public register = async (userData: UserDto) => {
           const userHasExisted = await this.userService
-                                   .getUserByEmail(userData.email);
+                                           .getUserByEmail(userData.email);
           if (userHasExisted) {
                throw new UserWithEmailExistsException(userData.email);
           }
@@ -21,7 +19,7 @@ class AuthenticationService {
 
           const hashedPassword = await bcrypt.hash(userData.password, 10);
           const user = await this.userService
-                              .insertUser(userData, hashedPassword);
+                                 .insertUser(userData, hashedPassword);
           user.password = "";
 
           const secret = process.env.JWT_SECRET!
