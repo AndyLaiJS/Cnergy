@@ -1,0 +1,370 @@
+body {
+    background-color: rgb(255, 255, 255); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+header{
+    background-color: rgb(193, 228, 241); 
+    height: 118px;
+    text-align: center;
+    
+}
+
+header a{ /*  for "CUHK club" */ 
+    text-decoration: none;
+    font-size: 72px;
+    color: rgb(5, 5, 70); 
+    font-family: Candara, sans-serif; 
+    padding-left: 10px;
+    padding-right: 10px;
+    position: relative; 
+  
+}
+
+.startcontainer nav{ /* for navigation bar */ 
+    background-color: rgb(206, 238, 247);
+    text-align: center;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.startcontainer nav a{
+    text-decoration: none;
+    font-family: Candara, Helvetica, sans-serif; 
+    font-size: 30px;
+    padding-left: 60px;
+    padding-right: 60px;
+    color: rgb(92, 92, 47); /* change color of words */
+    position: relative; 
+}
+
+.startcontainer h2{ /* for "Back to Search */ 
+    padding-top: 70px; 
+    padding-bottom: 20px; 
+    margin: 0;
+    background: #ffffff;
+}
+
+.startcontainer h2 a{
+    text-decoration: none;
+    display: inline-block; 
+    color: rgb(6, 26, 44);
+    font-family: Source Sans Pro;
+    /* font-weight: lighter; */
+    font-size: 28px;
+    padding: 0 20px; 
+    padding-left: 50px;
+}
+
+/* Adapted from https://www.youtube.com/watch?v=IYTBAQRBsw0 */
+/* effects for "Back to Search */ 
+.fancy-link::after{ 
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: rgb(218, 191, 42);
+    transition: width .3s; 
+}
+
+.fancy-link:hover::after{
+    width: 100%;
+    transition: width .3s; 
+}
+
+.container { /* container for chosen activity */ 
+    width:1124px; 
+    height:250px; 
+    margin: auto;
+    background-color: white; 
+    padding-top:20px; 
+    padding-left:15px; 
+    padding-right:15px; 
+    margin-top: 20px; 
+    border: solid rgb(163, 134, 4); 
+} 
+
+h1 {
+    padding-left: 30px;
+}
+
+p {
+    padding-left: 30px; 
+}
+
+.st-box { 
+    float:left; 
+    width:180px; 
+    height:160px; 
+    background-color:white; 
+    border:dashed black; 
+    padding-left: 0px;
+} 
+
+.stbox img {
+    width: 200px;
+    height: 150px;
+}
+
+.nd-box { 
+    float: left;  
+    width:700px; 
+    height:220px; 
+    background-color:white;  
+    /* border:solid black;  */
+    border-left: solid black;
+    border-left-width: 3px;
+    margin-left:30px; 
+} 
+
+.nd-box ul {
+    padding-left: 30px;
+}
+
+.nobull {
+    list-style-type: none;
+}
+
+.rd-box { 
+    float:left; 
+    /* width:120px; 
+    height:20px; 
+    background-color:white;  */
+    margin-left: 70px;
+    /* border:solid black;  */
+    /* border-radius: 3%; */
+} 
+
+/* Adapted from https://www.youtube.com/watch?v=ex7jGbyFgpA */
+bod a{
+    position: relative; 
+    display: inline-block;
+    padding: 15px 30px;
+    color: rgb(177, 166, 117); /* color of "Join" before light up */ 
+    letter-spacing: 4px;
+    text-decoration: none;
+    font-size: 26px;    
+    text-transform: uppercase;
+    transition: 0.2s;
+    overflow: hidden;
+}
+
+bod { /* color, shape and orientation of button */ 
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f0f3df;
+    font-family: consolas; 
+}
+
+bod a:hover{ /* light up the whole button */
+    color: rgb(163, 134, 4); /* color of "Join" after light up*/ 
+    background: #f8eb33b2;
+    box-shadow: 0 0 10px #e8ee95, 0 0 40px #e8ee95, 0 0 80px #e8ee95;
+    transition-delay: .5s; 
+}
+
+bod a span{
+    position: absolute;
+    display: block;
+}
+
+bod a span:nth-child(1){
+    top: 0;
+    left: -100%;
+    width: 100%; 
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #df4c08);
+}
+
+bod a:hover span:nth-child(1){
+    left: 100%;
+    transition: .5s;
+} 
+
+bod a span:nth-child(3){
+    bottom: 0;
+    right: -100%;
+    width: 100%; 
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #f38a11);
+}
+
+bod a:hover span:nth-child(3){
+    right: 100%;
+    transition: .5s;
+    transition-delay: 0.25s;
+} 
+
+bod a span:nth-child(2){
+    top: -100%;
+    right: 0;
+    width: 2px; 
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #c49a12);
+}
+
+bod a:hover span:nth-child(2){
+    top: 100%;
+    transition: .5s;
+    transition-delay: 0.125s;
+} 
+
+bod a span:nth-child(4){
+    bottom: -100%;
+    left: 0;
+    width: 2px; 
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #fded05);
+}
+
+bod a:hover span:nth-child(4){
+    bottom: 100%;
+    transition: .5s;
+    transition-delay: 0.375s;
+} 
+
+/* Adapted from https://www.w3schools.com/howto/howto_js_popup_form.asp */
+/* The popup form - hidden by default */
+.pop-box {
+    border: 3px solid #854646;
+    display: none;
+    position: fixed; /* fix position at the bottom right corner */ 
+    bottom: 0;
+    right: 15px;
+}
+
+/* Add styles to the container */
+.pop-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: rgb(255, 255, 255); 
+}
+
+/* Style for the join/cancel button */
+.pop-container .btn {
+    /* background-color: #4CAF50; */
+    background-color: #dffb4d; 
+    color: rgb(0, 0, 0); /* font color */ 
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    padding: 20px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom:10px;
+    opacity: 1;
+}
+
+/* Background color to the cancel button */
+.pop-container .cancel {
+    background-color:  #fb684d;
+}
+
+h4 {
+    font-size: 20px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+/* container for "you may also like" 
+and footer "CUHK" */ 
+/* modifying this will affect the container for CUHK Club too */ 
+.startcontainer { 
+    margin-left: auto;
+    margin-right: auto;
+    width: 1300px;  
+    /* padding-bottom: 100px; */
+}
+
+.startcontainer h3{
+    padding-top: 30px;
+    background-color: rgb(247, 233, 233); 
+    padding-bottom: 30px;
+}
+
+.startcontainer h3 a{ /* for "you may also like" */
+    text-decoration: none;
+    font-size: 44px; 
+    color: black; 
+    padding-left: 50px;
+    font-family: candara;
+}
+
+.cont { /* cont is a container for com-box */
+    width:1124px; 
+    height:350px; 
+    margin: auto;
+    background-color:rgb(248, 244, 223); 
+    padding-top:20px; 
+    padding-left:15px; 
+    padding-right:15px; 
+} 
+
+.img-box {
+    width: 200px;
+    height: 150px;
+    border: none; 
+    margin: auto;
+    margin-top: 30px;
+}
+
+.des-box {
+    width: 200px;
+    height: 80px; 
+    border: dashed rgb(131, 116, 75);
+    margin: auto;
+    margin-top: 20px; 
+    font-family: consolas;
+    background-color: rgb(248, 244, 223); 
+}
+
+/* com-box combines img and des */
+.com-box {  
+    float: left; 
+    width: 250px;
+    height: 300px;
+    background-color: white;
+    margin-left: 60px;
+    margin-right: 60px; 
+    box-sizing: border-box;  
+}
+
+.com-box img{
+    width: 200px;
+    height: 150px; 
+}
+
+/* Adapted from https://www.youtube.com/watch?v=hso-nm9cWmM */
+.com-box:before{
+    content: '';
+    position: absolute;
+    width: 250px;
+    height: 300px; 
+    border: none;
+    border-top: 4px solid rgb(163, 134, 4); 
+    border-bottom: 4px solid rgb(163, 134, 4);
+    box-sizing: border-box;  
+    transform:  scaleX(0);
+    transition: 0.5s; 
+}
+.com-box:hover:before{
+    transform: scaleX(1); 
+}
+
+footer{
+    margin-top: 20px;
+    background-color: black;
+    padding-top: 50px;
+    padding-bottom: 50px; 
+    margin-bottom: 20px; 
+}
+
+footer p{
+    font-size: 10px;
+    text-align: center;
+    color: aliceblue; 
+}
