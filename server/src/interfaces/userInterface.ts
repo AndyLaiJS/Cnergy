@@ -15,5 +15,13 @@ export default interface User {
           createdAt: Date;
           updatedAt: Date;
           deletedAt: Date;
-     }>;
+     }>,
+     clubs?: Array<{
+          id: number;
+          avatar: Buffer;
+          name: string;
+          description: Text;
+          createdAt: Date;
+          updatedAt: Date;
+     }>
 }

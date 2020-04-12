@@ -5,11 +5,14 @@ import UserDto from "src/dtos/userDto";
 class UserService {
      private userRepository = getRepository(User);
 
-     public getUserNameByUID = async (userId: string) => {
+     public getUserInfoByUID = async (userId: string) => {
           const user = await this.userRepository
                                  .findOne({
                                       where: { id: userId }
                                  });
+          if (user) {
+               user.password = "";
+          }
           return user;
      }
 

@@ -8,10 +8,10 @@ import ActivityDto from "../dtos/createActivityDto";
 import UpdateActivityDto from "../dtos/updateActivityDto";
 import JoinActivityDto from "../dtos/joinActivityDto";
 import UnauthorizedException from "../exceptions/unauthorizedException";
-import UserHasSignedUpActivityException from "../exceptions/userHasSignedUpActivityException";
-import UserHasNotSignedUpActivityException from "../exceptions/userHasNotSignedUpActivityException";
-import UserHasJoinedActivityException from "../exceptions/userHasJoinedActivityException";
-import JoinActivityRequestNotFoundException from "../exceptions/joinActivityRequestNotFoundException";
+import UserHasSignedUpException from "../exceptions/userHasSignedUpException";
+import UserHasNotSignedUpException from "../exceptions/userHasNotSignedUpException";
+import UserHasJoinedException from "../exceptions/userHasJoinedException";
+import JoinRequestNotFoundException from "../exceptions/joinRequestNotFoundException";
 
 import authenticationMiddleware from "../middlewares/authenticationMiddleware";
 import validationMiddleware from "../middlewares/validationMiddleware";
@@ -117,7 +117,7 @@ class ActivityController implements Controller {
 
           // If the user request is recorded, then he/she can't request to join the activity again
           if (hasSignedUp != 0) {
-               next(new UserHasSignedUpActivityException());
+               next(new UserHasSignedUpException("activity"));
           } else {
                try {
                     await this.activityService
@@ -150,7 +150,7 @@ class ActivityController implements Controller {
           const hasSignedUp = await this.activityService
                                         .getJoinActivityCount(activityData.id, user.id);
           if (hasSignedUp == 0) {
-               next(new UserHasNotSignedUpActivityException())
+               next(new UserHasNotSignedUpException("activity"))
           } else {
                try {
                     const hasApproved = await this.activityService
@@ -187,7 +187,7 @@ class ActivityController implements Controller {
                results[i]["activity"] = ( await this.activityService
                                                     .getActivityById(results[i].activityId) )!;
                results[i]["user"] = ( await this.userService
-                                                .getUserNameByUID(results[i].userId) )!;
+                                                .getUserInfoByUID(results[i].userId) )!;
           }
 
           response.send(results);
@@ -202,7 +202,7 @@ class ActivityController implements Controller {
 
           // No joinActivity record is found
           if (hasSignedUp == 0) {
-               next(new JoinActivityRequestNotFoundException());
+               next(new JoinRequestNotFoundException("activity"));
           } else {
                const hasApproved = await this.activityService
                                              .getUserJoinActivityHasApprovedStatus(
@@ -210,7 +210,7 @@ class ActivityController implements Controller {
                                                   activityData.userId
                                              );
                if (hasApproved) {
-                    next(new UserHasJoinedActivityException());
+                    next(new UserHasJoinedException("activity"));
                } else {
                     await this.activityService
                               .deleteUserJoinActivity(activityData.activityId,
@@ -232,7 +232,7 @@ class ActivityController implements Controller {
 
           // No joinActivity record is found
           if (hasSignedUp == 0) {
-               next(new JoinActivityRequestNotFoundException());
+               next(new JoinRequestNotFoundException("activity"));
                // Throw error
           } else {
                const hasApproved = await this.activityService
@@ -250,7 +250,7 @@ class ActivityController implements Controller {
                          status: 200
                     });
                } else {
-                    next(new UserHasJoinedActivityException());
+                    next(new UserHasJoinedException("activity"));
                }
           }
      }

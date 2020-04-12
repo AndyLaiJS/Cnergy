@@ -5,6 +5,7 @@ import App from "./app";
 
 import AuthenticationController from "./controllers/authenticationController";
 import ActivityController from "./controllers/activityController";
+import ClubController from "./controllers/clubController";
 
 async function main() {
     const config = await getConnectionOptions(process.env.NODE_ENV);
@@ -18,6 +19,7 @@ async function main() {
     const app = new App([
         new AuthenticationController(),
         new ActivityController(),
+        new ClubController(),
     ],3000);
     app.listen();
 }
