@@ -1,0 +1,145 @@
+/* Information */
+.content-list{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.content-lists{
+    display: grid;
+    grid-template-columns: 1fr 3fr 0.3fr;
+    margin: 1.5rem 0;
+    column-gap: .5rem;
+}
+.content-lists input{
+    padding: .5rem;
+    border-radius: .25rem;
+    text-decoration: none;
+}
+.content-lists input:focus{
+    border: 1px solid black;
+}
+.content-lists label{
+    padding: 0.5rem 0 0.5rem 1rem;
+    min-width: 5rem;
+}
+.btn{
+    text-decoration: none;
+    outline: none;
+    text-align: center;
+    border: none;
+    border-radius: .25rem;
+    cursor: pointer;
+    min-width: 3rem;
+    box-shadow: 0 2px #999;
+    background-color: rgb(23, 60, 66);
+    color: white;
+}
+.btn:hover{
+    background-color: #0C2226;
+}
+.btn:active{
+    transform: translateY(2px);
+    background-color: #0C2226;
+    box-shadow: none;
+}
+
+/* Profile Picture */
+.image-content{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 40vh;
+}
+.image-container{
+    width: 15vw;
+    min-width: 12rem;
+    text-align: center;
+    margin: 1.5rem 0 0 0;
+}
+.img{
+    max-width: 100%;
+    height: auto;
+}
+.btn2{
+    width: 15vw;
+    height: 2.5rem;
+    min-width: 12rem;
+    margin: 1rem 0 0 0;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    outline: none;
+    background-color: rgb(23, 60, 66);
+    color: white;
+    box-shadow: 0 2px #999;
+    border-radius: .25rem;
+    font-size: 18px;
+}
+.btn2:hover{
+    background-color: #0C2226;
+}
+.btn2:active{
+    transform: translateY(2px);
+    background-color: #0C2226;
+    box-shadow: none;
+}
+
+label {
+    display: inline-block;
+}
+.input-box {
+    display: inline-block;
+}
+
+
+
+/* ID */
+#pw-btn{
+    margin-left: .5rem;
+    width: 10rem;
+}
+
+
+
+/* Responsive */
+@media screen and (max-width: 768px){
+    .content-lists{
+        display: grid;
+        grid-template-columns: 1fr 2fr 0.3fr;
+        margin: 1.5rem 0;
+        column-gap: .5rem;
+    }
+    
+    .btn2{
+        font-size: 15px;
+    }
+
+}
+@media screen and (max-width: 528px){
+    .content{
+        width: 100%;
+    }
+    .content-list{
+        width: 100%;
+        align-items: center;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .content-lists{
+        grid-template-columns: 1fr;
+        text-align: center;
+        row-gap: .5rem;
+        font-size: 15px;
+    }
+    .btn{
+        height: 2rem;
+    }
+    .content-lists label{
+        padding: 0;
+        min-width: 5rem;
+    }
+
+}

@@ -3,6 +3,10 @@ import VueRouter from 'vue-router'
 import home from '../views/Home.vue'
 import login from '../views/Login.vue'
 import register from '../views/Register.vue'
+import profile from '../Profile Page/profile.vue'
+// import clubs-activities from '../Profile Page/clubs-activities.vue'
+// import security from '../Profile Page/security.vue'
+// import help-faq from '../Profile Page/help-faq.vue'
 
 Vue.use(VueRouter)
 
@@ -22,6 +26,26 @@ const routes = [
     name: 'register',
     component: register
   },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: profile
+  },
+  // {
+  //   path: '/clubs-activities',
+  //   name: 'clubs-activities',
+  //   component: clubs-activities
+  // },
+  // {
+  //   path: '/security',
+  //   name: 'security',
+  //   component: security
+  // },
+  // {
+  //   path: '/help-faq',
+  //   name: 'help-faq',
+  //   component: help-faq
+  // },
   // {
   //   path: '/about',
   //   name: 'About',
