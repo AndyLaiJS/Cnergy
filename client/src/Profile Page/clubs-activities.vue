@@ -166,7 +166,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import './css/style.css';
-    @import './css/content-style.css';
-    @import './css/clubs-activities.css';
+@import './css/style.css';
+@import './css/content-style.css';
+@import './css/clubs-activities.css';
 </style>

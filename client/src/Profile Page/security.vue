@@ -45,8 +45,8 @@
 </template>
 
 <style scoped lang="scss">
-    @import './css/style.css';
-    @import './css/content-style.css';
+@import './css/style.css';
+@import './css/content-style.css';
 input {
     background-color: white;
 }
