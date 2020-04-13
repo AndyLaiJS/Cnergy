@@ -2,7 +2,7 @@
     <div class="wrapper">
         <header>
             <div class="header">
-                <router-link to="/" class="icon-link">MeePo</router-link>
+                <router-link to="/home" class="icon-link">MeePo</router-link>
                 <a href="#" class="profile-link">Profile</a>
             </div>
         </header>
@@ -58,7 +58,7 @@
 </template>
 
 <style scoped lang="scss">
-    @import '../css/style.css';
-    @import '../css/content-style.css';
+    @import './css/style.css';
+    @import './css/content-style.css';
     
 </style>

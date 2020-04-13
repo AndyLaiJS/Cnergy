@@ -147,7 +147,7 @@ a:hover{
 	color: var(--accent-color);
 }
 
-.btn{
+.lgn{
 	display: block;
 	width: 50%;
 	height: 50px;
@@ -163,7 +163,7 @@ a:hover{
 	cursor: pointer;
 	transition: .5s;
 }
-.btn:hover {
+.lgn:hover {
   background-color: var(--accent-color);
   color: #fff;
 }

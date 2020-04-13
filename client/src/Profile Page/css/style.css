@@ -1,15 +1,4 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-html, body{
-    height: 100%;
-    margin: 0;
-}
-body{
-    font-family: 'Poppins', sans-serif;
-}
+
 /* Initialize footer to stick at bottom */
 .wrapper{
     min-height: 100%;
