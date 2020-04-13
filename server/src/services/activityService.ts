@@ -1,7 +1,7 @@
 import { getRepository } from "typeorm";
 import { Activity } from "../entity/Activity";
 import { JoinActivity } from "../entity/JoinActivity";
-import ActivityDto from "src/dtos/createActivityDto";
+import CreateActivityDto from "src/dtos/createActivityDto";
 import User from "src/interfaces/userInterface";
 import UpdateActivityDto from "src/dtos/updateActivityDto";
 
@@ -9,16 +9,25 @@ class ActivityService {
      private activityRepository = getRepository(Activity);
      private joinActivityRepository = getRepository(JoinActivity);
 
-     public getAllActivities = async () => {
-          const activities = await this.activityRepository.find();
+     public getActivitiesByTimestamp = async (timestamp: string, comparator: string = ">=") => {
+          const activities = await this.activityRepository
+                                       .createQueryBuilder("activity")
+                                       .where(`activity.activityDate ${comparator} :time`, {
+                                            time: timestamp
+                                       })
+                                       .getMany();
           return activities;
      }
 
-     public getActivitiesByUserEmail = async (userEmail: string) => {
+     public getActivitiesByEmailAndTimestamp = async (userEmail: string, timestamp: string, comparator: string = ">=") => {
           const activities = await this.activityRepository
                                        .createQueryBuilder("activity")
                                        .innerJoinAndSelect("activity.creator", "creator")
-                                       .where("creator.email=:email", { email: userEmail })
+                                       .where(`creator.email=:email AND
+                                               activity.activityDate ${comparator} :time`, {
+                                                  email: userEmail,
+                                                  time: timestamp
+                                             })
                                        .getMany();
           return activities;
      }
@@ -31,7 +40,18 @@ class ActivityService {
           return activity;
      }
 
-     public postActivity = async (activityData: ActivityDto, creator: User) => {
+     public getActivityTypeById = async (activityId: number) => {
+          const activity = await this.activityRepository
+                                     .createQueryBuilder("activity")
+                                     .select("activity.type")
+                                     .where(`activity.id = :id`, {
+                                          id: activityId
+                                     })
+                                     .getOne();
+          return activity?.type;
+     }
+
+     public postActivity = async (activityData: CreateActivityDto, creator: User) => {
           const activity = await this.activityRepository
                                      .create({
                                           ...activityData,
@@ -59,7 +79,6 @@ class ActivityService {
           return result;
      }
 
-     // TODO: Think of a better function name
      public getJoinActivityCount = async (activityId: number, userId: string) => {
           const isExists = await this.joinActivityRepository
                                      .count({
@@ -71,12 +90,11 @@ class ActivityService {
           return isExists;
      }
 
-     public postUserJoinActivity = async (activityData: ActivityDto, user: User) => {
-          const hasApproved = (activityData.type == "Public" ? true : false);
+     public postUserJoinActivity = async (activityId: number, userId: string, hasApproved: boolean = true) => {
           const result = await this.joinActivityRepository
                                    .insert({
-                                        userId: user.id,
-                                        activityId: activityData.id,
+                                        userId: userId,
+                                        activityId: activityId,
                                         hasApproved: hasApproved
                                    });
           return result;
@@ -121,14 +139,14 @@ class ActivityService {
           return result;
      }
 
-     public getPendingRequestByUID = async (user: User) => {
+     public getPendingRequestByUID = async (userId: string) => {
           const result = await this.joinActivityRepository
                                    .createQueryBuilder("joinActivity")
                                    .innerJoin("joinActivity.activity", "activity")
                                    .innerJoin("joinActivity.user", "user")
                                    .where(`activity.creatorId = :userId AND
                                            joinActivity.hasApproved = false`, {
-                                             userId: user.id
+                                             userId: userId
                                    })
                                    .getMany();
           return result;

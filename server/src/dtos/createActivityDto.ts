@@ -1,20 +1,12 @@
-import { IsString, IsNumber, IsDate, ValidateNested, IsOptional } from "class-validator"
-import UserDto from "./userDto";
+import { IsString, IsNumber, IsOptional } from "class-validator"
 
-class ActivityDto {
-     @IsOptional()
-     public id: number;
-
-     @ValidateNested()
-     public creator: UserDto;
-
+class CreateActivityDto {
      @IsString()
      public name: string;
 
      @IsString()
      public description: string;
 
-     // TODO: Consider other possible format
      @IsString()
      public activityDate: string;
 
@@ -24,6 +16,7 @@ class ActivityDto {
      @IsNumber()
      public minParticipants: number;
 
+     @IsOptional()
      @IsNumber()
      public participantsCount: number;
 
@@ -31,4 +24,4 @@ class ActivityDto {
      public type: string;
 }
 
-export default ActivityDto;
+export default CreateActivityDto;
