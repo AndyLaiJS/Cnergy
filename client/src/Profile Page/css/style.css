@@ -11,13 +11,13 @@
 /* Header */
 .header{
     display: flex;
-    background-color: #0C2226;
+    background-color: #6d9dff;
     justify-content: space-between;
     align-items: center;
     min-height: 10vh;
 }
 .header a{
-    color: white;
+    color: white !important;
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 3px;
@@ -25,8 +25,8 @@
     font-size: 20px;
 }
 .header a:hover{
-    color: rgb(123, 158, 170);
-    transform: scale(1.2);
+    color: white;
+    transform: scale(1.1);
 }
 .icon-link{
     margin-left: 2rem;
@@ -34,7 +34,7 @@
     font-size: 20px;
 }
 .profile-link{
-    margin-right: 2rem;
+    margin-right: 200px;
     font-size: 18px;
 }
 /* Main Body */
@@ -45,13 +45,14 @@
     width: 85vw;
     min-height: 70vh;
     display: flex;
-    background-color: red;
+    border-radius: 5px;
 }
 .options{
     background-color: #0C2226;
     height: inherit;
     width: 15vw;
     min-width: 12rem;
+    border-radius: 5px 0 0 5px;
 }
 .settings-display{
     background-color: #EAE6E6;
@@ -59,6 +60,7 @@
     width: 70vw;
     display: flex;
     flex-wrap: wrap-reverse;
+    border-radius: 5px;
 }
 
 /* Main Body - Left Options */
@@ -70,19 +72,20 @@
     justify-content: space-around;
     height: 100%;
 }
-.options-link{
-    color: white;
+.options-link {
+    color: white !important;
     text-decoration: none;
     letter-spacing: 1px;
     font-size: 18px;
     transition: 0.25s ease-in-out;
 }
-.options-link:hover{
-    color: rgb(123, 158, 170);
-    font-size: 22px;
+
+.options-links:hover {
+    color: #dffb4d !important;
 }
+
 .active{
-    color: rgb(100, 131, 141);
+    color: rgb(100, 131, 141) !important;
 }
 /* Footer */
 .footer{

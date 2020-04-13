@@ -1,8 +1,13 @@
 <template>
     <div class="wrapper">
         <header>
-            <div class="header">
-                <router-link to="/home" class="icon-link">MeePo</router-link>
+            <div id="nav">
+                <router-link to="/home">
+                <div class="navLogo">
+                    <img src="../assets/CUHK.png">
+                    <b>CUHK</b> MeePo
+                </div>
+                </router-link>
                 <a href="#" class="profile-link">Profile</a>
             </div>
         </header>
