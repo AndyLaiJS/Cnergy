@@ -93,7 +93,7 @@
               </div>
 
               <!-- <button type="submit" class="btn">Register</button> -->
-              <router-link to="/home"><button class="btn">Register</button></router-link>
+              <router-link to="/home"><button class="lgn">Register</button></router-link>
 
           </form>
       </div>

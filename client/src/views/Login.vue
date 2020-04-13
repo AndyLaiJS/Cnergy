@@ -47,7 +47,7 @@
               </div>
 
               <a href="#">Forgot Password?</a>
-              <button class="btn">Login</button>
+              <button class="lgn">Login</button>
 
           </form>
 
