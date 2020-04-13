@@ -16,8 +16,8 @@
                 <ul class="options-links">
                     <li class="active"><router-link to="/profile" class="active options-link">Profile Settings</router-link></li>
                     <li><router-link to="/clubsactivities" class="options-link">Clubs & Activities</router-link></li>
-                    <li><router-link to="security" class="options-link">Security</router-link></li>
-                    <li><router-link to="hfaq" class="options-link">Help & FAQ</router-link></li>
+                    <li><router-link to="/security" class="options-link">Security</router-link></li>
+                    <li><router-link to="/hfaq" class="options-link">Help & FAQ</router-link></li>
                 </ul>
             </div>
             <div class="settings-display">
@@ -65,5 +65,4 @@
 <style scoped lang="scss">
     @import './css/style.css';
     @import './css/content-style.css';
-    
 </style>
