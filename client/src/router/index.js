@@ -5,7 +5,7 @@ import login from '../views/Login.vue'
 import register from '../views/Register.vue'
 import profile from '../Profile Page/profile.vue'
 import clubsactivities from '../Profile Page/clubs-activities.vue'
-// import security from '../Profile Page/security.vue'
+import security from '../Profile Page/security.vue'
 // import help-faq from '../Profile Page/help-faq.vue'
 
 Vue.use(VueRouter)
@@ -36,11 +36,11 @@ const routes = [
     name: 'clubsactivities',
     component: clubsactivities
   },
-  // {
-  //   path: '/security',
-  //   name: 'security',
-  //   component: security
-  // },
+  {
+    path: '/security',
+    name: 'security',
+    component: security
+  },
   // {
   //   path: '/help-faq',
   //   name: 'help-faq',
