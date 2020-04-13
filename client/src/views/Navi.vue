@@ -1,10 +1,12 @@
 <template>
     <v-app>
         <div id="nav">
-            <div class="navLogo">
-                <img src="../assets/CUHK.png">
-                <b>CUHK</b> MeePo
-            </div>
+            <router-link to="/home">
+                <div class="navLogo">
+                    <img src="../assets/CUHK.png">
+                    <b>CUHK</b> MeePo
+                </div>
+            </router-link>
             <div class="navLink">
                 <router-link to="/home">Clubs</router-link> 
                 <router-link to="/home">Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
@@ -21,7 +23,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 #nav {
   font-size: 25px;
   line-height: 80px;
@@ -42,6 +44,7 @@ export default {
   }
 }
 .navLogo {
+  font-size: 24px;
   cursor: pointer;
   img {
     height: 30px;
