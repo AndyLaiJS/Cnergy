@@ -4,7 +4,7 @@ import home from '../views/Home.vue'
 import login from '../views/Login.vue'
 import register from '../views/Register.vue'
 import profile from '../Profile Page/profile.vue'
-// import clubs-activities from '../Profile Page/clubs-activities.vue'
+import clubsactivities from '../Profile Page/clubs-activities.vue'
 // import security from '../Profile Page/security.vue'
 // import help-faq from '../Profile Page/help-faq.vue'
 
@@ -31,11 +31,11 @@ const routes = [
     name: 'profile',
     component: profile
   },
-  // {
-  //   path: '/clubs-activities',
-  //   name: 'clubs-activities',
-  //   component: clubs-activities
-  // },
+  {
+    path: '/clubsactivities',
+    name: 'clubsactivities',
+    component: clubsactivities
+  },
   // {
   //   path: '/security',
   //   name: 'security',

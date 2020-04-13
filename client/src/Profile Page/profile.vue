@@ -3,10 +3,10 @@
         <header>
             <div id="nav">
                 <router-link to="/home">
-                <div class="navLogo">
-                    <img src="../assets/CUHK.png">
-                    <b>CUHK</b> MeePo
-                </div>
+                    <div class="navLogo">
+                        <img src="../assets/CUHK.png">
+                        <b>CUHK</b> MeePo
+                    </div>
                 </router-link>
                 <a href="#" class="profile-link">Profile</a>
             </div>
@@ -14,10 +14,10 @@
         <main class="main">
             <div class="options">
                 <ul class="options-links">
-                    <li class="active"><a href="index.html" class="active options-link">Profile Settings</a></li>
-                    <li><a href="clubs-activities.html" class="options-link">Clubs & Activities</a></li>
-                    <li><a href="security.html" class="options-link">Security</a></li>
-                    <li><a href="help-faq.html" class="options-link">Help & FAQ</a></li>
+                    <li class="active"><router-link to="/profile" class="active options-link">Profile Settings</router-link></li>
+                    <li><router-link to="/clubsactivities" class="options-link">Clubs & Activities</router-link></li>
+                    <li><router-link to="security" class="options-link">Security</router-link></li>
+                    <li><router-link to="hfaq" class="options-link">Help & FAQ</router-link></li>
                 </ul>
             </div>
             <div class="settings-display">
