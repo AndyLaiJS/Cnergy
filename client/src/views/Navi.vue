@@ -6,8 +6,8 @@
                 <b>CUHK</b> MeePo
             </div>
             <div class="navLink">
-                <router-link to="/">Clubs</router-link> 
-                <router-link to="/">Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
+                <router-link to="/home">Clubs</router-link> 
+                <router-link to="/home">Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
                 <router-link to="/profile">Profile</router-link>
             </div>
         </div>
