@@ -7,28 +7,41 @@ export class Activity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
     
-    @ManyToOne(type => User, user => user.activities)
+    @ManyToOne(() => User, user => user.activities)
     creator: User;
 
-    @OneToMany(type => JoinActivity, joinActivity => joinActivity.activity)
+    @OneToMany(() => JoinActivity, joinActivity => joinActivity.activity)
     participants: JoinActivity[];
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     name: string;
     
-    @Column()
+    @Column({
+        nullable: false
+    })
     description: string;
         
-    @Column()
+    @Column({
+        nullable: false
+    })
     activityDate: Date;
     
-    @Column()
+    @Column({
+        nullable: false
+    })
     maxParticipants: number;
     
-    @Column()
+    @Column({
+        nullable: false
+    })
     minParticipants: number;
 
-    @Column()
+    @Column({
+        default: () => "0",
+        nullable: false
+    })
     participantsCount: number;
 
     // Type can be either "Public" or "Private"
@@ -40,12 +53,14 @@ export class Activity extends BaseEntity {
 
     @CreateDateColumn({
         default: () => "CURRENT_TIMESTAMP(6)",
+        nullable: false
     })
     createdAt: Date;
 
     @UpdateDateColumn({
         default: () => "CURRENT_TIMESTAMP(6)",
-        onUpdate: "CURRENT_TIMESTAMP(6)"
+        onUpdate: "CURRENT_TIMESTAMP(6)",
+        nullable: false
     })
     updatedAt: Date;
     

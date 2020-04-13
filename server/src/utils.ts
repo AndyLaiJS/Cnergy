@@ -38,5 +38,16 @@ function getEmail(sid: string) {
 }
 
 // --------------------------------------------------------------------------------
+function getCurrentTimestamp() {
+     let currTime = new Date();
+     let year = currTime.getFullYear();
+     let month = currTime.getMonth() + 1;
+     let date = currTime.getDate();
+     let hour = currTime.getHours();
+     let minute = currTime.getMinutes();
+     let second = currTime.getSeconds();
 
-export default { createToken, createCookie, getEmail };
+     return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
+}
+
+export default { createToken, createCookie, getEmail, getCurrentTimestamp };

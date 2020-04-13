@@ -14,6 +14,7 @@ import utils from "../utils";
 
 class AuthenticationController implements Controller {
      public path = "/auth";
+     public context = "";
      public router = Router();
      private authenticationService = new AuthenticationService();
      private userService = new UserService();
@@ -33,7 +34,7 @@ class AuthenticationController implements Controller {
           try {
                const { cookie, user } = await this.authenticationService
                                                   .register(userData);
-               console.log(`Cookie = ${cookie}`)
+
                response.setHeader("Set-Cookie", [cookie]);
                response.send(user);
           } catch (e) {

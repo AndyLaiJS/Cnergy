@@ -1,21 +1,22 @@
 import { Request, Response, Router, NextFunction } from "express";
 
-import Controller from "../interfaces/controllerInterface";
-import authenticationMiddleware from "../middlewares/authenticationMiddleware";
-import RequestWithUser from "../interfaces/requestWithUserInterface";
-import validationMiddleware from "../middlewares/validationMiddleware";
-import UserService from "../services/userService";
-import CreateClubDto from "../dtos/createClubDto";
 import ClubService from "../services/clubService";
+import UserService from "../services/userService";
+import Controller from "../interfaces/controllerInterface";
+import RequestWithUser from "../interfaces/requestWithUserInterface";
 import User from "../interfaces/userInterface";
+import ClubRequestDto from "../dtos/clubRequestDto";
+import CreateClubDto from "../dtos/createClubDto";
+import JoinClubDto from "../dtos/joinClubDto";
 import UpdateClubDto from "../dtos/updateClubDto";
 import UnauthorizedException from "../exceptions/unauthorizedException";
-import JoinClubDto from "../dtos/joinClubDto";
 import UserHasSignedUpException from "../exceptions/userHasSignedUpException";
 import UserHasNotSignedUpException from "../exceptions/userHasNotSignedUpException";
 import UserHasJoinedException from "../exceptions/userHasJoinedException";
-import ClubRequestDto from "../dtos/clubRequestDto";
 import JoinRequestNotFoundException from "../exceptions/joinRequestNotFoundException";
+
+import authenticationMiddleware from "../middlewares/authenticationMiddleware";
+import validationMiddleware from "../middlewares/validationMiddleware";
 
 class ClubController implements Controller {
      public path = "/club";
@@ -31,6 +32,7 @@ class ClubController implements Controller {
      private initRoutes() {
           this.router
               .all(`${this.path}`, authenticationMiddleware)
+              .get(`${this.path}`, this.getClubs)
               .post(`${this.path}`, validationMiddleware(CreateClubDto), this.createClub)
               .patch(`${this.path}`, validationMiddleware(UpdateClubDto), this.updateClubInfo)
      
@@ -50,6 +52,27 @@ class ClubController implements Controller {
               .post(`${this.path}/accept`, authenticationMiddleware, validationMiddleware(ClubRequestDto), this.acceptJoinClubRequest); 
      }
 
+     /**
+      * GET /club
+      * 
+      * getClubs() allow users to view registered clubs
+      */
+     private getClubs = async(request: Request, response: Response, next: NextFunction) => {
+          try {
+               const clubs = await this.clubService
+                                       .getClubs();
+               response.send(clubs);
+          } catch(e) {
+               next(e);
+          }
+     }
+
+     /**
+      * POST /club
+      * 
+      * createClub() allow user to create a club.
+      * By default, the creator of the club is the president
+      */
      private createClub = async (request: RequestWithUser, response: Response, next: NextFunction) => {
           const president: User = request.user;
           const clubInfo: CreateClubDto = request.body;
@@ -64,6 +87,11 @@ class ClubController implements Controller {
           }
      }
 
+     /**
+      * PATCH /club
+      * 
+      * updateClubInfo() allow the president of the club to update the club's info
+      */
      private updateClubInfo = async (request: RequestWithUser, response: Response, next: NextFunction) => {
           const president: User = request.user;
           const updatedClubInfo: UpdateClubDto = request.body;
@@ -84,6 +112,12 @@ class ClubController implements Controller {
           }
      }
 
+     /**
+      * POST /club/join
+      * 
+      * joinClub() allow users to sign up as the member of the club.
+      * User should wait for the club president's confirmation
+      */
      private joinClub = async (request: RequestWithUser, response: Response, next: NextFunction) => {
           const user: User = request.user;
           const joinClubInfo: JoinClubDto = request.body;
@@ -108,8 +142,13 @@ class ClubController implements Controller {
           }
      }
 
+     /**
+      * DELETE /club/join
+      * 
+      * cancelJoinClub() allow user to cancel the his/her signup request
+      */
      private cancelJoinClub = async (request: RequestWithUser, response: Response, next: NextFunction) => {
-          const user = request.user;
+          const user: User = request.user;
           const clubInfo: JoinClubDto = request.body;
 
           const hasSignedUp = await this.clubService
@@ -139,7 +178,12 @@ class ClubController implements Controller {
           }
      }
 
-     // // --------------------------------------------------------------
+     /**
+      * GET /club/pending
+      * 
+      * getPendingClubRequests() allow club president to check who signed up
+      * as the member of the club and has not been accepted yet
+      */
      private getPendingClubRequests = async (request: RequestWithUser, response: Response, next: NextFunction) => {
           const user: User = request.user;
           const results = await this.clubService
@@ -155,6 +199,11 @@ class ClubController implements Controller {
           response.send(results);
      }
 
+     /**
+      * DELETE /club/reject
+      * 
+      * rejectJoinClubRequest() allow club president to reject a sign up request from user
+      */
      private rejectJoinClubRequest = async (request: RequestWithUser, response: Response, next: NextFunction) => {
           const user: User = request.user;
           const clubInfo: ClubRequestDto = request.body;
@@ -187,6 +236,11 @@ class ClubController implements Controller {
           }
      }
 
+     /**
+      * POST /club/accept
+      * 
+      * acceptJoinClubRequest() allow club president to accept a sign up request from user
+      */
      private acceptJoinClubRequest = async (request: RequestWithUser, response: Response, next: NextFunction) => {
           const clubInfo: ClubRequestDto = request.body;
           const hasSignedUp = await this.clubService
@@ -219,6 +273,11 @@ class ClubController implements Controller {
           }
      }
 
+     /**
+      * GET /club/members
+      * 
+      * getClubMembers() allow user to view all members in a specific club
+      */
      private getClubMembers = async (request: Request, response: Response, next: NextFunction) => {
           const clubId = request.body["id"];
 

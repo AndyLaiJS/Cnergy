@@ -10,6 +10,13 @@ class ClubService {
      private clubRepository = getRepository(Club);
      private joinClubRepository = getRepository(JoinClub);
 
+     public getClubs = async() => {
+          const clubs = await this.clubRepository
+                                  .createQueryBuilder("club")
+                                  .getMany();
+          return clubs;
+     }
+
      public getClubById = async (clubId: number) => {
           const club = await this.clubRepository
                                  .createQueryBuilder("club")

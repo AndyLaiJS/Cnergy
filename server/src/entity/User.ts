@@ -9,28 +9,37 @@ export class User extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     firstName: string;
 
     @Column()
     lastName: string;
 
-    @Column({ unique: true })
+    @Column({ 
+        unique: true,
+        nullable: false
+    })
     email: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     password: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     college: string;
 
-    @OneToMany(type => Activity, activity => activity.creator, { nullable: true })
+    @OneToMany(() => Activity, activity => activity.creator, { nullable: true })
     activities: Activity[];
 
     @OneToMany(() => Club, club => club.president, { nullable: true })
     clubs: Club[];
 
-    @OneToMany(tyoe => JoinActivity, joinActivity => joinActivity.user)
+    @OneToMany(() => JoinActivity, joinActivity => joinActivity.user)
     joinedActivities: JoinActivity[];
 
     @OneToMany(() => JoinClub, joinClub => joinClub.user)

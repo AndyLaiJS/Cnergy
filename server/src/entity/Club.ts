@@ -25,10 +25,14 @@ export class Club extends BaseEntity {
      })
      avatar: Buffer;
 
-     @Column()
+     @Column({
+          nullable: false
+     })
      name: string;
 
-     @Column("text")
+     @Column("text", {
+          nullable: false
+     })
      description: Text;
 
      @CreateDateColumn({

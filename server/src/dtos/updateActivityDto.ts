@@ -5,7 +5,6 @@ class UpdateActivityDto extends ActivityDto {
      @IsNumber()
      public id: number;
 
-     // TODO: Substitute any with other object
      @IsObject()
      public creator: any;
 }
