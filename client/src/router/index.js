@@ -7,6 +7,7 @@ import profile from '../Profile Page/profile.vue'
 import clubsactivities from '../Profile Page/clubs-activities.vue'
 import security from '../Profile Page/security.vue'
 import hfaq from '../Profile Page/help-faq.vue'
+import notfound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,11 @@ const routes = [
     path: '/hfaq',
     name: 'hfaq',
     component: hfaq
+  },
+  {
+    path: '/nf',
+    name: 'notfound',
+    component: notfound
   },
   // {
   //   path: '/about',
