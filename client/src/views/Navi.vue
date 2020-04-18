@@ -1,14 +1,16 @@
 <template>
     <v-app>
         <div id="nav">
-            <div class="navLogo">
-                <img src="../assets/CUHK.png">
-                <b>CUHK</b> MeePo
-            </div>
+            <router-link to="/home">
+                <div class="navLogo">
+                    <img src="../assets/CUHK.png">
+                    <b>CUHK</b> MeePo
+                </div>
+            </router-link>
             <div class="navLink">
-                <router-link to="/">Clubs</router-link> 
-                <router-link to="/">Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
-                <router-link to="/">Profile</router-link>
+                <router-link to="/home">Clubs</router-link> 
+                <router-link to="/home">Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
+                <router-link to="/profile">Profile</router-link>
             </div>
         </div>
             <router-view/>
@@ -21,12 +23,12 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 #nav {
   font-size: 25px;
   line-height: 80px;
   height: 80px;
-  background-color: white;
+  background-color: rgb(247, 247, 247);
   box-shadow: 0px 4px 4px -2px rgba(0,0,0,0.10);
   top: 0;
   position: sticky;
@@ -34,14 +36,15 @@ export default {
   z-index: 9999;
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: black;
     text-decoration: None;
   }
   a:hover {
-    color: black;
+    color: #4285F4 !important;
   }
 }
 .navLogo {
+  font-size: 24px;
   cursor: pointer;
   img {
     height: 30px;
