@@ -31,24 +31,6 @@
           </v-carousel-item>
         </v-carousel>
 
-        <div class="CardContainer">
-          <div class="cna">
-            <h1>Clubs</h1>
-          </div>
-          <div class="Card" v-for="(value, index) in testvalues" v-bind:key = "index">
-            {{ value }}
-          </div>
-        </div>
-
-        <div class="CardContainer">
-          <div class="cna">
-            <h1>Activities</h1>
-          </div>
-          <div class="Card" v-for="(value, index) in testvalues" v-bind:key = "index">
-            {{ index }}
-          </div>
-        </div>
-
       </div>
       <thefooter/>
     </div>
