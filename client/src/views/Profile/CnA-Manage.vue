@@ -20,26 +20,26 @@
                     <router-link to="/profile-edit"><i class="el-icon-edit"></i></router-link> <!-- edit profile -->
                     <router-link to="/profile-settings"><i class="el-icon-setting"></i></router-link> <!-- self-explanatory-->
                 </div>
-
-                <div class="flexContainer">
-                    <div class="CardContainer">
-                        <div class="cna">
-                            <h2>Clubs</h2>
+                <div class="contentContainer">
+                    <div class="flexContainer">
+                        <div class="CardContainer">
+                            <div class="cna">
+                                <h2>Clubs</h2>
+                            </div>
+                            <div class="Card" v-for="(value, index) in testvalues" v-bind:key = "index">
+                                {{ value }}
+                            </div>
                         </div>
-                        <div class="Card" v-for="(value, index) in testvalues" v-bind:key = "index">
-                            {{ value }}
+
+                        <div class="CardContainer">
+                            <div class="cna">
+                                <h2>Activities</h2>
+                            </div>
+                            <div class="Card" v-for="(value, index) in testvalues2" v-bind:key = "index">
+                                {{ value }} <i class="el-icon-edit-outline"></i>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="CardContainer">
-                        <div class="cna">
-                            <h2>Activities</h2>
-                        </div>
-                        <div class="Card" v-for="(value, index) in testvalues2" v-bind:key = "index">
-                            {{ value }}
-                        </div>
-                    </div>
-                </div>
                 </div>
 
             </div>
@@ -58,16 +58,8 @@ import thefooter from "../Footer"
 export default {
     data() {
         return {
-            sid: "1155116329",
-            major: "Computer Science",
-            year: "2",
-            college: "SHHo",
-            testvalues: ["Photography", "Football", "Badminton", 
-                        "Cooking", "Painting", "Squash", 
-                        "Swimming", "Research", "Meme Community Supreme"],
-            testvalues2: ["Eat New Food", "Dai Pai Dong or something", "HIKE LIKE NEVER B4!!", 
-                        "Instant GPA 4.0", "Instant GPA 0.0", "Tag", 
-                        "A game of... PONG", "Civ 6 Community", "Meme Klub Edisi 2"],
+            testvalues: ["Photography", "Badminton", "Meme Community Supreme"],
+            testvalues2: ["Eat New Food"],
         }
     },
     components: {
