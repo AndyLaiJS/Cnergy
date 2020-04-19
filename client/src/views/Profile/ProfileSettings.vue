@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <Nav/>
+        <NavBar/>
         <div class="home">
 
             <div class="profile-container">
@@ -27,13 +27,27 @@
                             <h2> Password Setting</h2>
                             <div class="content-lists">
                                 <label for="fname">Password </label>
-                                <input type="text" name="fname" class="input-box" placeholder="New password">
+                                <input 
+                                    v-validate="'required'" 
+                                    v-model="password"
+                                    type="password"
+                                    name="fname" 
+                                    class="input-box" 
+                                    placeholder="New password"
+                                >
                             </div>
                             <div class="content-lists">
                                 <label for="fname">Confirm Password </label>
-                                <input type="text" name="fname" class="input-box" placeholder="Confirm new password">
+                                <input
+                                    v-validate="'required'"
+                                    v-model="confirmPassword" 
+                                    type="password" 
+                                    name="fname" 
+                                    class="input-box" 
+                                    placeholder="Confirm new password"
+                                >
                             </div>
-                            <button id="one">Edit</button>
+                            <button id="one" @click="changePassword">Change</button>
                         </div>
                     </div>
                 </div>
@@ -41,21 +55,40 @@
             </div>
             
         </div>
-        <thefooter/>
+        <Footer/>
     </v-app>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-import Nav from "../NavBar"
-import thefooter from "../Footer"
+import NavBar from "../NavBar"
+import Footer from "../Footer"
+
+import utils from "../../utils/validator";
 
 export default {
-    components: {
-        Nav,
-        thefooter,
+    data() {
+        return {
+            password: "",
+            confirmPassword: "",
+        }
     },
+    components: {
+        NavBar,
+        Footer,
+    },
+    methods: {
+        changePassword() {
+            let err = utils.changePasswordChecker(this.password, this.confirmPassword);
+            if (err.length != 0) {
+                this.$fire({
+                    title: "Password Error",
+                    text: err,
+                    type: "error",
+                    timer: 3000
+                })
+            }
+        }
+    }
 }
 </script>
 
@@ -94,12 +127,12 @@ input {
     outline: none;
 }
 button {
-    flex: 1;
     display: inline-block;
     width: 70px;
     border-radius: 15px;
     outline: none;
     border: 2px solid var(--accent-color);
+    box-shadow:  0px 3px silver;
     color: var(--accent-color);
     margin: 0 auto 0 auto;
     cursor: pointer;
@@ -108,5 +141,9 @@ button {
 button:hover {
     color: white;
     background-color: var(--accent-color);
+}
+button:active {
+  box-shadow: 0 1px silver;
+  transform: translateY(3px);
 }
 </style>
