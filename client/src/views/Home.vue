@@ -97,7 +97,6 @@ export default {
         PopupModal
     },
     mounted() {
-        // localStorage.removeItem("user");
         ActivityService
             .getOngoingActivities()
             .then(

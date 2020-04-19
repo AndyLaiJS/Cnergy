@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <NavBar/>
+        <Nav/>
         <div class="home">
 
             <div class="profContainer">
@@ -16,7 +16,8 @@
                 </div>
 
                 <div class="navSetting">
-                    <router-link to="/profile"><i class="el-icon-files"></i></router-link><!-- clubs n activities -->
+                    <router-link to="/profile"><i class="el-icon-user"></i></router-link><!-- clubs n activities -->
+                    <router-link to="/manager"><i class="el-icon-folder"></i></router-link> <!-- manage cna -->
                     <router-link to="/profile-edit" id="actif"><i class="el-icon-edit"></i></router-link> <!-- edit profile -->
                     <router-link to="/profile-settings"><i class="el-icon-setting"></i></router-link><!-- self-explanatory-->
                 </div>

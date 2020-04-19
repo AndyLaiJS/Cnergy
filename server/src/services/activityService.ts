@@ -125,6 +125,29 @@ class ActivityService {
           return userHasBeenApproved?.hasApproved;
      }
 
+     public getUserHasJoinedActvities = async (userId: string) => {
+          // const joinedActivities = await this.joinActivityRepository
+          //                                    .createQueryBuilder("joinActivity")
+          //                                    .innerJoinAndSelect("joinActivity.activity", "activity")
+          //                                    .where(`joinActivity.userId = :userId AND
+          //                                            joinActivity.hasApproved = true AND
+          //                                            joinActivity.activityId = activity.id`, {
+          //                                                 userId: userId
+          //                                            })
+          //                                    .getMany();
+          // return joinedActivities;
+          const activities = await this.activityRepository
+                                       .createQueryBuilder("activity")
+                                       .innerJoin("activity.participants", "participants")
+                                       .where(`participants.userId = :userId AND
+                                               participants.hasApproved = true AND
+                                               activity.id = participants.ActivityId`, {
+                                                    userId: userId
+                                             })
+                                        .getMany();
+          return activities;
+     }
+
      public updateJoinActivityApprovedStatus = async (activityId: number, userId: string) => {
           const result = await this.joinActivityRepository
                                    .createQueryBuilder()

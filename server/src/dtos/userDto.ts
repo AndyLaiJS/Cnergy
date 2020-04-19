@@ -19,6 +19,9 @@ class UserDto {
 
      @IsString()
      public college: string;
+
+     @IsString()
+     public major: string;
      
      @IsOptional()
      @ValidateNested()

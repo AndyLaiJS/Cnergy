@@ -15,6 +15,16 @@ class ActivityService {
                     headers: authenticationHeader()
                });
      }
+
+     getJoinedActivities(userId) {
+          console.log("This is in activityService.js")
+          return axios
+               .get(`${API_URL}/join`, {
+                    params: {
+                         uid: userId
+                    }
+               })
+     }
 }
 
 export default new ActivityService();

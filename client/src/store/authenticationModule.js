@@ -14,11 +14,11 @@ export const auth = {
                     .login(user)
                     .then(
                          user => {
-                              commit("login success", user);
+                              commit("loginSuccess", user);
                               return Promise.resolve(user);
                          },
                          error => {
-                              commit("login failure");
+                              commit("loginFailure");
                               return Promise.reject(error);
                          }
                     );
@@ -32,11 +32,11 @@ export const auth = {
                     .register(user)
                     .then(
                          response => {
-                              commit("register success", user);
+                              commit("registerSuccess", user);
                               return Promise.resolve(response.data);
                          },
                          error => {
-                              commit("register failure", error);
+                              commit("registerFailure", error);
                               return Promise.reject(error);
                          }
                     );
