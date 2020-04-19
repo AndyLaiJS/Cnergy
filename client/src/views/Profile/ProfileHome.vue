@@ -15,7 +15,8 @@
                 </div>
 
                 <div class="navSetting">
-                    <router-link to="/profile"><i class="el-icon-files" id="actif"></i></router-link> <!-- clubs n activities -->
+                    <router-link to="/profile"><i class="el-icon-user" id="actif"></i></router-link> <!-- clubs n activities -->
+                    <router-link to="/manager"><i class="el-icon-folder"></i></router-link> <!-- manage cna -->
                     <router-link to="/profile-edit"><i class="el-icon-edit"></i></router-link> <!-- edit profile -->
                     <router-link to="/profile-settings"><i class="el-icon-setting"></i></router-link> <!-- self-explanatory-->
                 </div>
@@ -164,7 +165,7 @@ export default {
 .navSetting {
     position: relative;
     display: grid;
-    grid-template-columns: 60px 60px 60px;
+    grid-template-columns: 60px 60px 60px 60px 60px;
     justify-content: end; 
     a {
         font-size: 20px;

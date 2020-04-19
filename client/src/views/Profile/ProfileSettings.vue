@@ -9,14 +9,14 @@
                     <div class="pic">
                         <img style="height: 145px; width: 145px;" src="../../assets/avatar.png">
                         <div class="name">
-                            <button id="whiteBtn">Edit</button> <!-- for the picture -->
                             <h3>Silver Pony</h3>
                         </div>
                     </div>
                 </div>
 
                 <div class="navSetting">
-                    <router-link to="/profile"><i class="el-icon-files"></i></router-link><!-- clubs n activities -->
+                    <router-link to="/profile"><i class="el-icon-user"></i></router-link><!-- clubs n activities -->
+                    <router-link to="/manager"><i class="el-icon-folder"></i></router-link> <!-- manage cna -->
                     <router-link to="/profile-edit"><i class="el-icon-edit"></i></router-link> <!-- edit profile -->
                     <router-link to="/profile-settings"><i class="el-icon-setting" id="actif"></i></router-link><!-- self-explanatory-->
                 </div>
