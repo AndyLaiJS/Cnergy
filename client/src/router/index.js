@@ -3,10 +3,10 @@ import VueRouter from 'vue-router'
 import home from '../views/Home.vue'
 import login from '../views/Login.vue'
 import register from '../views/Register.vue'
-import profile from '../Profile Page/profile.vue'
-import clubsactivities from '../Profile Page/clubs-activities.vue'
-import security from '../Profile Page/security.vue'
-import hfaq from '../Profile Page/help-faq.vue'
+import profile from '../views/Profile/ProfileHome.vue'
+import profileEdit from '../views/Profile/ProfileEdit.vue'
+import profileSet from '../views/Profile/ProfileSettings.vue'
+
 import notfound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -33,19 +33,15 @@ const routes = [
     component: profile
   },
   {
-    path: '/clubsactivities',
-    name: 'clubsactivities',
-    component: clubsactivities
+    path: '/profile-edit',
+    name: 'profile-edit',
+    component: profileEdit
   },
   {
-    path: '/security',
-    name: 'security',
-    component: security
-  },
-  {
-    path: '/hfaq',
-    name: 'hfaq',
-    component: hfaq
+    path: '/profile-settings',
+    name: 'profile-settings',
+    component: profileSet
+
   },
   {
     path: '/nf',

@@ -12,7 +12,7 @@
                     <a target="_blank" href="https://www.facebook.com/dsc.cuhk" rel="noreferrer"><img style="height: 28px" src="../assets/f_logo.png"></a>
                     <a target="_blank" href="https://www.instagram.com/dsc.cuhk/" rel="noreferrer"><img style="height: 27px" src="../assets/ig.png"></a>
                 </div> -->
-                Email: <a target="_blank" href="mailto:dsc.cuhk@gmail.com">cuhkSAoffice@link.cuhk.edu.hk</a>
+                Email: <a target="_blank" href="mailto:sdrs@cuhk.edu.hk">sdrs@link.cuhk.edu.hk</a>
         </span>
         
     </div>
@@ -26,7 +26,7 @@ export default {
 
 <style scoped lang="scss">
 * {
-    color: white;
+    color: black;
 }
 /* temporary h2 */
 h1 {
@@ -42,11 +42,11 @@ h2 {
     a {
         display: inline-block;
         text-decoration: none;
-        color: white;
+        color: black;
         font-weight: bolder;
     }
     a:hover {
-        color: #dffb4d;
+        color: #4285F4 !important;
     }
 }
 .footerBody {
@@ -55,7 +55,7 @@ h2 {
     flex-wrap: wrap;
     text-align: left;
     justify-content: space-between;
-    background-color: black;
+    background-color: rgb(247, 247, 247);
     padding: 50px 200px 30px 200px;
 }
 .socialIcon {

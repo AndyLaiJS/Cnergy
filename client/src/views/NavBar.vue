@@ -28,7 +28,7 @@ export default {
   font-size: 25px;
   line-height: 80px;
   height: 80px;
-  background-color: white;
+  background-color: rgb(247, 247, 247);
   box-shadow: 0px 4px 4px -2px rgba(0,0,0,0.10);
   top: 0;
   position: sticky;
@@ -36,11 +36,11 @@ export default {
   z-index: 9999;
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: black;
     text-decoration: None;
   }
   a:hover {
-    color: black;
+    color: #4285F4 !important;
   }
 }
 .navLogo {
