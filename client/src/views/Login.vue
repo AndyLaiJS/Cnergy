@@ -1,123 +1,103 @@
 <template>
-<!-- TODO: Create the animation and UI -->
-    <!-- <div class="login-page">
-        <div class="login-form" @submit.prevent="onLogin">
-            <form>
-                <h2 class="title">Log In</h2>
-
-                <div class="email">
-                    <input type="text" placeholder="Email" v-model="email"/>
-                </div>
-                <div class="password">
-                    <input type="password" placeholder="Password" v-model="password"/>
-                </div>
-
-                <button>Login</button>
-                <router-link to="/register"><button>Register Here</button></router-link>
-            </form>
-            <div class="error" v-if="error">{{ error.message }}</div>
-        </div>
-    </div> -->
-
-    <div class="container">
-
-      <div class="login-content" @submit.prevent="onLogin">
-          <form class="loginForm">
-
-              <h2 class="title">Log In</h2>
-
-              <div class="input-div one">
-                  <div class="i">
-                    <i class="fas fa-at"></i>
-                  </div>
-                  <div class="div">
-                    <h5>Email</h5>
-                    <input type="text" class="input" v-model="email">
-                  </div>
-              </div>
-
-              <div class="input-div pass">
-                  <div class="i">
-                    <i class="fas fa-lock"></i>
-                  </div>
-                  <div class="div">
-                    <h5>Password</h5>
-                    <input type="password" class="input" v-model="password">
-                  </div>
-              </div>
-
-              <a href="#">Forgot Password?</a>
-              <button class="lgn">Login</button>
-
-          </form>
-
-        <div class="error" v-if="error">{{ error.message }}</div>
-
-      </div>
-
-      <div class="registration">
-        Do not have account yet?
-        <router-link to="/register">Register Here</router-link>
-      </div>
+    <div class="col-md-12">
+        <form name="form" @submit.prevent="handleLogin">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                    v-model="user.email"
+                    v-validate="'required'"
+                    type="email"
+                    class="form-control"
+                    name="username"
+                />
+                <div
+                    v-if="errors.has('email')"
+                    class="alert alert-danger"
+                    role="alert"
+                >Email is required!</div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    v-model="user.password"
+                    v-validate="'required'"
+                    type="password"
+                    class="form-control"
+                    name="password"
+                />
+                <div
+                    v-if="errors.has('password')"
+                    class="alert alert-danger"
+                    role="alert"
+                >Password is required!</div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" :disabled="loading">
+                    <span v-show="loading" class="spinner-border spinner-border-sm"></span>
+                    <span>Login</span>
+                </button>
+            </div>
+            <div class="form-group">
+                <div v-if="message" class="alert alert-danger" role="alert">{{ message }}</div>
+            </div>
+        </form>
     </div>
 </template>
 
 <script>
-import { handleSignIn } from "../handler";
+import User from "../models/User";
 
 export default {
+    name: "Login",
     data() {
         return {
-            email: "",
-            password: "",
-            error: "",
-            authenticated: false,
+            user: new User("", "", "", "", ""),
+            loading: false,
+            message: "",
+        };
+    },
+    computed: {
+        loggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        }
+    },
+    created() {
+        if (this.loggedIn) {
+            this.$router.push("/home");
         }
     },
     methods: {
-        async onLogin() {
-            try {
-                const user = await handleSignIn(this.email, this.password)
-                this.$router.push("/home");
-            } catch(e) {
-                this.error = e;
-            }
+        handleLogin() {
+            this.loading = true;
+            this.$validator.validateAll().then(
+                isValid => {
+                    if (!isValid) {
+                        this.loading = false;
+                        return;
+                    }
+
+                    if (this.user.email && this.user.password) {
+                        this.$store.dispatch("auth/login", this.user)
+                            .then(
+                                () => {
+                                    this.$router.push("/home");
+                                },
+                                error => {
+                                    this.loading = false;
+                                    this.message =
+                                        (error.response && error.response.data) ||
+                                         error.message ||
+                                         error.toString();
+                                }
+                            );
+                    }
+                }
+            );
         }
     },
-    mounted() {
-        const inputs = document.querySelectorAll(".input");
-        function addcl(){
-            let parent = this.parentNode.parentNode;
-            parent.classList.add("focus");
-        }
-
-        function remcl(){
-            let parent = this.parentNode.parentNode;
-            if(this.value == ""){
-                parent.classList.remove("focus");
-            }
-        }
-
-
-        inputs.forEach(input => {
-            input.addEventListener("focus", addcl);
-            input.addEventListener("blur", remcl);
-        });
-    }
 }
 </script>
 
-<style scoped lang="scss">
-@import '../css/Page.css';
-.registration {
-    a {
-        display: inline-block;
-    }
-}
+<style>
 
-.error {
-    padding: 50px;
-    color: white;
-    font-size: 18px;
-}
 </style>
