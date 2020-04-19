@@ -1,7 +1,7 @@
 import { IsNumber, IsObject } from "class-validator"
-import ActivityDto from "./createActivityDto";
+import CreateActivityDto from "./createActivityDto";
 
-class UpdateActivityDto extends ActivityDto {
+class UpdateActivityDto extends CreateActivityDto {
      @IsNumber()
      public id: number;
 

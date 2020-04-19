@@ -36,7 +36,10 @@ class AuthenticationController implements Controller {
                                                   .register(userData);
 
                response.setHeader("Set-Cookie", [cookie]);
-               response.send(user);
+               response.send({
+                    user,
+                    accessToken: cookie
+               });
           } catch (e) {
                next(e);
           }
@@ -58,7 +61,10 @@ class AuthenticationController implements Controller {
                     const cookie = utils.createCookie(tokenData);
 
                     response.setHeader("Set-Cookie", [cookie]);
-                    response.send(user);
+                    response.send({
+                         user,
+                         accessToken: cookie
+                    });
                } else {
                     next(new WrongCredentialsException());
                }

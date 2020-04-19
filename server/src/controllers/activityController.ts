@@ -15,7 +15,6 @@ import UserHasNotSignedUpException from "../exceptions/userHasNotSignedUpExcepti
 import UserHasJoinedException from "../exceptions/userHasJoinedException";
 import JoinRequestNotFoundException from "../exceptions/joinRequestNotFoundException";
 
-import authenticationMiddleware from "../middlewares/authenticationMiddleware";
 import validationMiddleware from "../middlewares/validationMiddleware";
 import utils from "../utils";
 
@@ -32,26 +31,23 @@ class ActivityController implements Controller {
 
      private initRoutes() {
           this.router
-              .all(`${this.path}`, authenticationMiddleware)
               .get(`${this.path}`, this.getAllOngoingActivities)
               .post(`${this.path}`, validationMiddleware(CreateActivityDto), this.createActivity)
               .patch(`${this.path}`, this.updateUserActivity);
 
           this.router
-              .all(`${this.path}/past`, authenticationMiddleware)
               .get(`${this.path}/past`, this.getAllPastActivities)
 
           this.router
-              .all(`${this.path}/join`, authenticationMiddleware)
               .post(`${this.path}/join`, this.joinActivity)
               .delete(`${this.path}/join`, this.cancelJoinActivity);
 
           this.router
-              .post(`${this.path}/accept`, authenticationMiddleware, this.acceptActivityRequest);
+              .post(`${this.path}/accept`, this.acceptActivityRequest);
           this.router
-              .delete(`${this.path}/reject`, authenticationMiddleware, validationMiddleware(ActivityRequestDto), this.rejectActivityRequest);
+              .delete(`${this.path}/reject`, validationMiddleware(ActivityRequestDto), this.rejectActivityRequest);
           this.router
-              .get(`${this.path}/pending`, authenticationMiddleware, validationMiddleware(ActivityRequestDto), this.getPendingActivityRequests);
+              .get(`${this.path}/pending`, validationMiddleware(JoinActivityDto), this.getPendingActivityRequests);
      }
 
      /**
@@ -76,6 +72,7 @@ class ActivityController implements Controller {
                     activities = await this.activityService
                                            .getActivitiesByTimestamp(timestamp);
                }
+               console.log(activities);
                response.send({
                     activities: activities
                });
@@ -117,13 +114,16 @@ class ActivityController implements Controller {
      }
 
      /**
-      * POST /activity
+      * POST /activity?uid=...
       * 
       * createActivity() allow user to create an activity
       */
-     private createActivity = async (request: RequestWithUser, response: Response, next: NextFunction) => {
-          const creator: User = request.user;
+     private createActivity = async (request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          const creator = await this.userService
+                                    .getUserInfoByUID(uid) as User;
           const activityData: CreateActivityDto = request.body;
+
           try {
                const result = await this.activityService
                                         .postActivity(activityData, creator);
@@ -134,15 +134,17 @@ class ActivityController implements Controller {
      }
 
      /**
-      * PATCH /activity
+      * PATCH /activity?uid=...
       * 
       * updateUserActivity() allow user to update the activity's specification
       */
-     private updateUserActivity = async (request: RequestWithUser, response: Response, next: NextFunction) => {
-          const creator: User = request.user;
+     private updateUserActivity = async (request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          const creator = await this.userService
+                                    .getUserInfoByUID(uid) as User;
           const activityData: UpdateActivityDto = request.body;
 
-          // Only the creator of the activity can update the activity field
+          // // Only the creator of the activity can update the activity field
           if (creator.id == activityData.creator.id) {
                try {
                     const result = await this.activityService
@@ -157,7 +159,7 @@ class ActivityController implements Controller {
      }
 
      /**
-      * POST /activity/join
+      * POST /activity/join?uid=...
       * 
       * joinActivity() allow users to join an activity.
       * 
@@ -165,8 +167,11 @@ class ActivityController implements Controller {
       * If the activity is for "Private", then the user shall wait for the activity's creator permission
       * By default, the activity type is "Public"
       */
-     private joinActivity = async (request: RequestWithUser, response: Response, next: NextFunction) => {
-          const user: User = request.user;
+     private joinActivity = async (request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          const user = await this.userService
+                                 .getUserInfoByUID(uid) as User;
+
           const activityData: JoinActivityDto = request.body;
 
           const hasSignedUp = await this.activityService
@@ -210,8 +215,10 @@ class ActivityController implements Controller {
       * 
       * cancelJoinActivity() allow user to cancel the activity that he/she signed up for
       */
-     private cancelJoinActivity = async (request: RequestWithUser, response: Response, next: NextFunction) => {
-          const user: User = request.user;
+     private cancelJoinActivity = async (request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          const user = await this.userService
+                                    .getUserInfoByUID(uid) as User;
           const activityData: JoinActivityDto = request.body;
 
           const hasSignedUp = await this.activityService
@@ -246,13 +253,15 @@ class ActivityController implements Controller {
      }
 
      /**
-      * GET /activity/pending
+      * GET /activity/pending?uid=...
       * 
       * getPendingActivityRequests() allow activity creator to check
       * who signed up to the activity and has not been accepted yet
       */
-     private getPendingActivityRequests = async (request: RequestWithUser, response: Response) => {
-          const user: User = request.user;
+     private getPendingActivityRequests = async (request: Request, response: Response) => {
+          const uid: string = request.query["uid"];
+          const user = await this.userService
+                                    .getUserInfoByUID(uid) as User;
           const results = await this.activityService
                                     .getPendingRequestByUID(user.id);
 
