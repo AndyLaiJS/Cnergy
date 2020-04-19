@@ -32,14 +32,6 @@
                         <div class="CardContainer" id="edit">
                             <h2> Basic Info </h2>
                                 <div class="content-lists">
-                                    <label for="fname">Name </label>
-                                    <input type="text" name="fname" class="input-box" placeholder="Silver Pony">
-                                </div>
-                                <div class="content-lists">
-                                    <label for="fname">SID </label>
-                                    <input type="text" name="fname" class="input-box" placeholder="1155116329">
-                                </div>
-                                <div class="content-lists">
                                     <label for="fname">Major </label>
                                     <input type="text" name="fname" class="input-box" placeholder="Computer Science">
                                 </div>
