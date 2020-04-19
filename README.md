@@ -6,7 +6,7 @@ their desired club.
 
 The application is built using VueJS. 
 
-NodeJS and npm are assumed to be already installed on your system
+NodeJS, npm and MySQL are assumed to be already installed on your system
 
 ### Installing VueJS
 ```
@@ -23,7 +23,31 @@ npm install -g @vue/cli
 vue --version
 ```
 
-Once VueJS is installed and the repository is cloned onto your system, open up a Terminal and navigate towards the directory
+Some dependencies are required:
+
+```
+npm install -g typescript
+```
+
+```
+npm install -g axios
+```
+
+```
+npm install -g mysql
+```
+
+### Vuetify
+```
+vue add vuetify
+```
+
+### Element-UI:
+```
+npm i element-ui -S
+```
+
+Once VueJS and the dependencies are installed and the repository is cloned onto your system, open up a Terminal and navigate towards the directory
 holding the repository and type the following command:
 
 ```
