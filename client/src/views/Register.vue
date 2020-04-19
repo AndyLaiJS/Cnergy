@@ -66,27 +66,10 @@
                         </div>
                     </div>
 
-                    <!-- <div class="input-div select-div college">
-                        <div class="select">
-                          <select class="selector" name="collegeSelector">
-                            <option value="college">College</option>
-                            <option value="chungchi">Chung Chi College</option>
-                            <option value="newasia">New Asia College</option>
-                            <option value="united">United College</option>
-                            <option value="shaw">Shaw College</option>
-                            <option value="morningside">Morningside College</option>
-                            <option value="shho">S.H.Ho College</option>
-                            <option value="cwchu">CW.Chu College</option>
-                            <option value="wuyeesun">Wu Yee Sun College</option>
-                            <option value="leewoosing">Lee Woo Sing College</option>
-                          </select>
-                        </div>
-                    </div> -->
                     <v-col class="d-flex" cols="22" sm="20">
                       <v-select
                         :items="colleges"
                         label="Colleges"
-                        
                       ></v-select>
                     </v-col>
 
