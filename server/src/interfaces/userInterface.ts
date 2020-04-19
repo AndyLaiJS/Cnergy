@@ -5,6 +5,7 @@ export default interface User {
      email: string;
      password: string;
      college: string;
+     major: string;
      activities?: Array<{
           id: number;
           name: string;

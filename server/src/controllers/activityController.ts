@@ -39,6 +39,7 @@ class ActivityController implements Controller {
               .get(`${this.path}/past`, this.getAllPastActivities)
 
           this.router
+              .get(`${this.path}/join`, this.getJoinedActivities)
               .post(`${this.path}/join`, this.joinActivity)
               .delete(`${this.path}/join`, this.cancelJoinActivity);
 
@@ -72,7 +73,6 @@ class ActivityController implements Controller {
                     activities = await this.activityService
                                            .getActivitiesByTimestamp(timestamp);
                }
-               console.log(activities);
                response.send({
                     activities: activities
                });
@@ -250,6 +250,25 @@ class ActivityController implements Controller {
                     next(e);
                }
           }
+     }
+
+     /**
+      * GET /activity/join?uid=...
+      * 
+      * getJoinedActivities() allow user to check 
+      * which activities he/she has successfully signedup
+      */
+     private getJoinedActivities = async (request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          const user = await this.userService
+                                 .getUserInfoByUID(uid) as User;
+          console.log(`uid = ${uid}`);
+          console.log(user);
+          const activities = await this.activityService
+                                       .getUserHasJoinedActvities(user.id);
+                            
+          console.log(activities);
+          response.send(activities);
      }
 
      /**

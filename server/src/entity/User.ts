@@ -33,6 +33,11 @@ export class User extends BaseEntity {
     })
     college: string;
 
+    @Column({
+        nullable: false
+    })
+    major: string;
+
     @OneToMany(() => Activity, activity => activity.creator, { nullable: true })
     activities: Activity[];
 
