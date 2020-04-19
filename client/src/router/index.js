@@ -6,6 +6,7 @@ import register from '../views/Register.vue'
 import profile from '../views/Profile/ProfileHome.vue'
 import profileEdit from '../views/Profile/ProfileEdit.vue'
 import profileSet from '../views/Profile/ProfileSettings.vue'
+import profileMngr from '../views/Profile/CnA-Manage.vue'
 
 import notfound from '../views/NotFound.vue'
 
@@ -42,6 +43,11 @@ const routes = [
     name: 'profile-settings',
     component: profileSet
 
+  },
+  {
+    path: '/manager',
+    name: 'manager',
+    component: profileMngr
   },
   {
     path: '/nf',
