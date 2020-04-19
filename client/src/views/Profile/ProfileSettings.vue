@@ -3,7 +3,7 @@
         <Nav/>
         <div class="home">
 
-            <div class="profContainer">
+            <div class="profile-container">
 
                 <div class="overlay">
                     <div class="pic">
@@ -14,16 +14,16 @@
                     </div>
                 </div>
 
-                <div class="navSetting">
+                <div class="nav-bar-setting">
                     <router-link to="/profile"><i class="el-icon-user"></i></router-link><!-- clubs n activities -->
                     <router-link to="/manager"><i class="el-icon-folder"></i></router-link> <!-- manage cna -->
                     <router-link to="/profile-edit"><i class="el-icon-edit"></i></router-link> <!-- edit profile -->
                     <router-link to="/profile-settings"><i class="el-icon-setting" id="actif"></i></router-link><!-- self-explanatory-->
                 </div>
                 
-                <div class="contentContainer">
-                    <div class="flexContainer">
-                        <div class="CardContainer" id="edit">
+                <div class="content-container">
+                    <div class="flex-container">
+                        <div class="card-container" id="edit">
                             <h2> Password Setting</h2>
                             <div class="content-lists">
                                 <label for="fname">Password </label>
@@ -73,7 +73,7 @@ export default {
     margin-top: 10px;
     width: 100px;
 }
-.CardContainer {
+.card-container {
     text-align: left;
 }
 .input-box-desc {

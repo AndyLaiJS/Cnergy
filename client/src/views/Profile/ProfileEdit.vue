@@ -3,7 +3,7 @@
         <Nav/>
         <div class="home">
 
-            <div class="profContainer">
+            <div class="profile-container">
 
                 <div class="overlay">
                     <div class="pic">
@@ -15,22 +15,22 @@
                     </div>
                 </div>
 
-                <div class="navSetting">
+                <div class="nav-bar-setting">
                     <router-link to="/profile"><i class="el-icon-user"></i></router-link><!-- clubs n activities -->
                     <router-link to="/manager"><i class="el-icon-folder"></i></router-link> <!-- manage cna -->
                     <router-link to="/profile-edit" id="actif"><i class="el-icon-edit"></i></router-link> <!-- edit profile -->
                     <router-link to="/profile-settings"><i class="el-icon-setting"></i></router-link><!-- self-explanatory-->
                 </div>
                 
-                <div class="contentContainer">
-                    <div class="flexContainer">
-                        <div class="CardContainer" id="desc">
+                <div class="content-container">
+                    <div class="flex-container">
+                        <div class="card-container" id="desc">
                             <h2> About me </h2>
                             <div class="content-lists">
                                 <input type="text" class="input-box-desc" placeholder="I am the rarest of ponies, the SILVER PONY!">
                             </div>
                         </div>
-                        <div class="CardContainer" id="edit">
+                        <div class="card-container" id="edit">
                             <h2> Basic Info </h2>
                                 <div class="content-lists">
                                     <label for="fname">Major </label>
@@ -80,7 +80,7 @@ export default {
     margin-top: 10px;
     width: 100px;
 }
-.CardContainer {
+.card-container {
     text-align: left;
 }
 .input-box-desc {
