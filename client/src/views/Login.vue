@@ -1,54 +1,69 @@
 <template>
-    <div class="col-md-12">
-        <form name="form" @submit.prevent="handleLogin">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input
-                    v-model="user.email"
-                    v-validate="'required'"
-                    type="email"
-                    class="form-control"
-                    name="username"
-                />
-                <div
-                    v-if="errors.has('email')"
-                    class="alert alert-danger"
-                    role="alert"
-                >Email is required!</div>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input
-                    v-model="user.password"
-                    v-validate="'required'"
-                    type="password"
-                    class="form-control"
-                    name="password"
-                />
-                <div
-                    v-if="errors.has('password')"
-                    class="alert alert-danger"
-                    role="alert"
-                >Password is required!</div>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary btn-block" :disabled="loading">
-                    <span v-show="loading" class="spinner-border spinner-border-sm"></span>
-                    <span>Login</span>
-                </button>
-            </div>
-            <div class="form-group">
-                <div v-if="message" class="alert alert-danger" role="alert">{{ message }}</div>
-            </div>
-        </form>
+    <div class="login-container">
+        <div id="nav">
+            <router-link to="/">
+                <div class="navLogo">
+                    <img src="../assets/CUHK.png">
+                    <b>CUHK</b> MeePo
+                </div>
+            </router-link>
+            
+            <form class="navLink" name="form" @submit.prevent="handleLogin">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                        v-model="user.email"
+                        v-validate="'required'"
+                        type="email"
+                        class="form-control"
+                        name="username"
+                    />
+                    <div
+                        v-if="errors.has('email')"
+                        class="alert alert-danger"
+                        role="alert"
+                    >Email is required!</div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                        v-model="user.password"
+                        v-validate="'required'"
+                        type="password"
+                        class="form-control"
+                        name="password"
+                    />
+                    <div
+                        v-if="errors.has('password')"
+                        class="alert alert-danger"
+                        role="alert"
+                    >Password is required!</div>
+                </div>
+                <div class="form-btn">
+                    <span></span>
+                    <button class="btn btn-primary btn-block" :disabled="loading">
+                        <span v-show="loading" class="spinner-border spinner-border-sm"></span>
+                        <span>Login</span>
+                    </button>
+                </div>
+                <div class="form-group">
+                    <div v-if="message" class="alert alert-danger" role="alert">{{ message }}</div>
+                </div>
+            </form>
+        </div>
+        <Register/>
     </div>
 </template>
 
 <script>
 import User from "../models/User";
+import Register from "./Register";
 
 export default {
     name: "Login",
+    components: {
+        Register,
+    },
     data() {
         return {
             user: new User(),
@@ -98,6 +113,58 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
+.login-container {
+    background-image: url("../assets/simple_webpage_design.png");
+    background-size: 1800px;
+    background-repeat: no-repeat;
+    height: 100vh !important;
+}
+.navLink {
+    cursor:auto;
+    line-height: 50px;
+    justify-content: end;
+    grid-template-columns: 150px 150px 70px;
+}
+.form-group {
+    display: grid;
+    grid-template-rows: 40px 20px 20px;
+    text-align: left;
+}
+label {
+    font-size: 12px;
+    font-weight: bold;
+}
+input {
+    font-size: 11px;
+    width: 120px;
+    background-color: white;
+    border: 1px solid black;
+    outline: none;
+}
+.alert {
+    margin: 0;
+    padding: 0;
+    font-size: 10px;
+}
 
+.form-btn {
+    display: grid;
+    grid-template-rows: 40px 20px 20px;
+    font-size: 12px;
+    line-height: 80px;
+    button {
+        width: 60px;
+        outline: none;
+        border: 2px solid var(--accent-color);
+        color: var(--accent-color);
+        line-height: 20px;
+        cursor: pointer;
+        transition: .5s;
+    }
+    button:hover {
+        background-color: var(--accent-color);
+        color: #fff;
+    }
+}
 </style>
