@@ -8,11 +8,7 @@
 
         <span id="right">
             <h1>#find.ur.passion</h1>
-                <!-- <div class="socialIcon">
-                    <a target="_blank" href="https://www.facebook.com/dsc.cuhk" rel="noreferrer"><img style="height: 28px" src="../assets/f_logo.png"></a>
-                    <a target="_blank" href="https://www.instagram.com/dsc.cuhk/" rel="noreferrer"><img style="height: 27px" src="../assets/ig.png"></a>
-                </div> -->
-                Email: <a target="_blank" href="mailto:sdrs@cuhk.edu.hk">sdrs@link.cuhk.edu.hk</a>
+            Email: <a target="_blank" href="mailto:sdrs@cuhk.edu.hk">sdrs@link.cuhk.edu.hk</a>
         </span>
         
     </div>
@@ -52,7 +48,6 @@ h2 {
 .footerBody {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     text-align: left;
     justify-content: space-between;
     background-color: rgb(247, 247, 247);
