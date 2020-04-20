@@ -37,6 +37,10 @@ npm install -g axios
 npm install -g mysql
 ```
 
+```
+npm i vue-simple-alert
+```
+
 ### Vuetify
 ```
 vue add vuetify
