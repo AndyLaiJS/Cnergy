@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <Nav/>
+        <NavBar/>
         <div class="home">
 
             <div class="profile-container">
@@ -10,7 +10,7 @@
                         <img style="height: 145px; width: 145px;" src="../../assets/avatar.png">
                         <div class="name">
                             <button id="whiteBtn">Edit</button> <!-- for the picture -->
-                            <h3>Silver Pony</h3>
+                            <h3>{{ getFormattedName(user.firstName, user.lastName) }}</h3>
                         </div>
                     </div>
                 </div>
@@ -48,21 +48,54 @@
             </div>
             
         </div>
-        <thefooter/>
+        <Footer/>
     </v-app>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-import Nav from "../NavBar"
-import thefooter from "../Footer"
+import NavBar from "../NavBar"
+import Footer from "../Footer"
+
+import User from "../../models/User";
+import utils from  "../../utils/formatter";
 
 export default {
-    components: {
-        Nav,
-        thefooter,
+    data() {
+        return {
+            user: new User()
+        }
     },
+    components: {
+        NavBar,
+        Footer,
+    },
+    computed: {
+        isLoggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        },
+        getCurrentUser() {
+            return this.$store.state.auth.user.user;
+            },
+    },
+    methods: {
+        getFormattedName(firstName, lastName) {
+            return utils.getFormattedName(firstName, lastName);
+        },
+        getSIDFromEmail(email) {
+            let sid = email.split("@");
+            return sid[0];
+        },
+        getFormattedDate(tanggal) {
+            return utils.getFormattedDate(tanggal);
+        },
+    },
+    mounted() {
+        if (this.isLoggedIn) {
+            this.user = this.getCurrentUser;
+        } else {
+            this.$router.push("/");
+        }
+    }
 }
 </script>
 
@@ -106,6 +139,7 @@ button {
     border-radius: 15px;
     outline: none;
     border: 2px solid var(--accent-color);
+    box-shadow:  0px 3px silver;
     color: var(--accent-color);
     margin: 0 auto 0 auto;
     cursor: pointer;
@@ -114,5 +148,9 @@ button {
 button:hover {
     color: white;
     background-color: var(--accent-color);
+}
+button:active {
+  box-shadow: 0 1px silver;
+  transform: translateY(3px);
 }
 </style>

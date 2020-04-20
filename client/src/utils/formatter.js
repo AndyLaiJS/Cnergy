@@ -35,7 +35,7 @@ function getDay(year, month, date) {
      return day[offset];
 }
 
-var date = {
+var formatter = {
      getFormattedDate(date) {
           let year = date.slice(0, 4);
           let month = getMonth(date.slice(5, 7));
@@ -47,7 +47,11 @@ var date = {
                year, month, day
           );
           return `${dayInWord}, ${day} ${month} ${year} ${hours}:${minutes}`;
+     },
+
+     getFormattedName(firstName, lastName) {
+          return `${lastName.toUpperCase()}, ${firstName}`;
      }
 }
 
-export default date;
+export default formatter;

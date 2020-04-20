@@ -11,8 +11,7 @@
                         />
                         <div class="name">
                             <h3>
-                                {{ getCapitalizeString(this.user.lastName) }},
-                                {{ user.firstName }}
+                                {{ getFormattedName(user.firstName, user.lastName) }}
                             </h3>
                         </div>
                     </div>
@@ -61,7 +60,7 @@
                             </div>
                             <div
                                 class="card"
-                                v-for="(activity, index) in this.userJoinedActivities"
+                                v-for="(activity, index) in userJoinedActivities"
                                 v-bind:key="index"
                             >
                                 <!-- TODO: Create an additional component to store this -->
@@ -88,7 +87,7 @@ import NavBar from "../NavBar";
 import Footer from "../Footer";
 
 import User from "../../models/User";
-import utils from  "../../utils/date";
+import utils from  "../../utils/formatter";
 
 export default {
     data() {
@@ -105,14 +104,14 @@ export default {
     computed: {
         isLoggedIn() {
             return this.$store.state.auth.status.loggedIn;
-    },
-    getCurrentUser() {
-        return this.$store.state.auth.user.user;
+        },
+        getCurrentUser() {
+            return this.$store.state.auth.user.user;
         },
     },
     methods: {
-        getCapitalizeString(str) {
-            return str.toUpperCase();
+        getFormattedName(firstName, lastName) {
+            return utils.getFormattedName(firstName, lastName);
         },
         getSIDFromEmail(email) {
             let sid = email.split("@");
