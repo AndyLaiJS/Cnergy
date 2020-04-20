@@ -39,6 +39,7 @@ var validator = {
                     return err;
                }
           }
+          return "";
      },
 
      loginFieldChecker(email, password) {

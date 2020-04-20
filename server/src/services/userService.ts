@@ -33,6 +33,20 @@ class UserService {
                                  .save();
           return user;
      }
+
+     public updateUserPassword = async (userId: string, password: string) => {
+          const result = await this.userRepository
+                                   .createQueryBuilder("user")
+                                   .update(User)
+                                   .set({
+                                        password: password
+                                   })
+                                   .where(`id = :userId`, {
+                                        userId: userId
+                                   })
+                                   .execute();
+          return result;
+     }
 }
 
 export default UserService;

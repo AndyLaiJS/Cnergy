@@ -4,7 +4,7 @@ import authenticationHeader from "./authenticationHeader";
 const API_URL = "http://localhost:3000/activity";
 
 class ActivityService {
-     getOngoingActivities () {
+     getOngoingActivities() {
           return axios
                .get(`${API_URL}`);
      }
@@ -17,7 +17,6 @@ class ActivityService {
      }
 
      getJoinedActivities(userId) {
-          console.log("This is in activityService.js")
           return axios
                .get(`${API_URL}/join`, {
                     params: {

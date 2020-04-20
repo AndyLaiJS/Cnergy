@@ -9,7 +9,7 @@
                     <div class="pic">
                         <img style="height: 145px; width: 145px;" src="../../assets/avatar.png">
                         <div class="name">
-                            <h3>Silver Pony</h3>
+                            <h3>{{ getFormattedName(user.firstName, user.lastName) }}</h3>
                         </div>
                     </div>
                 </div>
@@ -61,11 +61,14 @@
 import NavBar from "../NavBar"
 import Footer from "../Footer"
 
+import User from "../../models/User";
 import utils from "../../utils/validator";
+import formatter from "../../utils/formatter";
 
 export default {
     data() {
         return {
+            user: new User(),
             password: "",
             confirmPassword: "",
         }
@@ -74,7 +77,18 @@ export default {
         NavBar,
         Footer,
     },
+    computed: {
+        isLoggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        },
+        getCurrentUser() {
+            return this.$store.state.auth.user.user;
+        },
+    },
     methods: {
+        getFormattedName(firstName, lastName) {
+            return formatter.getFormattedName(firstName, lastName);
+        },
         changePassword() {
             let err = utils.changePasswordChecker(this.password, this.confirmPassword);
             if (err.length != 0) {
@@ -84,7 +98,35 @@ export default {
                     type: "error",
                     timer: 3000
                 })
+
+                return;
             }
+
+            this.$store.dispatch("user/updatePassword", [this.user.id, this.password])
+                .then(
+                    response => {
+                        if (response.data.status == 200) {
+                            this.$fire({
+                                title: "Update Password Succeed",
+                                type: "success",
+                                timer: 3000
+                            })                    
+                        } else {
+                            this.$fire({
+                                title: "Update Password Failed",
+                                type: "error",
+                                timer: 3000
+                            })                    
+                        }
+                    },
+                );
+        }
+    },
+    mounted() {
+        if (this.isLoggedIn) {
+            this.user = this.getCurrentUser;
+        } else {
+            this.$router.push("/");
         }
     }
 }
