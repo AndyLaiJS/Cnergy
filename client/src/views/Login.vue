@@ -110,8 +110,10 @@ export default {
 
 <style scoped lang="scss">
 .main {
+    background-color: rgb(247, 247, 247);
     background-image: url("../assets/simple_webpage_design.png");
-    background-size: 1800px;
+    background-size: cover;
+    background-attachment: fixed;
     background-repeat: no-repeat;
     height: 100vh !important;
     margin: 0;

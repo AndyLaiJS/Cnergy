@@ -110,10 +110,9 @@ export default {
 </script>
 
 <style scope lang="scss">
-.register-container > .footerBody {
-  width: 100% !important;
-  position: absolute;
-  bottom: 0 !important;
+.register-container{
+  position: relative;
+  height: 100vh;
 }
 .v-select__selections {
   height: 90px !important;
@@ -125,7 +124,7 @@ export default {
   flex: 1;
   padding: 13% 0;
   margin-left: 100px;
-  font-size: 55px;
+  font-size: 50px;
   text-align: left; 
 }
 .register-box {
@@ -133,6 +132,7 @@ export default {
   margin: 70px 200px;
   background-color: rgb(247, 247, 247);
   border-radius: 10px;
+  margin-bottom: 90px;
 }
 .wording-title {
   margin-bottom: 30px;
@@ -189,5 +189,10 @@ input {
 .rg-button:active {
   box-shadow: 0 1px silver;
   transform: translateY(3px);
+}
+@media screen and (max-width: 1400px) {
+  .doodle {
+    font-size: 40px;
+  }
 }
 </style>
