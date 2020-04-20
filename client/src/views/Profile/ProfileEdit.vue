@@ -20,6 +20,10 @@
                     <router-link to="/manager"><i class="el-icon-folder"></i></router-link> <!-- manage cna -->
                     <router-link to="/profile-edit" id="actif"><i class="el-icon-edit"></i></router-link> <!-- edit profile -->
                     <router-link to="/profile-settings"><i class="el-icon-setting"></i></router-link><!-- self-explanatory-->
+                    <a id="log-out" @click="logOut()">
+                        <v-icon size="20px"> mdi-logout </v-icon>
+                    </a>
+                    <!-- log out via vuetify icons -->
                 </div>
                 
                 <div class="content-container">
@@ -88,6 +92,10 @@ export default {
         getFormattedDate(tanggal) {
             return utils.getFormattedDate(tanggal);
         },
+        logOut() {
+            localStorage.removeItem("user");
+            this.$router.push("/");
+        }
     },
     mounted() {
         if (this.isLoggedIn) {
@@ -143,10 +151,10 @@ button {
     color: var(--accent-color);
     margin: 0 auto 0 auto;
     cursor: pointer;
-    transition: .5s;
+    transition: .1s;
 }
 button:hover {
-    color: white;
+    color: black;
     background-color: var(--accent-color);
 }
 button:active {

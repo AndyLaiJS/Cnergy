@@ -33,6 +33,10 @@
                         <i class="el-icon-setting"></i>
                     </router-link>
                     <!-- self-explanatory-->
+                    <a id="log-out" @click="logOut()">
+                        <v-icon size="20px"> mdi-logout </v-icon>
+                    </a>
+                    <!-- log out via vuetify icons -->
                 </div>
                 <div class="content-container">
                     <div class="flex-container">
@@ -120,6 +124,10 @@ export default {
         getFormattedDate(tanggal) {
             return utils.getFormattedDate(tanggal);
         },
+        logOut() {
+            localStorage.removeItem("user");
+            this.$router.push("/");
+        }
     },
     mounted() {
         if (this.isLoggedIn) {
@@ -155,6 +163,10 @@ export default {
 }
 #actif {
     color: #4285f4 !important;
+}
+#logout {
+    margin: 0;
+    padding: 0;
 }
 .home {
     background-image: url("../../assets/bolt.png");
@@ -210,7 +222,7 @@ export default {
 .nav-bar-setting {
     position: relative;
     display: grid;
-    grid-template-columns: 60px 60px 60px 60px 60px;
+    grid-template-columns: 60px 60px 60px 60px 60px 60px;
     justify-content: end;
     a {
     font-size: 20px;
@@ -221,12 +233,19 @@ export default {
         cursor: pointer;
     }
 }
-i {
+
+i, v-icon{
     cursor: pointer;
 }
 
-i:hover {
-    color: #4285f4;
+i:hover, v-icon:hover {
+    color: #4285f4 !important;
+}
+
+.v-icon {
+    text-decoration: none;
+    color: black !important;
+    margin-bottom: 3px !important;
 }
 
 .flex-container {
