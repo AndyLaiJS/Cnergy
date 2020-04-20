@@ -91,13 +91,24 @@ export default {
             message: "",
         };
     },
+    computed: {
+        isLoggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        },
+        getCurrentUser() {
+            return this.$store.state.auth.user.user;
+        },
+    },
     components: {
         NavBar,
         Footer,
         PopupModal
     },
     mounted() {
-        // localStorage.removeItem("user");
+        if (!this.isLoggedIn) {
+            this.$router.push("/");
+            return;
+        }
         ActivityService
             .getOngoingActivities()
             .then(

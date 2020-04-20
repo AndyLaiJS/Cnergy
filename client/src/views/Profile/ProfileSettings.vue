@@ -93,8 +93,8 @@ export default {
         getFormattedName(firstName, lastName) {
             return formatter.getFormattedName(firstName, lastName);
         },
-        logOut() {
-            localStorage.removeItem("user");
+        logout() {
+            this.$store.dispatch("auth/logout");
             this.$router.push("/");
         },
         changePassword() {

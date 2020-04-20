@@ -19,7 +19,7 @@
                     <router-link to="/manager" id="actif"><i class="el-icon-folder"></i></router-link> <!-- manage cna -->
                     <router-link to="/profile-edit"><i class="el-icon-edit"></i></router-link> <!-- edit profile -->
                     <router-link to="/profile-settings"><i class="el-icon-setting"></i></router-link> <!-- self-explanatory-->
-                    <a id="log-out" @click="logOut()">
+                    <a id="log-out" @click="logout()">
                         <v-icon size="20px"> mdi-logout </v-icon>
                     </a>
                     <!-- log out via vuetify icons -->
@@ -67,9 +67,8 @@ export default {
         }
     },
     methods: {
-        logOut() {
-            console.log("yo");
-            localStorage.removeItem("user");
+        logout() {
+            this.$store.dispatch("auth/logout");
             this.$router.push("/");
         },
     },

@@ -262,12 +262,9 @@ class ActivityController implements Controller {
           const uid: string = request.query["uid"];
           const user = await this.userService
                                  .getUserInfoByUID(uid) as User;
-          console.log(`uid = ${uid}`);
-          console.log(user);
           const activities = await this.activityService
                                        .getUserHasJoinedActvities(user.id);
                             
-          console.log(activities);
           response.send(activities);
      }
 
