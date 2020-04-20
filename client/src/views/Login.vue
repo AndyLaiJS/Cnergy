@@ -18,6 +18,7 @@
                             type="email"
                             class="form-control"
                             name="username"
+                            placeholder="sid@link.cuhk.edu.hk"
                         />
                         <div
                             v-if="errors.has('email')"
@@ -129,7 +130,7 @@ export default {
     cursor:auto;
     line-height: 50px;
     justify-content: end;
-    grid-template-columns: 150px 150px 70px;
+    grid-template-columns: 150px 150px 70px 70px;
 }
 .form-group {
     display: grid;
@@ -148,6 +149,7 @@ input {
     outline: none;
 }
 .alert {
+    line-height: 20px;
     margin: 0;
     padding: 0;
     font-size: 10px;
