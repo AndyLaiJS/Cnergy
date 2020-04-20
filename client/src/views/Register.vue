@@ -3,12 +3,14 @@
 
       <div class="register-box">
         <div class="doodle">
-          REGISTER @ CUHK
+          JOIN OTHERS. <br>
+          <b>FIND YOUR PASSION.</b> <br>
+          NOW.
         </div>
         <div class="reg-content">
           <form class="reg-form">
             <div class="wording-title">
-              <h1> Create a new account with us! </h1>
+              <h1> Create a new account! </h1>
               <p> It's quick and easy </p>
             </div>
             <div class="compress-form">
@@ -73,6 +75,7 @@
           </form>
         </div>
       </div>
+
       <Footer/>
     </div>
 </template>
@@ -107,20 +110,29 @@ export default {
 </script>
 
 <style scope lang="scss">
+.footerBody {
+  width: 100% !important;
+  position: absolute !important;
+  bottom: 0 !important;
+}
 .v-select__selections {
   height: 90px !important;
 }
 .v-text-field {
   padding-top: 45px;
 }
-.register-box {
-  display: flex;
-  margin: 50px 200px;
-  background-color: rgb(247, 247, 247);
-  border-radius: 10px;
-}
 .doodle {
   flex: 1;
+  padding: 13% 0;
+  margin-left: 100px;
+  font-size: 55px;
+  text-align: left; 
+}
+.register-box {
+  display: flex;
+  margin: 70px 200px;
+  background-color: rgb(247, 247, 247);
+  border-radius: 10px;
 }
 .wording-title {
   margin-bottom: 30px;
