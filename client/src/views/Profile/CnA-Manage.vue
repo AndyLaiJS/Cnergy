@@ -68,7 +68,6 @@ export default {
     },
     methods: {
         logOut() {
-            console.log("yo");
             localStorage.removeItem("user");
             this.$router.push("/");
         },
