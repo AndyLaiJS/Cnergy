@@ -134,8 +134,7 @@ label {
 input {
     font-size: 11px;
     width: 120px;
-    background-color: white;
-    border: 1px solid black;
+    background-color: white; 
     outline: none;
 }
 .alert {

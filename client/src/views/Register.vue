@@ -110,9 +110,9 @@ export default {
 </script>
 
 <style scope lang="scss">
-.footerBody {
+.register-container > .footerBody {
   width: 100% !important;
-  position: absolute !important;
+  position: absolute;
   bottom: 0 !important;
 }
 .v-select__selections {
