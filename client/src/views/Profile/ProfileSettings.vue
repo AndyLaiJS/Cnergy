@@ -28,7 +28,6 @@
                             <div class="content-lists">
                                 <label for="fname">Password </label>
                                 <input 
-                                    v-validate="'required'" 
                                     v-model="password"
                                     type="password"
                                     name="fname" 
@@ -39,7 +38,6 @@
                             <div class="content-lists">
                                 <label for="fname">Confirm Password </label>
                                 <input
-                                    v-validate="'required'"
                                     v-model="confirmPassword" 
                                     type="password" 
                                     name="fname" 

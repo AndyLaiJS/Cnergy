@@ -14,31 +14,19 @@
                         <label for="email">Email</label>
                         <input
                             v-model="user.email"
-                            v-validate="'required'"
                             type="email"
                             class="form-control"
                             name="username"
                         />
-                        <div
-                            v-if="errors.has('email')"
-                            class="alert alert-danger"
-                            role="alert"
-                        >Email is required!</div>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input
                             v-model="user.password"
-                            v-validate="'required'"
                             type="password"
                             class="form-control"
                             name="password"
                         />
-                        <div
-                            v-if="errors.has('password')"
-                            class="alert alert-danger"
-                            role="alert"
-                        >Password is required!</div>
                     </div>
                     <div class="form-btn">
                         <span></span>
@@ -46,9 +34,6 @@
                             <span v-show="loading" class="spinner-border spinner-border-sm"></span>
                             <span>Login</span>
                         </button>
-                    </div>
-                    <div class="form-group">
-                        <div v-if="message" class="alert alert-danger" role="alert">{{ message }}</div>
                     </div>
                 </form>
             </div>
@@ -61,6 +46,7 @@
 import User from "../models/User";
 import Register from "./Register";
 
+import utils from "../utils/validator";
 
 export default {
     name: "Login",
@@ -69,9 +55,9 @@ export default {
     },
     data() {
         return {
-            user: new User(),
+            user: new User("", "", "", "", "", ""),
             loading: false,
-            message: "",
+            err: "",
         };
     },
     computed: {
@@ -80,7 +66,6 @@ export default {
         }
     },
     created() {
-        //localStorage.removeItem("user");
         if (this.loggedIn) {
             this.$router.push("/home");
         }
@@ -88,30 +73,35 @@ export default {
     methods: {
         handleLogin() {
             this.loading = true;
-            this.$validator.validateAll().then(
-                isValid => {
-                    if (!isValid) {
-                        this.loading = false;
-                        return;
-                    }
+            
+            this.err = utils.loginFieldChecker(this.user.email, this.user.password);
+            if (this.err.length != 0) {
+                this.loading = false;
+                this.$fire({
+                    title: "Login Field Error",
+                    text: this.err,
+                    type: "error",
+                    timer: 3000
+                })
+                return;                
+            }
 
-                    if (this.user.email && this.user.password) {
-                        this.$store.dispatch("auth/login", this.user)
-                            .then(
-                                () => {
-                                    this.$router.push("/home");
-                                },
-                                error => {
-                                    this.loading = false;
-                                    this.message =
-                                        (error.response && error.response.data) ||
-                                         error.message ||
-                                         error.toString();
-                                }
-                            );
+            this.$store.dispatch("auth/login", this.user)
+                .then(
+                    () => {
+                        this.$router.push("/home");
+                    },
+                    error => {
+                        this.loading = false;
+                        this.message = error.response.data;
+                        this.$fire({
+                            title: this.message.message,
+                            text: "Wrong email or password",
+                            type: "error",
+                            timer: 3000,
+                        })
                     }
-                }
-            );
+                );
         }
     },
 }
