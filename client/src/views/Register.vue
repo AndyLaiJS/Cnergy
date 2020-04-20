@@ -1,91 +1,28 @@
 <template>
-    <div class="container">
+    <div class="register-container">
 
-      <div class="login-content">
-          <!-- <form class="regForm" action="index.html" method="POST"> -->
-          <form class="regForm">
+      <div class="register-box">
+        <div class="doodle">
+          REGISTER @ CUHK
+        </div>
+        <div class="reg-content">
+          <form class="reg-form">
 
-              <h1 class="title">Registration</h1>
-
-              <div class="inputs">
-
-                    <div class="input-div fName">
-                        <div class="i">
-                          <i class="fas fa-user"></i>
-                        </div>
-                        <div class="div">
-                          <h5>First Name</h5>
-                          <input type="text" class="input" name="regFirstName">
-                        </div>
-                    </div>
-                    <div class="input-div lName">
-                        <div class="i">
-                          <i class="fas fa-user"></i>
-                        </div>
-                        <div class="div">
-                          <h5>Last Name</h5>
-                          <input type="text" class="input" name="regLastName">
-                        </div>
-                    </div>
-
-                    <div class="input-div email">
-                        <div class="i">
-                          <i class="fas fa-at"></i>
-                        </div>
-                        <div class="div">
-                          <h5>Email</h5>
-                          <input type="email" class="input" name="loginEmail">
-                        </div>
-                    </div>
-
-                    <div class="input-div pass password">
-                        <div class="i">
-                          <i class="fas fa-lock"></i>
-                        </div>
-                        <div class="div">
-                          <h5>Password</h5>
-                          <input type="password" class="input" name="regPassword">
-                        </div>
-                    </div>
-                    <div class="input-div pass confirm-password">
-                        <div class="i">
-                          <i class="fas fa-lock"></i>
-                        </div>
-                        <div class="div">
-                          <h5>Confirm Password</h5>
-                          <input type="password" class="input" name="regConfirmPassword">
-                        </div>
-                    </div>
-
-                    <div class="input-div major">
-                        <div class="i">
-                        </div>
-                        <div class="div">
-                          <h5>Major </h5>
-                          <input type="text" class="input" name="regMajor">
-                        </div>
-                    </div>
-
-                    <v-col class="d-flex" cols="22" sm="20">
-                      <v-select
-                        :items="colleges"
-                        label="Colleges"
-                      ></v-select>
-                    </v-col>
-
-              </div>
-
-              <!-- <button type="submit" class="btn">Register</button> -->
-              <router-link to="/home"><button class="lgn">Register</button></router-link>
+            <router-link to="/home"><button class="lgn">Register</button></router-link>
 
           </form>
+        </div>
       </div>
-
+      <Footer/>
     </div>
 </template>
 
 <script>
+import Footer from "./Footer";
 export default {
+  components: {
+    Footer,
+  },
   data: () => ({
     colleges: ['S.H.Ho College', 'New Asia College', 'Shaw College', 'Morningside College', 'Chung Chi College',
               'United College', 'CW.Chu College', 'Wu Yee Sun College', 'Lee Woo Sing College'],
@@ -114,7 +51,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../css/Page.css';
 
 .v-select__selections {
   height: 90px !important;
@@ -123,9 +59,15 @@ export default {
 .v-text-field {
   padding-top: 45px;
 }
-
-.login-content {
-  margin-top: 0;
+.register-box {
   display: flex;
+  margin: 50px 100px;
+  background-color: rgb(247, 247, 247);
+}
+.doodle {
+  flex: 1;
+}
+.reg-content {
+  flex: 1;
 }
 </style>

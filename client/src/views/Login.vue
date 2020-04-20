@@ -1,63 +1,66 @@
 <template>
-    <div class="login-container">
-        <div id="nav">
-            <router-link to="/">
-                <div class="navLogo">
-                    <img src="../assets/CUHK.png">
-                    <b>CUHK</b> MeePo
-                </div>
-            </router-link>
-            
-            <form class="navLink" name="form" @submit.prevent="handleLogin">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input
-                        v-model="user.email"
-                        v-validate="'required'"
-                        type="email"
-                        class="form-control"
-                        name="username"
-                    />
-                    <div
-                        v-if="errors.has('email')"
-                        class="alert alert-danger"
-                        role="alert"
-                    >Email is required!</div>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input
-                        v-model="user.password"
-                        v-validate="'required'"
-                        type="password"
-                        class="form-control"
-                        name="password"
-                    />
-                    <div
-                        v-if="errors.has('password')"
-                        class="alert alert-danger"
-                        role="alert"
-                    >Password is required!</div>
-                </div>
-                <div class="form-btn">
-                    <span></span>
-                    <button class="btn btn-primary btn-block" :disabled="loading">
-                        <span v-show="loading" class="spinner-border spinner-border-sm"></span>
-                        <span>Login</span>
-                    </button>
-                </div>
-                <div class="form-group">
-                    <div v-if="message" class="alert alert-danger" role="alert">{{ message }}</div>
-                </div>
-            </form>
+    <v-app class="main">
+        <div class="login-container">
+            <div id="nav">
+                <router-link to="/">
+                    <div class="navLogo">
+                        <img src="../assets/CUHK.png">
+                        <b>CUHK</b> MeePo
+                    </div>
+                </router-link>
+                
+                <form class="navLink" name="form" @submit.prevent="handleLogin">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input
+                            v-model="user.email"
+                            v-validate="'required'"
+                            type="email"
+                            class="form-control"
+                            name="username"
+                        />
+                        <div
+                            v-if="errors.has('email')"
+                            class="alert alert-danger"
+                            role="alert"
+                        >Email is required!</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input
+                            v-model="user.password"
+                            v-validate="'required'"
+                            type="password"
+                            class="form-control"
+                            name="password"
+                        />
+                        <div
+                            v-if="errors.has('password')"
+                            class="alert alert-danger"
+                            role="alert"
+                        >Password is required!</div>
+                    </div>
+                    <div class="form-btn">
+                        <span></span>
+                        <button class="btn btn-primary btn-block" :disabled="loading">
+                            <span v-show="loading" class="spinner-border spinner-border-sm"></span>
+                            <span>Login</span>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <div v-if="message" class="alert alert-danger" role="alert">{{ message }}</div>
+                    </div>
+                </form>
+            </div>
         </div>
         <Register/>
-    </div>
+    </v-app>
 </template>
 
 <script>
 import User from "../models/User";
 import Register from "./Register";
+
 
 export default {
     name: "Login",
@@ -77,6 +80,7 @@ export default {
         }
     },
     created() {
+        //localStorage.removeItem("user");
         if (this.loggedIn) {
             this.$router.push("/home");
         }
@@ -114,11 +118,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.login-container {
+.main {
     background-image: url("../assets/simple_webpage_design.png");
     background-size: 1800px;
     background-repeat: no-repeat;
     height: 100vh !important;
+    margin: 0;
 }
 .navLink {
     cursor:auto;
@@ -156,14 +161,14 @@ input {
     button {
         width: 60px;
         outline: none;
-        border: 2px solid var(--accent-color);
-        color: var(--accent-color);
-        line-height: 20px;
+        border: 2px solid #4285F4;
+        color: #4285F4;
+        line-height: 10px;
         cursor: pointer;
         transition: .5s;
     }
     button:hover {
-        background-color: var(--accent-color);
+        background-color: #4285F4;
         color: #fff;
     }
 }
