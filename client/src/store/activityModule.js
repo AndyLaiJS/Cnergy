@@ -22,6 +22,18 @@ export const activity = {
                               return Promise.reject(error);
                          }
                     )
+          },
+          createActivity({ commit }, [ user, activity ]) {
+               return ActivityService
+                    .createActivity(user, activity)
+                    .then(
+                         response => {
+                              return Promise.resolve(response);
+                         },
+                         error => {
+                              return Promise.reject(error);
+                         }
+                    );
           }
      },
      mutations: {

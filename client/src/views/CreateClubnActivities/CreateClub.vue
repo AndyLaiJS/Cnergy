@@ -1,32 +1,26 @@
 <template>
     <div>
-        <Navi/>
+        <NavBar/>
         <div class="create-box">
             <div class="doodle">
                 CREATE. <br>
                 <b>SHARE YOUR PASSION.</b> <br>
                 OFFICIALLY.
             </div>
-
             <div class="create-content">
-        
                 <form class="create-form">
                     <div class="wording-title">
                         <h1> Create a new club! </h1>
                         <p> It's quick and easy to share your passion </p>
                     </div>
-
                     <div class="input-logo">
-
                         <div class="logo-container">
-
                             <div class="preview">
                                 <div id="display-logo" class="display-logo">
                                     <img src="" alt="LOGO" class="display-logo-img">
                                     <span class="display-logo-default">LOGO</span>
                                 </div>
                             </div>
-
                             <div class="upload-reset">
                                 <div class="upload">
                                     <label for="logo" class="create-button">⬆︎ Upload Club Logo</label>
@@ -36,13 +30,9 @@
                                     <label id="reset" for="reset" class="reset create-button">Reset Club Logo</label>
                                 </div>
                             </div>
-
                             <input id="logo" type="file" name="clubLogo"/>
-
                         </div>
-                        
                     </div>
-
                     <div class="form-group">
                         <input 
                             class="form-control"
@@ -58,7 +48,7 @@
                             v-model="eventDescription">
                         </textarea>
                     </div>
-                    <div class="compress-form">
+                    <!-- <div class="compress-form">
                     <input 
                         id="first-box"
                         class="form-control"
@@ -73,12 +63,9 @@
                         name="sid"
                         placeholder="Your SID"
                         />
-                    </div>
-
+                    </div> -->
                     <router-link to="/create-activities"><button class="create-button">Create</button></router-link>
-
                 </form>
-
             </div>
         </div>
         <Footer/>
@@ -86,12 +73,11 @@
 </template>
 
 <script>
-/* eslint-disable */
-import Navi from "../NavBar";
+import NavBar from "../NavBar";
 import Footer from "../Footer";
 export default {
   components: {
-    Navi,
+    NavBar,
     Footer
   },
   data () {

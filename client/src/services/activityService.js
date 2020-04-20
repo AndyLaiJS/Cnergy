@@ -24,6 +24,20 @@ class ActivityService {
                     }
                })
      }
+
+     createActivity(user, activity) {
+          return axios
+               .post(`${API_URL}`, {
+                    name: activity.name,
+                    description: activity.description,
+                    activityDate: activity.activityDate,
+                    maxParticipants: Number(activity.maxParticipants),
+                    minParticipants: Number(activity. minParticipants),
+                    type: activity.type
+               }, {
+                    params: { uid: user.id }
+               });
+     }
 }
 
 export default new ActivityService();

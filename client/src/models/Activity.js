@@ -1,12 +1,12 @@
 export default class Activity {
      constructor(
-          id, 
-          name, 
-          description, 
-          activityDate, 
-          minParticipants, 
-          maxParticipants,
-          type
+          id = "",
+          name = "", 
+          description = "", 
+          activityDate = "", 
+          minParticipants = "", 
+          maxParticipants = "",
+          type = "Public"
      ) {
           this.id = id;
           this.name = name;

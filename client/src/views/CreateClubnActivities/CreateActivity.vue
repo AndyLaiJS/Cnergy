@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Navi/>
+        <NavBar/>
         <div class="create-box">
             <div class="doodle">
                 CREATE. <br>
@@ -8,127 +8,135 @@
                 PLAY.
             </div>
             <div class="create-content">
-
                 <form class="create-form">
                     <div class="wording-title">
                         <h1> Create a new activity! </h1>
                         <p> It's quick and easy to share your passion </p>
                     </div>
                     <div class="form-group">
-                        <input 
+                        <input
                             class="form-control"
+                            v-model="activity.name"
                             type="text"
-                            name="event-name"
                             placeholder="Name of Activity"
-                            />
+                        />
                     </div>
                     <div class="form-group">
                         <textarea 
-                            required name="eventDescription" 
-                            rows="6" placeholder="Event Description" 
-                            v-model="eventDescription">
-                        </textarea>
-                    </div>
-                    <div class="compress-form">
-                    <input 
-                        id="first-box"
-                        class="form-control"
-                        type="text"
-                        name="creator-name"
-                        placeholder="Your name"
-                        />
-                    <input 
-                        id="second-box"
-                        class="form-control"
-                        type="text"
-                        name="sid"
-                        placeholder="Your SID"
+                            v-model="activity.description"
+                            rows="6" 
+                            placeholder="Event Description" 
                         />
                     </div>
                     <div class="form-group">
-                    <input 
-                        class="form-control"
-                        type="date"
-                        name="date"
-                        placeholder="YYYY-MM-DD"
+                        <input
+                            class="form-control"
+                            v-model="activity.activityDate"
+                            type="date"
+                            placeholder="YYYY-MM-DD"
                         />
                     </div>
                     <div class="compress-form">
-                    <input 
-                        id="first-box"
-                        class="form-control"
-                        type="text"
-                        name="min"
-                        placeholder="Minimum participants"
+                        <input 
+                            id="first-box"
+                            class="form-control"
+                            v-model="activity.minParticipants"
+                            type="text"
+                            placeholder="Minimum participants"
                         />
-                    <input 
-                        id="second-box"
-                        class="form-control"
-                        type="text"
-                        name="max"
-                        placeholder="Maximum participants"
+                        <input
+                            id="second-box"
+                            class="form-control"
+                            v-model="activity.maxParticipants"
+                            type="text"
+                            placeholder="Maximum participants"
                         />
                     </div>
-
-                    <router-link to="/create-activities"><button class="create-button">Create</button></router-link>
-
+                    <router-link to="/create-activities">
+                        <button 
+                            class="create-button" 
+                            @click="createActivity"
+                        > Create
+                        </button>
+                    </router-link>
                 </form>
-
             </div>
         </div>
-         
         <Footer/>
     </div>
 </template>
 
 <script>
-import Navi from "../NavBar";
+import NavBar from "../NavBar";
 import Footer from "../Footer";
+
+import Activity from "../../models/Activity";
+import User from "../../models/User";
+
+import utils from "../../utils/validator";
+
 export default {
     components: {
-    Navi,
-    Footer
-  },
-  data () {
-    return {
-        eventName: "",
-        eventDate: "",
-        eventDescription: "",
-        creatorName: "",
-        creatorSID: "",
-        minParticipant: "",
-        maxParticipant: ""
-    }
-  },
-  mounted () {
-    const inpLogo = document.getElementById("logo");
-    const displayContainer = document.getElementById("display-logo");
-    const displayImage = displayContainer.querySelector(".display-logo-img");
-    const displayDefaultText = displayContainer.querySelector(".display-logo-default");
-
-    inpLogo.addEventListener("change", function () {
-        const file = this.files[0];
-        
-        if (file) {
-            const reader = new FileReader();
-
-            displayDefaultText.style.display = "none";
-            displayImage.style.display = "block";
-
-            reader.addEventListener("load", function() {
-                displayImage.setAttribute("src", this.result);
-                displayContainer.style.border = "none";
-            });
-
-            reader.readAsDataURL(file);
-        } else {
-            displayDefaultText.style.display = null;
-            displayImage.style.display = null;
-            displayContainer.style = null;
-            displayImage.setAttribute("src", "");
+        NavBar,
+        Footer
+    },
+    data () {
+        return {
+            activity: new Activity(),
+            user: new User(),
         }
-    });
-  }
+    },
+    computed: {
+        isLoggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        },
+        getCurrentUser() {
+            return this.$store.state.auth.user.user;
+        }
+    },
+    methods: {
+        createActivity() {
+            let err = utils.createActivityChecker(this.activity);
+            if (err.length != 0) {
+                this.$fire({
+                    title: "Create Activity Failed",
+                    "text": err,
+                    type: "error",
+                    timer: 3000
+                });
+
+                return;
+            }
+
+            this.$store
+                .dispatch("activity/createActivity", [this.user, this.activity] )
+                .then(
+                    response => {
+                        if (response.status == 200) {
+                            this.$fire({
+                                title: "Create an Activity Success",
+                                type: "success",
+                                timer: 3000
+                            });
+                        } else {
+                            console.log(response);
+                            this.$fire({
+                                title: "Create an Activity Fail",
+                                type: "error",
+                                timer: 3000
+                            });
+                        }
+                    }
+                )
+        }
+    },
+    mounted () {
+        if (this.isLoggedIn) {
+            this.user = this.getCurrentUser;
+        } else {
+            this.$router.push("/");
+        }
+    }
 }
 </script>
 
