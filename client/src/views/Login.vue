@@ -153,15 +153,21 @@ input {
     button {
         width: 60px;
         outline: none;
+        border-radius: 20px;
         border: 2px solid #4285F4;
+        box-shadow: 0 3px silver;
         color: #4285F4;
         line-height: 10px;
         cursor: pointer;
-        transition: .5s;
+        transition: .1s;
     }
     button:hover {
         background-color: #4285F4;
         color: #fff;
+    }
+    button:active {
+        box-shadow: 0 1px silver;
+        transform: translateY(3px);
     }
 }
 </style>
