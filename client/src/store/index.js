@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import { auth } from "./authenticationModule";
 import { activity } from "./activityModule";
+import { user } from "./userModule";
 
 Vue.use(Vuex)
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
      },
      modules: {
           auth,
-          activity
+          activity,
+          user
      }
 })
