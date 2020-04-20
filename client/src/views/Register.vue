@@ -112,13 +112,6 @@ export default {
 <style scope lang="scss">
 .register-container{
   position: relative;
-  height: 100vh;
-}
-.v-select__selections {
-  height: 90px !important;
-}
-.v-text-field {
-  padding-top: 45px;
 }
 .doodle {
   flex: 1;

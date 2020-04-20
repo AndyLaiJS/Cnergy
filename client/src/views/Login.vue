@@ -1,5 +1,5 @@
 <template>
-    <v-app class="main">
+    <div class="main">
         <div class="login-container">
             <div id="nav">
                 <router-link to="/">
@@ -40,7 +40,7 @@
             </div>
         </div>
         <Register/>
-    </v-app>
+    </div>
 </template>
 
 <script>
@@ -115,8 +115,6 @@ export default {
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
-    height: 100vh !important;
-    margin: 0;
 }
 .navLink {
     cursor:auto;
