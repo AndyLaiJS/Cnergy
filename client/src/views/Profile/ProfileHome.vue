@@ -79,7 +79,7 @@
                 </div>
             </div>
         </div>
-    <Footer />  
+    <Footer/>  
     </v-app>
 </template>
 
