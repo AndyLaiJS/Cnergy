@@ -7,6 +7,8 @@ import profile from '../views/Profile/ProfileHome.vue'
 import profileEdit from '../views/Profile/ProfileEdit.vue'
 import profileSet from '../views/Profile/ProfileSettings.vue'
 import profileMngr from '../views/Profile/CnA-Manage.vue'
+import createAct from '../views/CreateClubnActivities/CreateActivity.vue'
+import createClub from '../views/CreateClubnActivities/CreateClub.vue'
 
 import notfound from '../views/NotFound.vue'
 
@@ -53,6 +55,16 @@ const routes = [
     path: '/nf',
     name: 'notfound',
     component: notfound
+  },
+  {
+    path: '/create-club',
+    name: 'create-club',
+    component: createClub
+  },
+  {
+    path: '/create-activities',
+    name: 'create-activities',
+    component: createAct
   },
   // {
   //   path: '/about',
