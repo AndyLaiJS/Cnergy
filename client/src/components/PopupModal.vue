@@ -11,9 +11,9 @@
                 <v-card-title
                     class="headline"
                     primary-title
-                > Privacy Policy
+                > Title
                 </v-card-title>
-
+                
                 <v-card-text>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                 </v-card-text>
@@ -22,7 +22,10 @@
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <button @click="dialog = false"> I accept </button>
+                    <button @click="dialog = false" id="greenbtn"> Join </button>
+                    <v-spacer></v-spacer>
+                    <button @click="dialog = false"> Ok </button>
+                    <v-spacer></v-spacer>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -44,13 +47,22 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 #info-btn {
     position: relative;
 }
 .text-center {
     z-index: 9999;
 }
+#greenbtn {
+    border: 2px solid #67C23A;
+    color: #67C23A;
+}
+#greenbtn:hover {
+    background-color: #67C23A;
+    color: white;
+}
+
 button{
     padding: 5px 30px;
     border-radius: 50px;
