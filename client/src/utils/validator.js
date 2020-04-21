@@ -143,6 +143,15 @@ var validator = {
                     activity.minParticipants, 
                     activity.maxParticipants);
           return err;
+     },
+
+     createClubChecker(club) {
+          let err = 
+               fieldsShouldNotBeEmpty(
+                    club.name,
+                    club.description
+               );
+          return err;
      }
 }
 

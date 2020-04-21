@@ -29,7 +29,9 @@
                         />
                     </div>
                     <div class="form-group">
-                        <select>
+                        <select
+                            v-model="activity.type"
+                        >
                             <option v-for="option in options" :key="option">
                                 {{ option }}
                             </option>

@@ -6,7 +6,7 @@ export default class Activity {
           activityDate = "", 
           minParticipants = "", 
           maxParticipants = "",
-          type = "Public"
+          type = ""
      ) {
           this.id = id;
           this.name = name;

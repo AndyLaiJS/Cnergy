@@ -3,7 +3,6 @@ import { Request, Response, Router, NextFunction } from "express";
 import ClubService from "../services/clubService";
 import UserService from "../services/userService";
 import Controller from "../interfaces/controllerInterface";
-import RequestWithUser from "../interfaces/requestWithUserInterface";
 import User from "../interfaces/userInterface";
 import ClubRequestDto from "../dtos/clubRequestDto";
 import CreateClubDto from "../dtos/createClubDto";
@@ -31,13 +30,12 @@ class ClubController implements Controller {
 
      private initRoutes() {
           this.router
-              .all(`${this.path}`, authenticationMiddleware)
               .get(`${this.path}`, this.getClubs)
               .post(`${this.path}`, validationMiddleware(CreateClubDto), this.createClub)
               .patch(`${this.path}`, validationMiddleware(UpdateClubDto), this.updateClubInfo)
      
           this.router
-              .get(`${this.path}/members`, authenticationMiddleware, this.getClubMembers);
+              .get(`${this.path}/members`, this.getClubMembers);
 
           this.router
               .all(`${this.path}/join`, authenticationMiddleware)
@@ -45,11 +43,11 @@ class ClubController implements Controller {
               .delete(`${this.path}/join`, this.cancelJoinClub)
     
           this.router
-              .get(`${this.path}/pending`, authenticationMiddleware, this.getPendingClubRequests); 
+              .get(`${this.path}/pending`, this.getPendingClubRequests); 
           this.router
-              .delete(`${this.path}/reject`, authenticationMiddleware, validationMiddleware(ClubRequestDto), this.rejectJoinClubRequest); 
+              .delete(`${this.path}/reject`, validationMiddleware(ClubRequestDto), this.rejectJoinClubRequest); 
           this.router
-              .post(`${this.path}/accept`, authenticationMiddleware, validationMiddleware(ClubRequestDto), this.acceptJoinClubRequest); 
+              .post(`${this.path}/accept`, validationMiddleware(ClubRequestDto), this.acceptJoinClubRequest); 
      }
 
      /**
@@ -68,13 +66,15 @@ class ClubController implements Controller {
      }
 
      /**
-      * POST /club
+      * POST /club?uid=...
       * 
       * createClub() allow user to create a club.
       * By default, the creator of the club is the president
       */
-     private createClub = async (request: RequestWithUser, response: Response, next: NextFunction) => {
-          const president: User = request.user;
+     private createClub = async (request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          const president = await this.userService
+                                      .getUserInfoByUID(uid) as User;
           const clubInfo: CreateClubDto = request.body;
 
           try {
@@ -88,12 +88,14 @@ class ClubController implements Controller {
      }
 
      /**
-      * PATCH /club
+      * PATCH /club?uid=...
       * 
       * updateClubInfo() allow the president of the club to update the club's info
       */
-     private updateClubInfo = async (request: RequestWithUser, response: Response, next: NextFunction) => {
-          const president: User = request.user;
+     private updateClubInfo = async (request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          const president = await this.userService
+                                      .getUserInfoByUID(uid) as User;
           const updatedClubInfo: UpdateClubDto = request.body;
 
           // Only the president of the club can update the club info
@@ -113,15 +115,17 @@ class ClubController implements Controller {
      }
 
      /**
-      * POST /club/join
+      * POST /club/join?uid=...
       * 
       * joinClub() allow users to sign up as the member of the club.
       * User should wait for the club president's confirmation
       */
-     private joinClub = async (request: RequestWithUser, response: Response, next: NextFunction) => {
-          const user: User = request.user;
-          const joinClubInfo: JoinClubDto = request.body;
+     private joinClub = async (request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          const user = await this.userService
+                                 .getUserInfoByUID(uid) as User;
 
+          const joinClubInfo: JoinClubDto = request.body;
           const hasSignedUp = await this.clubService
                                         .getUserJoinClubCount(joinClubInfo.id, user.id);
 
@@ -143,12 +147,14 @@ class ClubController implements Controller {
      }
 
      /**
-      * DELETE /club/join
+      * DELETE /club/join?uid=...
       * 
       * cancelJoinClub() allow user to cancel the his/her signup request
       */
-     private cancelJoinClub = async (request: RequestWithUser, response: Response, next: NextFunction) => {
-          const user: User = request.user;
+     private cancelJoinClub = async (request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          const user = await this.userService
+                                 .getUserInfoByUID(uid) as User;
           const clubInfo: JoinClubDto = request.body;
 
           const hasSignedUp = await this.clubService
@@ -179,13 +185,15 @@ class ClubController implements Controller {
      }
 
      /**
-      * GET /club/pending
+      * GET /club/pending?uid=...
       * 
       * getPendingClubRequests() allow club president to check who signed up
       * as the member of the club and has not been accepted yet
       */
-     private getPendingClubRequests = async (request: RequestWithUser, response: Response, next: NextFunction) => {
-          const user: User = request.user;
+     private getPendingClubRequests = async (request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          const user = await this.userService
+                                 .getUserInfoByUID(uid) as User;
           const results = await this.clubService
                                     .getPendingRequestsByUID(user);
 
@@ -200,12 +208,14 @@ class ClubController implements Controller {
      }
 
      /**
-      * DELETE /club/reject
+      * DELETE /club/reject?uid=...
       * 
       * rejectJoinClubRequest() allow club president to reject a sign up request from user
       */
-     private rejectJoinClubRequest = async (request: RequestWithUser, response: Response, next: NextFunction) => {
-          const user: User = request.user;
+     private rejectJoinClubRequest = async (request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          const user = await this.userService
+                                 .getUserInfoByUID(uid) as User;
           const clubInfo: ClubRequestDto = request.body;
           const hasSignedUp = await this.clubService
                                         .getUserJoinClubCount(
@@ -241,7 +251,7 @@ class ClubController implements Controller {
       * 
       * acceptJoinClubRequest() allow club president to accept a sign up request from user
       */
-     private acceptJoinClubRequest = async (request: RequestWithUser, response: Response, next: NextFunction) => {
+     private acceptJoinClubRequest = async (request: Request, response: Response, next: NextFunction) => {
           const clubInfo: ClubRequestDto = request.body;
           const hasSignedUp = await this.clubService
                                         .getUserJoinClubCount(
