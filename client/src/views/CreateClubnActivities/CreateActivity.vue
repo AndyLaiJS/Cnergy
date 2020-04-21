@@ -29,11 +29,18 @@
                         />
                     </div>
                     <div class="form-group">
+                        <select>
+                            <option v-for="option in options" :key="option">
+                                {{ option }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <input
                             class="form-control"
                             v-model="activity.activityDate"
                             type="date"
-                            placeholder="YYYY-MM-DD"
+                            max="9999-12-31"
                         />
                     </div>
                     <div class="compress-form">
@@ -84,6 +91,7 @@ export default {
         return {
             activity: new Activity(),
             user: new User(),
+            options: ["Private", "Public"],
         }
     },
     computed: {
@@ -177,7 +185,7 @@ export default {
   flex: 1;
   margin-right: 0;
 }
-input, textarea {
+input, textarea, select {
   background-color: white !important;
   padding: 10px;
   margin: 20px;
