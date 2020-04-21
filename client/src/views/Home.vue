@@ -2,20 +2,48 @@
     <div>
         <NavBar/>
         <div class="create-box">
-            <div class="doodle">
-                DISCOVER. <br>
-                <b>SEARCH YOUR PASSION.</b> <br>
-                JOIN.
-            </div>
-            <div class="info-content">
-                <div class="about-us">
-                    <b> BASED ON YOUR INTEREST </b> <br>
-                    We connect people <br>
-                    Who are PASSIONATE <br>
-                    About what you 
-                    
+
+            <div class="cards">
+                <div class="card-title">
+                    <h1>Clubs</h1>
+                </div>
+                <div
+                    class="card"
+                    v-for="(club, index) in clubs"
+                    v-bind:key="index"
+                >
+                    <b>{{ club.name }}</b>
+                    {{ club.description }}
+                    <PopupModal/>
+                    <!-- <v-btn
+                        id="info-button"
+                        color="primary"
+                        depressed
+                        small
+                    > More Info</v-btn> -->
                 </div>
             </div>
+            <div class="cards">
+                <div class="card-title">
+                    <h1>Activities</h1>
+                </div>
+                <div
+                    class="card"
+                    v-for="(activity, index) in activities"
+                    v-bind:key="index"
+                >
+                    <b>{{ activity.name }}</b>
+                    {{ activity.description }}
+                    <PopupModal/>
+                    <!-- <v-btn
+                        id="info-button"
+                        color="primary"
+                        depressed
+                        small
+                    > More Info</v-btn> -->
+                </div>
+            </div>
+            
         </div>
 
         <div class="home">
@@ -54,26 +82,7 @@
                     {{ club.name }}
                 </div>
             </div>
-            <div class="cards">
-                <div class="card-title">
-                    <h1>Activities</h1>
-                </div>
-                <div
-                    class="card"
-                    v-for="(activity, index) in activities"
-                    v-bind:key="index"
-                >
-                    <b>{{ activity.name }}</b>
-                    {{ activity.description }}
-                    <PopupModal/>
-                    <!-- <v-btn
-                        id="info-button"
-                        color="primary"
-                        depressed
-                        small
-                    > More Info</v-btn> -->
-                </div>
-            </div>
+            
         </div>
         <Footer/>
     </div>
@@ -179,19 +188,18 @@ h1, h2, h3 {
     background-repeat: no-repeat;
 }
 .cards {
-    border-radius: 20px;
+    flex: 5;
+    border-radius: 10px;
     margin: 50px 25px;
     padding-bottom: 10px;
     max-height: 525px;
     overflow: auto;
     background-color: white;
-    box-shadow: 0 0 3px rgba(0,0,0,0.10);
 }
 .card-title {
     top: 0;
     position: sticky;
     padding-top: 15px;
-    /* z-index: 999; */
     width: 100%;
     background-color: white;
 }
