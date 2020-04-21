@@ -11,6 +11,14 @@ class UserService {
                     params: { uid: userId }
                });
      }
+     updateAbout(userId, about) {
+          return axios
+               .put(`${API_URL}/about`, {
+                    about: about
+               }, {
+                    params: { uid: userId }
+               });
+     }
 }
 
 export default new UserService();

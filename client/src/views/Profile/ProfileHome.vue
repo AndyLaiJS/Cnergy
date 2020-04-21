@@ -48,7 +48,7 @@
                         </div>
                         <div class="card-container" id="desc">
                             <h2>About me</h2>
-                            I am the rarest of ponies, the SILVER PONY!
+                            {{ this.user.about }}
                         </div>
                     </div>
                     <div class="flex-container">
