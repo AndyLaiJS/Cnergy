@@ -5,23 +5,19 @@
             <input v-model="search" placeholder="Search" class="search-bar" type="text" name="search bar">
 
             <div class="view-icon" v-if="viewType==true">
-                <el-tooltip class="item" effect="dark" content="List view" placement="bottom-start" open-delay=450 hide-after=1650>
-                    <i class="el-icon-notebook-2" @click="viewClick()"></i>
+                <el-tooltip class="item" effect="dark" content="Club view" placement="bottom-start" open-delay=450 hide-after=1650>
+                    <i class="el-icon-sort" @click="viewClick()"></i>
                 </el-tooltip>
             </div>
             <div class="view-icon" v-else>
-                <el-tooltip class="item" effect="dark" content="Block view" placement="bottom-start" open-delay=450 hide-after=1650>
-                    <i class="el-icon-menu" @click="viewClick()"></i>
+                <el-tooltip class="item" effect="dark" content="Activity view" placement="bottom-start" open-delay=450 hide-after=1650>
+                    <i class="el-icon-sort" @click="viewClick()"></i>
                 </el-tooltip>
             </div>
                 
         </div>
     <div class="main-container">
 
-        
-
-        <div class="cna-view">
-        </div>
             <span v-if="viewType==true" class="cna-view">
                 <div class="card" v-for="(club, index) in clubs" v-bind:key="index">
                     <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
@@ -94,13 +90,14 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .main-container {
     border-radius: 0 0 10px 10px;
     min-height: 330px;
     max-height: 530px;
     overflow: auto;
     position:relative;
+    margin-bottom: 50px;
 }
 .search-container {
     border-radius: 10px 10px 0 0;
@@ -151,6 +148,7 @@ export default {
     outline:none;
     border:none; 
     transition: linear 0.1s;
+    transform: rotate(90deg);
 }
 .view-icon i:active {
     transform: scale(1.5);
@@ -180,6 +178,8 @@ export default {
 }
 
 .card-content {
+    text-align: left;
+    margin: 0 30px;
     position: absolute;
     width: 100%;
     top: 50%;
@@ -192,18 +192,6 @@ export default {
 }
 .card-content a:hover {
     color:#F2F6FC;
-}
-.title {
-    overflow: hidden;
-    font-size: 14px;
-    padding: 0 10px 0 10px;
-    color: white;
-    background-color: #67C23A;
-    height: 45px;
-    line-height: 45px;
-    width: 100%;
-    bottom: 0;
-    position: absolute;
 }
 .description {
     margin: 10px;

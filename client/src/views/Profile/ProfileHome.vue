@@ -51,34 +51,61 @@
                             I am the rarest of ponies, the SILVER PONY!
                         </div>
                     </div>
-                    <div class="flex-container">
-                        <div class="card-container">
-                            <div class="card-title">
-                                <h2>Clubs</h2>
-                            </div>
-                        <!-- TODO: Fetch Joined Clubs -->
-                        </div>
-                        <div class="card-container">
-                            <div class="card-title">
-                                <h2>Activities</h2>
-                            </div>
+                    <!-- <div class="flex-container"> -->
+                    <div class="card-title">
+                        <h2>Activities</h2>
+                    </div>
+                    <div class="main-container">
+                        <div class="cna-view">
                             <div
                                 class="card"
-                                v-for="(activity, index) in userJoinedActivities"
+                                id="smaller-card"
+                                v-for="(activity, index) in usera"
                                 v-bind:key="index"
                             >
                                 <!-- TODO: Create an additional component to store this -->
                                 <!-- Consider using Icon instead of words -->
-                                <b>{{ activity.name }}</b><br>
-                                Description: {{ activity.description }}<br>
-                                <!-- {{ activity.activityDate }} -->
-                                Date: {{ getFormattedDate(activity.activityDate) }}<br>
-                                Min. Participants: {{ activity.minParticipants }}<br>
-                                Max. Participants: {{ activity.maxParticipants }}<br>
-                                Type: {{ activity.type }}<br>
+                                <div class="card-content">
+                                    Name: <b> {{ activity.name }} </b><br>
+                                    Description: {{ activity.description }}<br>
+                                    <!-- {{ activity.activityDate }} -->
+                                    <!-- Date: {{ getFormattedDate(activity.activityDate) }}<br> -->
+                                    Min. Participants: {{ activity.minParticipants }}<br>
+                                    Max. Participants: {{ activity.maxParticipants }}<br>
+                                    Type: {{ activity.type }}<br>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="card-title">
+                        <h2>Activities</h2>
+                    </div>
+                    <div class="main-container">
+                        <div class="cna-view">
+                            <div
+                                class="card"
+                                id="smaller-card"
+                                v-for="(activity, index) in usera"
+                                v-bind:key="index"
+                            >
+                                <!-- TODO: Create an additional component to store this -->
+                                <!-- Consider using Icon instead of words -->
+                                <div class="card-content">
+                                    Name: <b> {{ activity.name }} </b><br>
+                                    Description: {{ activity.description }}<br>
+                                    <!-- {{ activity.activityDate }} -->
+                                    <!-- Date: {{ getFormattedDate(activity.activityDate) }}<br> -->
+                                    Min. Participants: {{ activity.minParticipants }}<br>
+                                    Max. Participants: {{ activity.maxParticipants }}<br>
+                                    Type: {{ activity.type }}<br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <!-- </div> -->
+
                 </div>
             </div>
         </div>
@@ -98,7 +125,14 @@ export default {
         return {
             user: new User(),
             userJoinedClubs: [],
-            userJoinedActivities: [],
+            // To Andrew: Idk why but if I change the name to user or literally anything else it renders on the top... 
+            usera: [
+                { name: "Dummy Activity Name", description: "A brief description", activityDate: 2020-12-12, minParticipants: 5, maxParticipants: 10, type: "Private"},
+                { name: "SkyMelon", description: "The first", activityDate: 2020-12-12, minParticipants: 5, maxParticipants: 10, type: "Private"},
+                { name: "SkyMango", description: "The wishful second", activityDate: 2020-12-12, minParticipants: 5, maxParticipants: 10, type: "Private"},
+                { name: "SkyKiwi", description: "The powerful third", activityDate: 2020-12-12, minParticipants: 5, maxParticipants: 10, type: "Private"},
+                { name: "SkyCherry", description: "The revised fourth", activityDate: 2020-12-12, minParticipants: 5, maxParticipants: 10, type: "Private"},
+            ],
         };
     },
     components: {
@@ -167,6 +201,10 @@ export default {
 #logout {
     margin: 0;
     padding: 0;
+}
+#smaller-card {
+    width: 400px;
+    height: 200px;
 }
 .home {
     background-color: rgb(247, 247, 247);
@@ -265,30 +303,32 @@ i:hover, v-icon:hover {
     background-color: white;
 }
 .card-title {
-    padding-top: 15px;
     width: 100%;
     background-color: white;
+    margin-top: 10px;
+    padding-top: 25px;
+    padding-bottom: 25px;
 }
-.card {
-    background-color: white;
-    min-width: 50px;
-    margin-top: 15px;
-    margin-left: 15px;
-    margin-right: 15px;
-    margin-bottom: 5px;
-    padding: 20px 0;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-    position: relative;
-    overflow: auto;
-    cursor: pointer;
-}
-.card:hover {
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-.card:active {
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
-}
+// .card {
+//     background-color: white;
+//     min-width: 50px;
+//     margin-top: 15px;
+//     margin-left: 15px;
+//     margin-right: 15px;
+//     margin-bottom: 5px;
+//     padding: 20px 0;
+//     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+//     transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+//     position: relative;
+//     overflow: auto;
+//     cursor: pointer;
+// }
+// .card:hover {
+//     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+//     transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+// }
+// .card:active {
+//     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+//     transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+// }
 </style>
