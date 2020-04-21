@@ -1,197 +1,219 @@
 <template>
     <div class="register-container">
-
-      <div class="register-box">
-        <div class="doodle">
-          JOIN OTHERS. <br>
-          <b>FIND YOUR PASSION.</b> <br>
-          NOW.
+        <div class="register-box">
+            <div class="doodle">
+                JOIN OTHERS. <br>
+                <b>FIND YOUR PASSION.</b> <br>
+                NOW.
+            </div>
+            <div class="reg-content">
+                <form class="reg-form">
+                    <div class="wording-title">
+                        <h1> Create a new account! </h1>
+                        <p> It's quick and easy </p>
+                    </div>
+                    <div class="compress-form">
+                        <input 
+                            class="form-control"
+                            type="text"
+                            v-model="user.firstName"
+                            placeholder="First name"
+                        />
+                        <input 
+                            class="form-control"
+                            type="text"
+                            v-model="user.lastName"
+                            placeholder="Last name"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <input 
+                            class="form-control"
+                            type="email"
+                            v-model="user.email"
+                            placeholder="CULink Email adress"
+                        />
+                    </div>
+                    <div class="compress-form">
+                        <select 
+                            v-model="user.major"
+                        >
+                            <option 
+                                v-for="major in majors" 
+                                :key="major"
+                            > 
+                                {{ major }}
+                            </option>
+                        </select>
+                        <select 
+                            v-model="user.college"
+                        >
+                            <option 
+                                v-for="college in colleges" 
+                                :key="college"
+                            >
+                                {{ college }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input 
+                            class="form-control"
+                            type="password"
+                            v-model="user.password"
+                            placeholder="Password"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <input 
+                            class="form-control"
+                            type="password"
+                            v-model="confirmPassword"
+                            placeholder="Confirm password"
+                        />
+                    </div>
+                    <router-link to="/">
+                        <button class="rg-button" @click="register">Register</button>
+                    </router-link>
+                </form>
+            </div>
         </div>
-        <div class="reg-content">
-          <form class="reg-form">
-            <div class="wording-title">
-              <h1> Create a new account! </h1>
-              <p> It's quick and easy </p>
-            </div>
-            <div class="compress-form">
-              <input 
-                id="first-box"
-                class="form-control"
-                type="text"
-                name="first-name"
-                placeholder="First name"
-                />
-              <input 
-                id="second-box"
-                class="form-control"
-                type="text"
-                name="first-name"
-                placeholder="Last name"
-                />
-            </div>
-            <div class="form-group">
-              <input 
-                class="form-control"
-                type="email"
-                name="email"
-                placeholder="CULink Email adress"
-                />
-            </div>
-            <div class="compress-form">
-              <select id="first-box">
-                  <option v-for="major in majors" :key="major">
-                      {{ major }}
-                  </option>
-              </select>
-              <select id="second-box">
-                  <option v-for="college in colleges" :key="college">
-                      {{ college }}
-                  </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <input 
-                class="form-control"
-                type="password"
-                name="password"
-                placeholder="Password"
-                />
-            </div>
-            <div class="form-group">
-              <input 
-                class="form-control"
-                type="password"
-                name="confirm-password"
-                placeholder="Confirm password"
-                />
-            </div>
-
-            <router-link to="/"><button class="rg-button">Register</button></router-link>
-
-          </form>
-        </div>
-      </div>
-
-      <Footer/>
+        <Footer/>
     </div>
 </template>
 
 <script>
 import Footer from "./Footer";
+import User from "../models/User";
+import validator from "../utils/validator";
+
 export default {
-  data () {
-    return {
-      colleges: ["S.H.Ho", "New Asia", "Morningside", "Chung Chi", "United",
-                "Lee Woo Sing", "Wu Yee Sun", "C.W Chu", "Shaw"],
-      majors: ["Computer Science", "SEEM", "Information Engineering", "MIE", "Electronic Engineering",
-              "Computer Engineering", "MAE", "FinTech", "IBBA", "Global Business Studies", "Architecture",
-              "Anthropology", "China Studies", "Mathematics", "Physics", "BERG", "Chemistry", "Earth Sciences",
-              "Law", "Biomedical Engineering", "Medicine", "Nursing", "Communications", "Finance", "Economics"]
+    data () {
+        return {
+            user: new User(),
+            confirmPassword: "",
+            colleges: ["S.H.Ho", "New Asia", "Morningside", "Chung Chi", "United",
+                    "Lee Woo Sing", "Wu Yee Sun", "C.W Chu", "Shaw"],
+            majors: ["Computer Science", "SEEM", "Information Engineering", "MIE", "Electronic Engineering",
+                    "Computer Engineering", "MAE", "FinTech", "IBBA", "Global Business Studies", "Architecture",
+                    "Anthropology", "China Studies", "Mathematics", "Physics", "BERG", "Chemistry", "Earth Sciences",
+                    "Law", "Biomedical Engineering", "Medicine", "Nursing", "Communications", "Finance", "Economics"]
+        }
+    },
+    components: {
+        Footer,
+    },
+    methods: {
+        register() {
+            let err = validator.signUpFieldChecker(this.user, this.confirmPassword);
+            if (err.length != 0) {
+                this.$fire({
+                    title: "Sign Up Error",
+                    text: err,
+                    type: "error",
+                    timer: 3000
+                })
+
+                return;
+            }
+            this.$store
+                .dispatch("auth/register", this.user)
+                .then(
+                    response => {
+                        this.$fire({
+                            title: "Sign Up Succeed",
+                            type: "success",
+                            text: "You have successfully signed up. Please login",
+                            timer: 3000
+                        })                    
+                    },
+                    error => {
+                        this.$fire({
+                            title: "Sign Up Failed",
+                            text: error.response.data.message,
+                            type: "error",
+                            timer: 3000
+                        });
+                    }
+                )
+        }
+    },
+    mounted() {
+
     }
-  },
-  components: {
-    Footer,
-  },
-
-  mounted() {
-      const inputs = document.querySelectorAll(".input");
-      function addcl(){
-          let parent = this.parentNode.parentNode;
-          parent.classList.add("focus");
-      }
-
-      function remcl(){
-          let parent = this.parentNode.parentNode;
-          if(this.value == ""){
-              parent.classList.remove("focus");
-          }
-      }
-
-      inputs.forEach(input => {
-          input.addEventListener("focus", addcl);
-          input.addEventListener("blur", remcl);
-      });
-  }
 }
 </script>
 
 <style scope lang="scss">
 .register-container{
-  position: relative;
+    position: relative;
 }
 .doodle {
-  flex: 1;
-  padding: 13% 0;
-  margin-left: 100px;
-  font-size: 50px;
-  text-align: left; 
+    flex: 1;
+    padding: 13% 0;
+    margin-left: 100px;
+    font-size: 50px;
+    text-align: left; 
 }
 .register-box {
-  display: flex;
-  margin: 70px 200px;
-  background-color: rgb(247, 247, 247);
-  border-radius: 10px;
-  margin-bottom: 90px;
+    display: flex;
+    margin: 70px 200px;
+    background-color: rgb(247, 247, 247);
+    border-radius: 10px;
+    margin-bottom: 90px;
 }
 .wording-title {
-  margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 .reg-content {
-  flex: 1;
+    flex: 1;
 }
 .reg-form {
-  padding: 45px;
-  padding-right: 80px;
-  text-align: left;
+    padding: 45px;
+    padding-right: 80px;
+    text-align: left;
 }
 .compress-form {
-  width: 100%;
-  display: flex;
-}
-#first-box {
-  flex: 1;
-}
-#second-box {
-  flex: 1;
-  margin-right: 0;
+    width: 100%;
+    display: flex;
 }
 input {
-  background-color: white !important;
-  padding: 10px;
-  margin: 20px;
-  margin-left: 0;
-  margin-top: 0;
-  width: 100%;
-  border-radius: 10px !important;
-  outline: none;
+    background-color: white !important;
+    padding: 10px;
+    margin: 20px;
+    margin-left: 0;
+    margin-top: 0;
+    width: 100%;
+    border-radius: 10px !important;
+    outline: none;
 }
 .compress-form {
-  input {
-    width: 200px;
-  }
+    input {
+        width: 200px;
+    }
 }
 .rg-button{
-  margin-top: 20px;
-  padding: 5px 30px;
-	border-radius: 50px;
-	outline: none;
-  border: 2px solid #4285F4;
-  box-shadow:  0px 3px silver;
-	color: #4285F4;
-	cursor: pointer;
-	transition: .1s;
+    margin-top: 20px;
+    padding: 5px 30px;
+    border-radius: 50px;
+    outline: none;
+    border: 2px solid #4285F4;
+    box-shadow:  0px 3px silver;
+    color: #4285F4;
+    cursor: pointer;
+    transition: .1s;
 }
 .rg-button:hover {
-  background-color: #4285F4;
-  color: #fff;
+    background-color: #4285F4;
+    color: #fff;
 }
 .rg-button:active {
-  box-shadow: 0 1px silver;
-  transform: translateY(3px);
+    box-shadow: 0 1px silver;
+    transform: translateY(3px);
 }
 @media screen and (max-width: 1400px) {
-  .doodle {
-    font-size: 40px;
-  }
+    .doodle {
+        font-size: 40px;
+    }
 }
 </style>

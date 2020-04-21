@@ -32,11 +32,31 @@ function validateDate(date) {
      return "Date should be between the next 5 days and the next 2 months";
 }
 
-function validateIntegerFields(context, ...fields) {
+function onlyAcceptIntegers(context, ...fields) {
      for (let i = 0; i < fields.length; i ++) {
           if (!fields[i].match(/^\d+$/)) {
                return `${context} field should be integer`;
           }
+     }
+     return "";
+}
+
+function onlyAcceptAlphabeticCharacters(context, field) {
+     for (let i = 0; i < field.length; i ++) {
+          if ( (field[i] >= 'a' && field[i] <= 'z') ||
+               (field[i] >= 'A' && field[i] <= 'Z') ) {
+                    continue;
+               }
+          return `${context} field should only contains alphabetic characters`;
+     }
+     return "";
+}
+
+const cuhkEmailRegex = "^115511[0-9]{4,4}(@link.cuhk.edu.hk)$";
+function onlyAcceptCUHKEmail(email) {
+     const regExp = new RegExp(cuhkEmailRegex);
+     if (!regExp.test(email)) {
+          return `${email} is not valid CUHK Email`;
      }
      return "";
 }
@@ -75,6 +95,33 @@ var validator = {
           return err;
      },
 
+     signUpFieldChecker(user, confirmPassword) {
+          let err = 
+               fieldsShouldNotBeEmpty(
+                    user.firstName,
+                    user.lastName,
+                    user.email,
+                    user.password,
+                    user.college,
+                    user.major,
+               ) ||
+               onlyAcceptAlphabeticCharacters(
+                    "First name",
+                    user.firstName,
+               ) ||
+               onlyAcceptAlphabeticCharacters(
+                    "Last name",
+                    user.lastName,
+               ) ||
+               onlyAcceptCUHKEmail(
+                    user.email
+               ) ||
+               passwordShouldBeSame(
+                    user.password, confirmPassword
+               );
+          return err;
+     },
+
      createActivityChecker(activity) {
           let err = 
                fieldsShouldNotBeEmpty(
@@ -86,7 +133,7 @@ var validator = {
                     activity.type
                ) ||
                validateDate(activity.activityDate) ||
-               validateIntegerFields(
+               onlyAcceptIntegers(
                     "Participant counts",
                     activity.minParticipants,
                     activity.maxParticipants

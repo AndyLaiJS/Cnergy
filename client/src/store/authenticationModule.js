@@ -33,7 +33,7 @@ export const auth = {
                     .then(
                          response => {
                               commit("registerSuccess", user);
-                              return Promise.resolve(response.data);
+                              return Promise.resolve(response);
                          },
                          error => {
                               commit("registerFailure", error);
