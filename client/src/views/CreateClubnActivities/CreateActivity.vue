@@ -78,7 +78,6 @@
 <script>
 import NavBar from "../NavBar";
 import Footer from "../Footer";
-
 import Activity from "../../models/Activity";
 import User from "../../models/User";
 import alerter from "../../utils/alerter";
@@ -97,11 +96,9 @@ export default {
         }
     },
     computed: {
-        isLoggedIn() {
-            return this.$store.state.auth.status.loggedIn;
-        },
         getCurrentUser() {
-            return this.$store.state.auth.user.user;
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user; 
         }
     },
     methods: {
@@ -117,28 +114,24 @@ export default {
             this.$store
                 .dispatch(
                     "activity/createActivity", 
-                    [this.user, this.activity],
+                    [ this.user, this.activity ],
                 )
                 .then(
-                    response => {
-                        if (response.status == 200) {
-                            this.$fire(alerter.successAlert(
-                                "Create Activity Success",
-                            ));
-                        } else {
-                            this.$fire(alerter.errorAlert(
-                                "Create Activity Fail",
-                            ));
-                        }
-                    }
+                    response => response.status == 200
+                        ?   this.$fire(alerter.successAlert(
+                                "Create Activity Success"
+                            ))
+                        :   this.$fire(alerter.errorAlert(
+                                "Create Activity Failed"
+                            )),
                 )
         }
     },
     mounted () {
-        if (this.isLoggedIn) {
-            this.user = this.getCurrentUser;
-        } else {
+       this.user = this.getCurrentUser;
+        if (!this.user) {
             this.$router.push("/");
+            return;
         }
     }
 }

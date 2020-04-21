@@ -10,9 +10,7 @@ class ActivityService {
                     params: { uid: userId },
                })
                .then(
-                    response => {
-                         return response.data.activities;
-                    }
+                    response => response.data.activities,
                );
      }
      
@@ -29,9 +27,7 @@ class ActivityService {
                     params: { uid: userId }
                })
                .then(
-                    response => {
-                         return response.data;
-                    }
+                    response => response.data,
                );
      }
 

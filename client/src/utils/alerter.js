@@ -8,12 +8,8 @@ function alertConfig(title, text, type) {
 }
 
 const alerter = {
-     errorAlert(title, text = "") {
-          return alertConfig(title, text, "error");
-     },
-     successAlert(title, text = "") {
-          return alertConfig(title, text, "success");
-     }
+     errorAlert:    (title, text = "") => alertConfig(title, text, "error"),
+     successAlert:  (title, text = "") => alertConfig(title, text, "success"),
 }
 
 export default alerter;

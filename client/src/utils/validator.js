@@ -10,6 +10,7 @@ function passwordShouldBeSame(...passwords) {
 function fieldsShouldNotBeEmpty(...fields) {
      for (let i = 0; i < fields.length; i ++) {
           if (fields[i] == "") {
+               console.log(i);
                return "Fields should not be empty";
           }
      }
@@ -68,31 +69,16 @@ function validateParticipantsCount(minCount, maxCount) {
           : "");
 }
 
-function getErrors(constraints, ...fields) {
-     for (let i = 0; i < constraints.length; i ++) {
-          let err = constraints[i](...fields);
-          if (err.length != 0) {
-               return err;
-          }
-     }
-     return "";
-}
-
 var validator = {
      changePasswordChecker(...passwords) {
-          let constraints = [
-               fieldsShouldNotBeEmpty,
-               passwordShouldBeSame,
-          ];
-          let err = getErrors(constraints, ...passwords);
+          let err = 
+               fieldsShouldNotBeEmpty(...passwords) ||
+               passwordShouldBeSame(...passwords);
           return err;
      },
 
      loginFieldChecker(email, password) {
-          let constraints = [
-               fieldsShouldNotBeEmpty,
-          ];
-          let err = getErrors(constraints, email, password);
+          let err = fieldsShouldNotBeEmpty(email, password);
           return err;
      },
 

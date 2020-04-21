@@ -115,42 +115,33 @@ export default {
         Footer,
     },
     computed: {
-        isLoggedIn() {
-            return this.$store.state.auth.status.loggedIn;
-        },
         getCurrentUser() {
-            return this.$store.state.auth.user.user;
-        },
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user; 
+        }
     },
     methods: {
-        getFormattedName(firstName, lastName) {
-            return formatter.getFormattedName(firstName, lastName);
-        },
-        getSIDFromEmail(email) {
-            let sid = email.split("@");
-            return sid[0];
-        },
-        getFormattedDate(date) {
-            return formatter.getFormattedDate(date);
-        },
+        getFormattedName: (firstName, lastName) => formatter.getFormattedName(firstName, lastName),
+        getFormattedDate: (date) => formatter.getFormattedDate(date),
+        getSIDFromEmail: (email) => email.split("@")[0],
         logout() {
             this.$store.dispatch("auth/logout");
             this.$router.push("/");
         },
     },
     async mounted() {
-        if (this.isLoggedIn) {
-            this.user = this.getCurrentUser;
-
-            this.userJoinedActivities =
-                await ActivityService
-                    .getJoinedActivities(this.user.id);
-            this.userJoinedClubs =
-                await ClubService
-                    .getJoinedClubs(this.user.id);
-            } else {
+        this.user = this.getCurrentUser;
+        if (!this.user) {
             this.$router.push("/");
+            return;
         }
+
+        this.userJoinedActivities =
+            await ActivityService
+                .getJoinedActivities(this.user.id);
+        this.userJoinedClubs =
+            await ClubService
+                .getJoinedClubs(this.user.id);
     },
 };
 </script>

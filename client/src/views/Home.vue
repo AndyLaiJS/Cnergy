@@ -91,9 +91,6 @@ export default {
         isLoggedIn() {
             return this.$store.state.auth.status.loggedIn;
         },
-        getCurrentUser() {
-            return this.$store.state.auth.user.user;
-        },
     },
     components: {
         NavBar,

@@ -20,7 +20,7 @@ class ClubService {
      public getClubsByPresidentId = async (presidentId: string) => {
           const clubs = await this.clubRepository
                                   .createQueryBuilder("club")
-                                  .where(`club.presidentId := presidentId`, {
+                                  .where(`club.presidentId = :presidentId`, {
                                        presidentId: presidentId
                                   })
                                   .getMany();

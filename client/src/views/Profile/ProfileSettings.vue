@@ -82,17 +82,13 @@ export default {
         Footer,
     },
     computed: {
-        isLoggedIn() {
-            return this.$store.state.auth.status.loggedIn;
-        },
         getCurrentUser() {
-            return this.$store.state.auth.user.user;
-        },
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user; 
+        }
     },
     methods: {
-        getFormattedName(firstName, lastName) {
-            return formatter.getFormattedName(firstName, lastName);
-        },
+        getFormattedName: (firstName, lastName) => formatter.getFormattedName(firstName, lastName),
         logout() {
             this.$store.dispatch("auth/logout");
             this.$router.push("/");
@@ -114,25 +110,21 @@ export default {
                     [this.user.id, this.password],
                 )
                 .then(
-                    response => {
-                        if (response.data.status == 200) {
-                            this.$fire(alerter.successAlert(
+                    response => response.data.status == 200
+                        ?   this.$fire(alerter.successAlert(
                                 "Update Password Success"
                             ))
-                        } else {
-                            this.$fire(alerter.errorAlert(
+                        :   this.$fire(alerter.errorAlert(
                                 "Update Password Failed"
-                            ));
-                        }
-                    },
+                            )),
                 );
         }
     },
     mounted() {
-        if (this.isLoggedIn) {
-            this.user = this.getCurrentUser;
-        } else {
+        this.user = this.getCurrentUser;
+        if (!this.user) {
             this.$router.push("/");
+            return;
         }
     }
 }

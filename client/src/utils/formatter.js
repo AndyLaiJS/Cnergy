@@ -26,9 +26,7 @@ var formatter = {
           return `${dayInWords}, ${day} ${month} ${year} ${hours}:${minutes}`;
      },
 
-     getFormattedName(firstName, lastName) {
-          return `${lastName.toUpperCase()}, ${firstName}`;
-     }
+     getFormattedName: (firstName, lastName) => `${lastName.toUpperCase()}, ${firstName}`,
 }
 
 export default formatter;

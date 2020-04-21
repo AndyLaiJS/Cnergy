@@ -80,11 +80,9 @@ export default {
         }
     },
     computed: {
-        isLoggedIn() {
-            return this.$store.state.auth.status.loggedIn;
-        },
         getCurrentUser() {
-            return this.$store.state.auth.user.user;
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user; 
         }
     },
     methods: {
@@ -103,25 +101,21 @@ export default {
                     [ this.user, this.club ],
                 )
                 .then(
-                    response => {
-                        if (response.status == 200) {
-                            this.$fire(alerter.successAlert(
-                                "Create Club Success",
-                            ));
-                        } else {
-                            this.$fire(alerter.errorAlert(
-                                "Create Club Fail"
-                            ));
-                        }
-                    }
+                    response => response.status == 200
+                        ?   this.$fire(alerter.successAlert(
+                                "Create Club Success"
+                            ))
+                        :   this.$fire(alerter.errorAlert(
+                                "Create Club Failed"
+                            )),
                 )
         }
     },
     mounted () {
-        if (this.isLoggedIn) {
-            this.user = this.getCurrentUser
-        } else {
+        this.user = this.getCurrentUser;
+        if (!this.user) {
             this.$router.push("/");
+            return;
         }
         // const inpLogo = document.getElementById("logo");
         // const displayContainer = document.getElementById("display-logo");

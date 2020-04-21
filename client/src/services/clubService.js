@@ -14,7 +14,9 @@ class ClubService {
      }
      getClubs(userId = "") {
           return axios
-               .get(`${API_URL}`)
+               .get(`${API_URL}`, {
+                    params: { uid: userId },
+               })
                .then(response => response.data);
      }
      getJoinedClubs(userId) {

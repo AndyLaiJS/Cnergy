@@ -83,24 +83,15 @@ export default {
         Footer,
     },
     computed: {
-        isLoggedIn() {
-            return this.$store.state.auth.status.loggedIn;
-        },
         getCurrentUser() {
-            return this.$store.state.auth.user.user;
-            },
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user; 
+        }
     },
     methods: {
-        getFormattedName(firstName, lastName) {
-            return formatter.getFormattedName(this.user.firstName, this.user.lastName);
-        },
-        getSIDFromEmail(email) {
-            let sid = email.split("@");
-            return sid[0];
-        },
-        getFormattedDate(date) {
-            return formatter.getFormattedDate(date);
-        },
+        getFormattedName: (firstName, lastName) => formatter.getFormattedName(firstName, lastName),
+        getFormattedDate: (date) => formatter.getFormattedDate(date),
+        getSIDFromEmail: (email) => email.split("@")[0],
         changeAbout() {
             this.$store
                 .dispatch(
@@ -108,18 +99,14 @@ export default {
                     [this.user.id, this.user.about],
                 )
                 .then(
-                    response => {
-                        if (response.data.status == 200) {
-                            this.$fire(alerter.successAlert(
+                    response => response.data.status == 200
+                        ?   this.$fire(alerter.successAlert(
                                 "Update About Success"
                             ))
-                        } else {
-                            this.$fire(alerter.errorAlert(
+                        :   this.$fire(alerter.errorAlert(
                                 "Update About Failed"
-                            ));
-                        }
-                    }
-                )
+                            )),
+                );
         },
         logout() {
             this.$store.dispatch("auth/logout");
@@ -127,10 +114,10 @@ export default {
         },
     },
     mounted() {
-        if (this.isLoggedIn) {
-            this.user = this.getCurrentUser;
-        } else {
+        this.user = this.getCurrentUser;
+        if (!this.user) {
             this.$router.push("/");
+            return;
         }
     }
 }

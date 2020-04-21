@@ -75,7 +75,6 @@ export default {
     methods: {
         handleLogin() {
             this.loading = true;
-            
             this.err = validator.loginFieldChecker(this.user.email, this.user.password);
             if (this.err.length != 0) {
                 this.loading = false;
@@ -88,9 +87,7 @@ export default {
             this.$store
                 .dispatch("auth/login", this.user)
                 .then(
-                    () => {
-                        this.$router.push("/home");
-                    },
+                    () => this.$router.push("/home"),
                     error => {
                         this.loading = false;
                         this.message = error.response.data;
