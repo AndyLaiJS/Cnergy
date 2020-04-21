@@ -16,12 +16,12 @@ class UserController implements Controller {
      }
 
      private initRoutes() {
-          this.router.patch(`${this.path}/pwd`, this.changePassword);
+          this.router.put(`${this.path}/pwd`, this.changePassword);
           this.router.put(`${this.path}/about`, this.changeAbout);
      }
 
      /**
-      * PATCH /user/pwd?uid=...
+      * PUT /user/pwd?uid=...
       * 
       * changePassword() allow user to change their password
       */
@@ -60,7 +60,6 @@ class UserController implements Controller {
           if (user) {
                const about = request.body["about"] || "";
                try {
-                    console.log(about);
                     await this.userService
                               .updateUserAbout(user.id, about);
                     response.send({

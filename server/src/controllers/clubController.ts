@@ -32,7 +32,7 @@ class ClubController implements Controller {
           this.router
               .get(`${this.path}`, this.getClubs)
               .post(`${this.path}`, validationMiddleware(CreateClubDto), this.createClub)
-              .patch(`${this.path}`, validationMiddleware(UpdateClubDto), this.updateClubInfo)
+              .put(`${this.path}`, validationMiddleware(UpdateClubDto), this.updateClubInfo)
      
           this.router
               .get(`${this.path}/members`, this.getClubMembers);
@@ -88,7 +88,7 @@ class ClubController implements Controller {
      }
 
      /**
-      * PATCH /club?uid=...
+      * PUT /club?uid=...
       * 
       * updateClubInfo() allow the president of the club to update the club's info
       */
