@@ -4,7 +4,7 @@
             <router-link to="/home">
                 <div class="navLogo">
                     <img src="../assets/CUHK.png">
-                    <b>CUHK</b> MeePo
+                    <b>CUHK</b> CNERGY
                 </div>
             </router-link>
             <div class="navLink">
@@ -50,7 +50,7 @@ export default {
     margin-top: 25px;
   }
   display: grid;
-  grid-template-columns: 40px 78px 200px;
+  grid-template-columns: 40px 78px 100px;
   justify-content: center;
   text-align: left;
   height: 60px;

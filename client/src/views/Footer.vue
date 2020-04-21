@@ -1,7 +1,7 @@
 <template>
     <div class="footerBody">
         <span id="left">
-            <h1>CUHK MeePo</h1>
+            <h1>CUHK CNERGY</h1>
             <p>Copyright © 2020 | All rights reserved.</p>
             
         </span>

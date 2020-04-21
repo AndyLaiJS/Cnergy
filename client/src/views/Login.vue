@@ -5,7 +5,7 @@
                 <router-link to="/">
                     <div class="navLogo">
                         <img src="../assets/CUHK.png">
-                        <b>CUHK</b> MeePo
+                        <b>CUHK</b> CNERGY
                     </div>
                 </router-link>
                 
