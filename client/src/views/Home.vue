@@ -170,6 +170,7 @@ h1, h2, h3 {
     margin: 0;
 }
 
+
 #title {
     margin: 10px;
     margin-bottom: 15px;
@@ -184,7 +185,7 @@ h1, h2, h3 {
     flex-wrap: wrap;
     justify-content: center;
     padding: 10px 0 10px 0;
-    background-image: url("../assets/bolt.png");
+    background-image: url("../assets/simple_webpage_design(1).png");
     background-repeat: no-repeat;
 }
 .cards {

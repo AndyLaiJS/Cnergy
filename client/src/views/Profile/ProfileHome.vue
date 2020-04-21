@@ -169,8 +169,10 @@ export default {
     padding: 0;
 }
 .home {
-    background-image: url("../../assets/bolt.png");
-    background-size: 1600px;
+    background-color: rgb(247, 247, 247);
+    background-image: url("../../assets/simple_webpage_design(1).png");
+    background-size: cover;
+    background-attachment: fixed;
     background-repeat: no-repeat;
 }
 .name {
@@ -186,13 +188,12 @@ export default {
 .profile-container {
     margin: auto;
     width: 1000px;
-    margin-top: 30px;
+    margin: 50px auto;
     border-radius: 10px;
     min-height: 500px;
     background-color: rgb(247, 247, 247);
     /* box-shadow: 0 0 5px rgba(0,0,0,0.10); */
     padding-bottom: 5px;
-    margin-bottom: 30px;
 }
 .content-container {
     margin: 50px;
