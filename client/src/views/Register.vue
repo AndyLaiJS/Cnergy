@@ -45,13 +45,11 @@
                 name="major"
                 placeholder="Major i.e. Computer Science"
                 />
-              <input 
-                id="second-box"
-                class="form-control"
-                type="text"
-                name="college"
-                placeholder="College"
-                />
+              <select id="second-box">
+                  <option v-for="college in colleges" :key="college">
+                      {{ college }}
+                  </option>
+              </select>
             </div>
             <div class="form-group">
               <input 
@@ -83,6 +81,12 @@
 <script>
 import Footer from "./Footer";
 export default {
+  data () {
+    return {
+      colleges: ["S.H.Ho", "New Asia", "Morningside", "Chung Chi", "United",
+                "Lee Woo Sing", "Wu Yee Sun", "C.W Chu", "Shaw"],
+    }
+  },
   components: {
     Footer,
   },
