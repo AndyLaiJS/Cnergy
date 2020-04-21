@@ -127,7 +127,6 @@ export default {
                                 timer: 3000
                             });
                         } else {
-                            console.log(response);
                             this.$fire({
                                 title: "Create an Activity Fail",
                                 type: "error",
