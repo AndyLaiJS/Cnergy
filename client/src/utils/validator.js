@@ -16,17 +16,17 @@ function fieldsShouldNotBeEmpty(...fields) {
      return "";
 }
 
-const ONE_HOUR = 60 * 60 * 1000;
-const ONE_DAY = 24 * ONE_HOUR;
-const ONE_MONTH = 30 * ONE_DAY;
+import { time } from "./constants";
 
-function validateDate(date) {
-     let today = new Date(new Date().getTime());
-     let nextFiveDays = new Date(today.getTime() + ONE_DAY * 5);
-     let nextTwoMonths = new Date(today.getTime() + ONE_MONTH * 2);
-
+function onlyAcceptDateInFixedRange(date) {
+     let now = time.now();
+     let range = [
+          new Date(now + time.ONE_DAY * 5),
+          new Date(now + time.ONE_MONTH * 2)
+     ];
      let givenDate = new Date(date);
-     if (givenDate >= nextFiveDays && givenDate <= nextTwoMonths) {
+
+     if (givenDate >= range[0] && givenDate <= range[1]) {
           return "";
      }
      return "Date should be between the next 5 days and the next 2 months";
@@ -52,11 +52,12 @@ function onlyAcceptAlphabeticCharacters(context, field) {
      return "";
 }
 
-const cuhkEmailRegex = "^115511[0-9]{4,4}(@link.cuhk.edu.hk)$";
+import { cuhk } from "./constants";
+
 function onlyAcceptCUHKEmail(email) {
-     const regExp = new RegExp(cuhkEmailRegex);
+     const regExp = new RegExp(cuhk.EMAIL_REGEX);
      if (!regExp.test(email)) {
-          return `${email} is not valid CUHK Email`;
+          return `${email} is not a valid CUHK Email`;
      }
      return "";
 }
@@ -132,7 +133,7 @@ var validator = {
                     activity.maxParticipants,
                     activity.type
                ) ||
-               validateDate(activity.activityDate) ||
+               onlyAcceptDateInFixedRange(activity.activityDate) ||
                onlyAcceptIntegers(
                     "Participant counts",
                     activity.minParticipants,

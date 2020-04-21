@@ -47,7 +47,8 @@
 import User from "../models/User";
 import Register from "./Register";
 
-import utils from "../utils/validator";
+import alerter from "../utils/alerter";
+import validator from '../utils/validator';
 
 export default {
     name: "Login",
@@ -56,7 +57,7 @@ export default {
     },
     data() {
         return {
-            user: new User("", "", "", "", "", ""),
+            user: new User(),
             loading: false,
             err: "",
         };
@@ -75,19 +76,17 @@ export default {
         handleLogin() {
             this.loading = true;
             
-            this.err = utils.loginFieldChecker(this.user.email, this.user.password);
+            this.err = validator.loginFieldChecker(this.user.email, this.user.password);
             if (this.err.length != 0) {
                 this.loading = false;
-                this.$fire({
-                    title: "Login Field Error",
-                    text: this.err,
-                    type: "error",
-                    timer: 3000
-                })
+                this.$fire(alerter.errorAlert(
+                    "Login Field Error", this.err,
+                ));
                 return;                
             }
 
-            this.$store.dispatch("auth/login", this.user)
+            this.$store
+                .dispatch("auth/login", this.user)
                 .then(
                     () => {
                         this.$router.push("/home");
@@ -95,12 +94,9 @@ export default {
                     error => {
                         this.loading = false;
                         this.message = error.response.data;
-                        this.$fire({
-                            title: this.message.message,
-                            text: "Wrong email or password",
-                            type: "error",
-                            timer: 3000,
-                        })
+                        this.$fire(alerter.errorAlert(
+                            this.message.message,
+                        ));
                     }
                 );
         }

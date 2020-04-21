@@ -86,18 +86,16 @@
 import Footer from "./Footer";
 import User from "../models/User";
 import validator from "../utils/validator";
+import alerter from "../utils/alerter";
+import { cuhk } from "../utils/constants";
 
 export default {
     data () {
         return {
             user: new User(),
             confirmPassword: "",
-            colleges: ["S.H.Ho", "New Asia", "Morningside", "Chung Chi", "United",
-                    "Lee Woo Sing", "Wu Yee Sun", "C.W Chu", "Shaw"],
-            majors: ["Computer Science", "SEEM", "Information Engineering", "MIE", "Electronic Engineering",
-                    "Computer Engineering", "MAE", "FinTech", "IBBA", "Global Business Studies", "Architecture",
-                    "Anthropology", "China Studies", "Mathematics", "Physics", "BERG", "Chemistry", "Earth Sciences",
-                    "Law", "Biomedical Engineering", "Medicine", "Nursing", "Communications", "Finance", "Economics"]
+            colleges: cuhk.COLLEGES,
+            majors: cuhk.MAJOR_CODES,
         }
     },
     components: {
@@ -107,33 +105,25 @@ export default {
         register() {
             let err = validator.signUpFieldChecker(this.user, this.confirmPassword);
             if (err.length != 0) {
-                this.$fire({
-                    title: "Sign Up Error",
-                    text: err,
-                    type: "error",
-                    timer: 3000
-                })
-
+                this.$fire(alerter.errorAlert(
+                    "Sign Up Error", err,
+                ));
                 return;
             }
             this.$store
                 .dispatch("auth/register", this.user)
                 .then(
                     response => {
-                        this.$fire({
-                            title: "Sign Up Succeed",
-                            type: "success",
-                            text: "You have successfully signed up. Please login",
-                            timer: 3000
-                        })                    
+                        this.$fire(alerter.successAlert(
+                            "Sign Up Succeed",
+                            "You have successfully signed up. Please login",
+                        ));
                     },
                     error => {
-                        this.$fire({
-                            title: "Sign Up Failed",
-                            text: error.response.data.message,
-                            type: "error",
-                            timer: 3000
-                        });
+                        this.$fire(alerter.errorAlert(
+                            "Sign Up Failed", 
+                            error.response.data.message,
+                        ));
                     }
                 )
         }
