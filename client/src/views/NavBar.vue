@@ -8,8 +8,8 @@
                 </div>
             </router-link>
             <div class="navLink">
-                <router-link to="/home">Clubs</router-link> 
-                <router-link to="/home">Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
+                <router-link to="/create-club">+ Clubs</router-link> 
+                <router-link to="/create-activities">+ Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
                 <router-link to="/profile">Profile</router-link>
             </div>
         </div>
