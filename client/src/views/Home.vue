@@ -1,6 +1,23 @@
 <template>
     <div>
         <NavBar/>
+        <div class="create-box">
+            <div class="doodle">
+                DISCOVER. <br>
+                <b>SEARCH YOUR PASSION.</b> <br>
+                JOIN.
+            </div>
+            <div class="info-content">
+                <div class="about-us">
+                    <b> BASED ON YOUR INTEREST </b> <br>
+                    We connect people <br>
+                    Who are PASSIONATE <br>
+                    About what you 
+                    
+                </div>
+            </div>
+        </div>
+
         <div class="home">
             <v-carousel
                 cycle
@@ -124,12 +141,26 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.doodle {
+    flex: 1;
+}
+.info-content {
+    flex: 1.3;
+}
+.about-us {
+    font-size: 40px;
+    padding: 45px;
+    padding-right: 80px;
+    text-align: left;
+}
+/* The CSS for the create-box and everything is on CreateActivity.. */
 h1, h2, h3 {
     color: black;
     font-weight: 600;
     margin: 0;
 }
+
 #title {
     margin: 10px;
     margin-bottom: 15px;

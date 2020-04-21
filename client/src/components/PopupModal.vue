@@ -44,7 +44,11 @@
 
 <script>
 export default {
-    
+    data () {
+      return {
+        dialog: false,
+      }
+    },
 }
 </script>
 
@@ -53,5 +57,8 @@ export default {
     position: relative;
     top: 20px;
     right: 10px;
+}
+.text-center {
+    z-index: 999;
 }
 </style>
