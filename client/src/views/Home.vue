@@ -1,89 +1,14 @@
 <template>
-    <div>
+    <div class="home">
         <NavBar/>
-        <div class="create-box">
 
-            <div class="cards">
-                <div class="card-title">
-                    <h1>Clubs</h1>
-                </div>
-                <div
-                    class="card"
-                    v-for="(club, index) in clubs"
-                    v-bind:key="index"
-                >
-                    <b>{{ club.name }}</b>
-                    {{ club.description }}
-                    <PopupModal/>
-                    <!-- <v-btn
-                        id="info-button"
-                        color="primary"
-                        depressed
-                        small
-                    > More Info</v-btn> -->
-                </div>
-            </div>
-            <div class="cards">
-                <div class="card-title">
-                    <h1>Activities</h1>
-                </div>
-                <div
-                    class="card"
-                    v-for="(activity, index) in activities"
-                    v-bind:key="index"
-                >
-                    <b>{{ activity.name }}</b>
-                    {{ activity.description }}
-                    <PopupModal/>
-                    <!-- <v-btn
-                        id="info-button"
-                        color="primary"
-                        depressed
-                        small
-                    > More Info</v-btn> -->
-                </div>
-            </div>
-            
+        <div class="card-box">
+            <p> <span id="dscvr">SEEK.</span> <b>SEARCH YOUR PASSION.</b> <span id="join">JOIN.</span></p> 
+            <div class="cards-container">
+                <ViewPanel/>
+            </div> 
         </div>
 
-        <div class="home">
-            <v-carousel
-                cycle
-                height="300"
-                hide-delimiter-background
-                hide-delimiters
-                show-arrows-on-hover
-            >
-                <v-carousel-item
-                    v-for="(slide, index) in slides"
-                    v-bind:key="index"
-                    :src="slide.src"
-                >
-                        <v-row
-                            class="fill-height"
-                            align="center"
-                            justify="center"
-                        >
-                            <div class="display-3">{{ slide.message }}</div>
-                        </v-row>
-                    
-                </v-carousel-item>
-            </v-carousel>
-
-            <div class="cards">
-                <div class="card-title">
-                    <h1>Clubs</h1>
-                </div>
-                <div 
-                    class="card"
-                    v-for="(club, index) in clubs"
-                    v-bind:key="index"
-                >
-                    {{ club.name }}
-                </div>
-            </div>
-            
-        </div>
         <Footer/>
     </div>
 </template>
@@ -91,7 +16,7 @@
 <script>
 import NavBar from "./NavBar"
 import Footer from "./Footer"
-import PopupModal from "../components/PopupModal";
+import ViewPanel from "./View"
 
 import Activity from "../models/Activity";
 import ActivityService from "../services/activityService";
@@ -100,17 +25,15 @@ export default {
     name: "Home",
     data() {
         return {
-            activities: [],
             clubs: [
-                { name: "Dummy Club Name" },
-                { name: "Another Dummy Club Name" },
+                { name: "Dummy Club Name", description: "WOWWWW" },
+                { name: "Dummy Club Name", description: "WOWWWW" },
+                { name: "Another Dummy Club Name", description: "How would you like it if you don't join this club?" },
             ],
-            slides: [
-                { message: "CNERGY", color: "indigo", src: require('../assets/Slide 1.png') },
-                { message: "Second", color: "warning", src: require('../assets/Slide 2.png')},
-                { message: "Third", color: "pink darken-2", src: require('../assets/Slide 3.png') },
-                { message: "Fourth", color: "red ligten-1", src: require('../assets/Slide 2.png') },
-                { message: "Fifth", color: "deep-purple accent-4", src: require('../assets/Slide 2.png') },
+            activity: [
+                { name: "Dummy Activity Name", description: "WOWWWW" },
+                { name: "Dummy Activity Name", description: "WOWWWW" },
+                { name: "Another Activity Club Name", description: "How would you like it if you don't join this club?" },
             ],
             message: "",
         };
@@ -126,7 +49,7 @@ export default {
     components: {
         NavBar,
         Footer,
-        PopupModal
+        ViewPanel
     },
     mounted() {
         if (!this.isLoggedIn) {
@@ -151,6 +74,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+#dscvr, #join {
+    font-size: 25px;
+}
 .doodle {
     flex: 1;
 }
@@ -169,58 +95,26 @@ h1, h2, h3 {
     font-weight: 600;
     margin: 0;
 }
-
-
-#title {
-    margin: 10px;
-    margin-bottom: 15px;
-    width: 100%;
-    font-weight: 600;
-    color: black;
-    font-size: 40px;
-}
-.home {
-    border-radius: 5px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 10px 0 10px 0;
-    background-image: url("../assets/simple_webpage_design(1).png");
-    background-repeat: no-repeat;
-}
-.cards {
-    flex: 5;
+.card-box {
+    margin: 70px 200px;
+    background-color: rgb(247, 247, 247);
     border-radius: 10px;
-    margin: 50px 25px;
-    padding-bottom: 10px;
-    max-height: 525px;
-    overflow: auto;
-    background-color: white;
+    margin-bottom: 90px;
+    p {
+        font-size: 40px;
+        padding-top: 30px;
+    }
+    h2 {
+        font-size: 35px;
+    }
 }
-.card-title {
-    top: 0;
-    position: sticky;
-    padding-top: 15px;
-    width: 100%;
-    background-color: white;
+.cards-container {
+    margin: 10px 100px;
+    padding-bottom: 80px;
 }
-.card {
-    background-color: white;
-    min-width: 50px;
-    margin-top: 15px;
-    margin-left: 15px;
-    margin-right: 15px;
-    margin-bottom: 5px; 
-    width: 500px;
-    padding: 55px 0;
-    box-shadow: 0 0 3px rgba(0,0,0,0.10);
-    transition: box-shadow .3s ease-in-out, transform .3s ease-in-out;
-    position: relative;
-    overflow: hidden;
-    display: flex;
+.description {
+    margin: 10px;
+    padding: 20px;
 }
-.card:hover {
-    box-shadow: 0 5px 5px rgba(0,0,0,0.10);
-    transition: box-shadow .3s ease-in-out, transform .3s ease-in-out;
-}
+
 </style>

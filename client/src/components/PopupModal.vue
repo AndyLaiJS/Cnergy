@@ -1,23 +1,15 @@
 
 <template>
     <div class="text-center">
+        <button @click="opendialog()">More info</button>
         <v-dialog
             v-model="dialog"
             width="500"
         >
-            <template v-slot:activator="{ on }">
-                <v-btn
-                    id="info-btn"
-                    color="red lighten-2"
-                    dark
-                    v-on="on"
-                > More Info
-                </v-btn>
-            </template>
 
             <v-card>
                 <v-card-title
-                    class="headline grey lighten-2"
+                    class="headline"
                     primary-title
                 > Privacy Policy
                 </v-card-title>
@@ -30,12 +22,7 @@
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn
-                        color="primary"
-                        text
-                        @click="dialog = false"
-                    > I accept
-                    </v-btn>
+                    <button @click="dialog = false"> I accept </button>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -49,16 +36,37 @@ export default {
         dialog: false,
       }
     },
+    methods: {
+        opendialog() {
+            this.dialog = true;
+        }
+    }
 }
 </script>
 
 <style scoped>
 #info-btn {
     position: relative;
-    top: 20px;
-    right: 10px;
 }
 .text-center {
-    z-index: 999;
+    z-index: 9999;
+}
+button{
+    padding: 5px 30px;
+    border-radius: 50px;
+    outline: none;
+    border: 2px solid #4285F4;
+    box-shadow:  0px 3px silver;
+    color: #4285F4;
+    cursor: pointer;
+    transition: .1s;
+}
+button:hover {
+    background-color: #4285F4;
+    color: #fff;
+}
+button:active {
+    box-shadow: 0 1px silver;
+    transform: translateY(3px);
 }
 </style>

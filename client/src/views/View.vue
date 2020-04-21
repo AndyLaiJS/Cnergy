@@ -1,0 +1,213 @@
+<template>
+<div>
+    <div class="search-container">
+            <i class="el-icon-search"></i>
+            <input v-model="search" placeholder="Search" class="search-bar" type="text" name="search bar">
+
+            <div class="view-icon" v-if="viewType==true">
+                <el-tooltip class="item" effect="dark" content="List view" placement="bottom-start" open-delay=450 hide-after=1650>
+                    <i class="el-icon-notebook-2" @click="viewClick()"></i>
+                </el-tooltip>
+            </div>
+            <div class="view-icon" v-else>
+                <el-tooltip class="item" effect="dark" content="Block view" placement="bottom-start" open-delay=450 hide-after=1650>
+                    <i class="el-icon-menu" @click="viewClick()"></i>
+                </el-tooltip>
+            </div>
+                
+        </div>
+    <div class="main-container">
+
+        
+
+        <div class="cna-view">
+        </div>
+            <span v-if="viewType==true" class="cna-view">
+                <div class="card" v-for="(club, index) in clubs" v-bind:key="index">
+                    <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
+                    
+                    <div class="card-content">
+                        <b>{{ club.name }}</b>
+
+                        <div class="description">
+                            {{ club.description }}
+                        </div>
+
+                        <PopupModal/>
+                    </div>
+                    
+                    
+                </div>
+            </span>
+            <span v-else class="cna-view">
+                <div class="card" v-for="(act, index) in activity" v-bind:key="index">
+                <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
+                
+                    <div class="card-content">
+                        <b>{{ act.name }}</b>
+
+                        <div class="description">
+                            {{ act.description }}
+                        </div>
+
+                        <PopupModal/>
+                    </div>
+                  
+                    
+                </div>
+            </span>
+            <!--<el-button type="success" circle icon="el-icon-plus" id="add" @click="addList"></el-button>-->
+    </div>
+</div>
+</template>
+
+<script>
+import PopupModal from "../components/PopupModal";
+export default {
+    data() {
+        return {
+            someStuff: [],
+            search: '',
+            viewType: true,
+            clubs: [
+                { name: "Dummy Club Name", description: "WOWWWW" },
+                { name: "Dummy Club Name", description: "WOWWWW" },
+                { name: "Dummy Club Name", description: "WOWWWW" },
+                { name: "Dummy Club Name", description: "WOWWWW" },
+            ],
+            activity: [
+                { name: "Dummy Activity Name", description: "WOWWWW" },
+                { name: "Dummy Activity Name", description: "WOWWWW" },
+                { name: "Another Activity Club Name", description: "How would you like it if you don't join this activity?" },
+            ],
+            message: "",
+        };
+    },
+    components: {
+        PopupModal,
+    },
+    methods: {
+        viewClick() {
+            this.viewType = !this.viewType;
+        }
+    },
+}
+</script>
+
+<style scoped lang="scss">
+.main-container {
+    border-radius: 0 0 10px 10px;
+    min-height: 330px;
+    max-height: 530px;
+    overflow: auto;
+    position:relative;
+}
+.search-container {
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    height: auto;
+    width: 100%;    
+    padding-top: 25px;
+    padding-bottom: 25px;
+    z-index: 999;
+    background-color: white;
+    padding-left: 50px;
+}
+.search-container i {
+    position: absolute;
+    margin: auto;
+    padding: 13px;
+}
+.cna-view {
+    text-align: center;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    background-color: white;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.search-bar {
+    width: 90%;
+    border-radius: 100px !important;
+    outline:none;
+    border:none; 
+    margin-bottom: 0; 
+    padding: 10px 15px 10px;
+    padding-left: 45px;
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+    transition: linear 0.1s;
+    display: inline-block;
+}
+.view-icon i {
+    font-size: 30px;
+    padding: 0;
+    margin-top: 10px;
+    margin: 10px auto 0 auto;
+    outline:none;
+    border:none; 
+    transition: linear 0.1s;
+}
+.view-icon i:active {
+    transform: scale(1.5);
+}
+.search-bar:focus {
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
+    transition: 0.1s;
+}
+.card {
+    border-radius: 10px;
+    min-width: 50px;
+    margin-top: 0px;
+    margin-bottom: 25px;
+    padding: 20px;
+    width: 320px;
+    height: 300px;
+    box-shadow: 0 1px 3px 0 rgba(186,188,217, 0.4);
+    transition: box-shadow .1s ease-in-out, transform .1s ease-in-out;
+    position: relative;
+    overflow: auto;
+    background-color: white;
+}
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 10px 0 rgba(186,188,217, 0.25), 0 6px 6px 0 rgba(186,188,217, 0.5);
+    transition: box-shadow .2s ease-in-out, transform .2s ease-in-out;
+}
+
+.card-content {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+};
+.card-content a {
+    text-decoration: none;
+    color: inherit;
+}
+.card-content a:hover {
+    color:#F2F6FC;
+}
+.title {
+    overflow: hidden;
+    font-size: 14px;
+    padding: 0 10px 0 10px;
+    color: white;
+    background-color: #67C23A;
+    height: 45px;
+    line-height: 45px;
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+}
+.description {
+    margin: 10px;
+    padding: 10px;
+}
+
+</style>

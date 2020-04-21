@@ -265,10 +265,7 @@ i:hover, v-icon:hover {
     background-color: white;
 }
 .card-title {
-    top: 0;
-    position: sticky;
     padding-top: 15px;
-    z-index: 999;
     width: 100%;
     background-color: white;
 }
