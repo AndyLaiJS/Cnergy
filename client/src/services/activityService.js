@@ -6,7 +6,12 @@ const API_URL = "http://localhost:3000/activity";
 class ActivityService {
      getOngoingActivities() {
           return axios
-               .get(`${API_URL}`);
+               .get(`${API_URL}`)
+               .then(
+                    response => {
+                         return response.data.activities;
+                    }
+               );
      }
      
      getPastActivities() {
@@ -19,10 +24,13 @@ class ActivityService {
      getJoinedActivities(userId) {
           return axios
                .get(`${API_URL}/join`, {
-                    params: {
-                         uid: userId
-                    }
+                    params: { uid: userId }
                })
+               .then(
+                    response => {
+                         return response.data;
+                    }
+               );
      }
 
      createActivity(user, activity) {

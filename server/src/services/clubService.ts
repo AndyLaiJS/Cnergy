@@ -49,6 +49,18 @@ class ClubService {
           return result;
      }
 
+     public getUserHasJoinedClubs = async(userId: string) => {
+          const results = await this.clubRepository
+                                    .createQueryBuilder("club")
+                                    .innerJoin("club.members", "member")
+                                    .where(`member.userId = :userId AND
+                                            member.hasJoined = TRUE`, {
+                                                 userId: userId
+                                    })
+                                    .getMany();
+          return results;
+     }
+
      public getUserJoinClubCount = async (clubId: number, userId: string) => {
           const isExists = await this.joinClubRepository
                                      .createQueryBuilder("joinClub")

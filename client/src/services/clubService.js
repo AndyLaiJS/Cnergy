@@ -12,6 +12,22 @@ class ClubService {
                     params: { uid: user.id }
                });
      }
+     getClubs() {
+          return axios
+               .get(`${API_URL}`)
+               .then(
+                    response => {
+                         return response.data;
+                    }
+               );
+     }
+     getJoinedClubs(userId) {
+          return axios
+               .get(`${API_URL}/join`, {
+                    params: { uid: userId }
+               })
+               .then(response => response.data );
+     }
 }
 
 export default new ClubService();

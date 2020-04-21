@@ -38,7 +38,7 @@ class ClubController implements Controller {
               .get(`${this.path}/members`, this.getClubMembers);
 
           this.router
-              .all(`${this.path}/join`, authenticationMiddleware)
+              .get(`${this.path}/join`, this.getJoinedClubs)
               .post(`${this.path}/join`, validationMiddleware(JoinClubDto), this.joinClub)  
               .delete(`${this.path}/join`, this.cancelJoinClub)
     
@@ -181,6 +181,23 @@ class ClubController implements Controller {
                } catch(e) {
                     next(e);
                }
+          }
+     }
+
+     /**
+      * GET /club/join?uid=...
+      * 
+      * getJoinedClubs() allow user to check which clubs he has been accepted
+      */
+     private getJoinedClubs = async (request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          try {
+               const results = await this.clubService
+                                         .getUserHasJoinedClubs(uid);
+               console.log(results);
+               response.send(results);
+          } catch(e) {
+               next(e);
           }
      }
 

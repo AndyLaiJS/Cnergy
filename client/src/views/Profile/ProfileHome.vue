@@ -56,7 +56,15 @@
                             <div class="card-title">
                                 <h2>Clubs</h2>
                             </div>
-                        <!-- TODO: Fetch Joined Clubs -->
+                             <div
+                                class="card"
+                                v-for="(club, index) in userJoinedClubs"
+                                v-bind:key="index"
+                            >
+                                <!-- Consider using Icon instead of words -->
+                                <b>{{ club.name }}</b><br>
+                                Description: {{ club.description }}<br>
+                            </div>
                         </div>
                         <div class="card-container">
                             <div class="card-title">
@@ -89,9 +97,10 @@
 <script>
 import NavBar from "../NavBar";
 import Footer from "../Footer";
-
 import User from "../../models/User";
-import utils from  "../../utils/formatter";
+import ActivityService from "../../services/activityService";
+import ClubService from "../../services/clubService";
+import formatter from  "../../utils/formatter";
 
 export default {
     data() {
@@ -115,30 +124,31 @@ export default {
     },
     methods: {
         getFormattedName(firstName, lastName) {
-            return utils.getFormattedName(firstName, lastName);
+            return formatter.getFormattedName(firstName, lastName);
         },
         getSIDFromEmail(email) {
             let sid = email.split("@");
             return sid[0];
         },
-        getFormattedDate(tanggal) {
-            return utils.getFormattedDate(tanggal);
+        getFormattedDate(date) {
+            return formatter.getFormattedDate(date);
         },
         logout() {
             this.$store.dispatch("auth/logout");
             this.$router.push("/");
         },
     },
-    mounted() {
+    async mounted() {
         if (this.isLoggedIn) {
             this.user = this.getCurrentUser;
 
-            this.$store
-                .dispatch("activity/getJoinedActivities", this.user)
-                .then(() => {
-                    this.userJoinedActivities = this.$store.state.activity.joinedActivities;
-                });
-        } else {
+            this.userJoinedActivities =
+                await ActivityService
+                    .getJoinedActivities(this.user.id);
+            this.userJoinedClubs =
+                await ClubService
+                    .getJoinedClubs(this.user.id);
+            } else {
             this.$router.push("/");
         }
     },

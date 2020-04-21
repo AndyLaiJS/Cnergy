@@ -10,7 +10,7 @@ function getMonth(monthNumber) {
 
 function getDay(year, month, date) {
      const index = new Date(`${month} ${date}, ${year}`).getDay();
-     return time.DAY[index];
+     return time.DAYS[index];
 }
 
 var formatter = {
@@ -20,7 +20,6 @@ var formatter = {
           let day = date.slice(8, 10);
           let hours = parseInt( date.slice(11, 13), 10 ) + 7;
           let minutes = date.slice(14, 16);
-
           let dayInWords = getDay(
                year, month, day
           );

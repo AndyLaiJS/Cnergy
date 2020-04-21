@@ -34,7 +34,9 @@
                     v-for="(club, index) in clubs"
                     v-bind:key="index"
                 >
-                    {{ club.name }}
+                    <b>{{ club.name }}</b>
+                    {{ club.description }}
+                    <PopupModal/>
                 </div>
             </div>
             <div class="cards">
@@ -66,19 +68,15 @@
 import NavBar from "./NavBar"
 import Footer from "./Footer"
 import PopupModal from "../components/PopupModal";
-
-import Activity from "../models/Activity";
 import ActivityService from "../services/activityService";
+import ClubService from "../services/clubService";
 
 export default {
     name: "Home",
     data() {
         return {
             activities: [],
-            clubs: [
-                { name: "Dummy Club Name" },
-                { name: "Another Dummy Club Name" },
-            ],
+            clubs: [],
             slides: [
                 { message: "CNERGY", color: "indigo", src: require('../assets/Slide 1.png') },
                 { message: "Second", color: "warning", src: require('../assets/Slide 2.png')},
@@ -102,24 +100,17 @@ export default {
         Footer,
         PopupModal
     },
-    mounted() {
+    async mounted() {
         if (!this.isLoggedIn) {
             this.$router.push("/");
             return;
         }
-        ActivityService
-            .getOngoingActivities()
-            .then(
-                response => {
-                    this.activities = response.data.activities;
-                },
-                error => {
-                    this.message =
-                        (error.response && error.response.data) ||
-                         error.message ||
-                         error.toString()
-                }
-            );
+        this.activities = 
+            await ActivityService
+                .getOngoingActivities();
+        this.clubs = 
+            await ClubService
+                .getClubs();
     }
 }
 </script>
