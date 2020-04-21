@@ -38,13 +38,11 @@
                 />
             </div>
             <div class="compress-form">
-              <input 
-                id="first-box"
-                class="form-control"
-                type="text"
-                name="major"
-                placeholder="Major i.e. Computer Science"
-                />
+              <select id="first-box">
+                  <option v-for="major in majors" :key="major">
+                      {{ major }}
+                  </option>
+              </select>
               <select id="second-box">
                   <option v-for="college in colleges" :key="college">
                       {{ college }}
@@ -85,6 +83,10 @@ export default {
     return {
       colleges: ["S.H.Ho", "New Asia", "Morningside", "Chung Chi", "United",
                 "Lee Woo Sing", "Wu Yee Sun", "C.W Chu", "Shaw"],
+      majors: ["Computer Science", "SEEM", "Information Engineering", "MIE", "Electronic Engineering",
+              "Computer Engineering", "MAE", "FinTech", "IBBA", "Global Business Studies", "Architecture",
+              "Anthropology", "China Studies", "Mathematics", "Physics", "BERG", "Chemistry", "Earth Sciences",
+              "Law", "Biomedical Engineering", "Medicine", "Nursing", "Communications", "Finance", "Economics"]
     }
   },
   components: {
