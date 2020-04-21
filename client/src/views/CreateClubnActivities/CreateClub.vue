@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg">
         <NavBar/>
         <div class="create-box">
             <div class="doodle">
@@ -131,6 +131,14 @@ export default {
 </script>
 
 <style scoped>
+.bg {
+    background-color: rgb(247, 247, 247);
+    background-image: url("../../assets/confirmation_page_design.png");
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+
+}
 .logo-container > input {
     margin-top: 20px;
 }

@@ -12,11 +12,8 @@
                 <v-carousel-item
                     v-for="(slide, index) in slides"
                     v-bind:key="index"
+                    :src="slide.src"
                 >
-                    <v-sheet
-                        :color="slide.color"
-                        height="100%"
-                    >
                         <v-row
                             class="fill-height"
                             align="center"
@@ -24,9 +21,10 @@
                         >
                             <div class="display-3">{{ slide.message }}</div>
                         </v-row>
-                    </v-sheet>
+                    
                 </v-carousel-item>
             </v-carousel>
+
             <div class="cards">
                 <div class="card-title">
                     <h1>Clubs</h1>
@@ -82,11 +80,11 @@ export default {
                 { name: "Another Dummy Club Name" },
             ],
             slides: [
-                { message: "First", color: "indigo" },
-                { message: "Second", color: "warning" },
-                { message: "Third", color: "pink darken-2" },
-                { message: "Fourth", color: "red ligten-1" },
-                { message: "Fifth", color: "deep-purple accent-4" },
+                { message: "CNERGY", color: "indigo", src: require('../assets/Slide 1.png') },
+                { message: "Second", color: "warning", src: require('../assets/Slide 2.png')},
+                { message: "Third", color: "pink darken-2", src: require('../assets/Slide 3.png') },
+                { message: "Fourth", color: "red ligten-1", src: require('../assets/Slide 2.png') },
+                { message: "Fifth", color: "deep-purple accent-4", src: require('../assets/Slide 2.png') },
             ],
             message: "",
         };

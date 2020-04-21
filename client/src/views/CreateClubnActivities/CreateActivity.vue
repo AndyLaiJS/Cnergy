@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg">
         <NavBar/>
         <div class="create-box">
             <div class="doodle">
@@ -226,5 +226,14 @@ textarea {
   .doodle {
     font-size: 40px;
   }
+}
+</style>
+<style scoped>
+.bg {
+    background-color: rgb(247, 247, 247);
+    background-image: url("../../assets/activity_club_page_background.png");
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 </style>
