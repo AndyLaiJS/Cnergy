@@ -17,6 +17,16 @@ class ClubService {
           return clubs;
      }
 
+     public getClubsByPresidentId = async (presidentId: string) => {
+          const clubs = await this.clubRepository
+                                  .createQueryBuilder("club")
+                                  .where(`club.presidentId := presidentId`, {
+                                       presidentId: presidentId
+                                  })
+                                  .getMany();
+          return clubs;
+     }
+
      public getClubById = async (clubId: number) => {
           const club = await this.clubRepository
                                  .createQueryBuilder("club")

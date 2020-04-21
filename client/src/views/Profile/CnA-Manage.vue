@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <Nav/>
+        <NavBar/>
         <div class="home">
 
             <div class="profile-container">
@@ -9,7 +9,7 @@
                     <div class="pic">
                         <img style="height: 145px; width: 145px;" src="../../assets/avatar.png">
                         <div class="name">
-                            <h3>Silver Pony</h3>
+                            <h3>{{ getFormattedName(user.firstName, user.lastName) }}</h3>
                         </div>
                     </div>
                 </div>
@@ -22,25 +22,36 @@
                     <a id="log-out" @click="logout()">
                         <v-icon size="20px"> mdi-logout </v-icon>
                     </a>
-                    <!-- log out via vuetify icons -->
                 </div>
                 <div class="content-container">
                     <div class="flex-container">
                         <div class="card-container">
-                            <div class="cna">
+                            <div class="card-title">
                                 <h2>Clubs</h2>
                             </div>
-                            <div class="card" v-for="(value, index) in testvalues" v-bind:key = "index">
-                                {{ value }}
+                            <div
+                                class="card"
+                                v-for="(club, index) in this.createdClubs"
+                                v-bind:key = "index"
+                            >
+                                <b>{{ club.name }}</b>
+                                {{ club.description }}
+                                <PopupModal />
                             </div>
                         </div>
 
                         <div class="card-container">
-                            <div class="cna">
+                            <div class="card-title">
                                 <h2>Activities</h2>
                             </div>
-                            <div class="card" v-for="(value, index) in testvalues2" v-bind:key = "index">
-                                {{ value }} 
+                            <div 
+                                class="card" 
+                                v-for="(activity, index) in this.createdActivities" 
+                                v-bind:key = "index"
+                            >
+                                <b>{{ activity.name }}</b>
+                                {{ activity.description }}
+                                <PopupModal/>
                             </div>
                         </div>
                     </div>
@@ -49,33 +60,58 @@
             </div>
             
         </div>
-        <thefooter/>
+        <Footer/>
     </v-app>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-import Nav from "../NavBar"
-import thefooter from "../Footer"
+import NavBar from "../NavBar";
+import Footer from "../Footer";
+import User from "../../models/User";
+import PopupModal from "../../components/PopupModal";
+import ActivityService from '../../services/activityService';
+import ClubService from '../../services/clubService';
+import formatter from "../../utils/formatter";
 
 export default {
     data() {
         return {
-            testvalues: ["Photography", "Badminton", "Meme Community Supreme"],
-            testvalues2: ["Eat New Food"],
+            user: new User(),
+            createdClubs: [],
+        }
+    },
+    components: {
+        NavBar,
+        Footer,
+        PopupModal,
+    },
+    computed: {
+        getCurrentUser() {
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user; 
         }
     },
     methods: {
+        getFormattedName: (firstName, lastName) => formatter.getFormattedName(firstName, lastName),
         logout() {
             this.$store.dispatch("auth/logout");
             this.$router.push("/");
         },
     },
-    components: {
-        Nav,
-        thefooter,
-    },
+    async mounted() {
+        this.user = this.getCurrentUser;
+        if (!this.user) {
+            this.$router.push("/");
+            return;
+        }
+
+        this.createdActivities = 
+            await ActivityService
+                .getOngoingActivities(this.user.id);
+        this.createdClubs =
+            await ClubService
+                .getClubs(this.user.id);
+    }
 }
 </script>
 

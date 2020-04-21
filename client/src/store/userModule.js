@@ -27,7 +27,6 @@ export const user = {
                     .updateAbout(userId, about)
                     .then(
                          response => {
-                              console.log(response);
                               commit("updateAboutSuccess", about);
                               return Promise.resolve(response);
                          },

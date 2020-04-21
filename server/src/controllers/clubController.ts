@@ -12,6 +12,7 @@ import UnauthorizedException from "../exceptions/unauthorizedException";
 import UserHasSignedUpException from "../exceptions/userHasSignedUpException";
 import UserHasNotSignedUpException from "../exceptions/userHasNotSignedUpException";
 import UserHasJoinedException from "../exceptions/userHasJoinedException";
+import UserNotFoundException from "../exceptions/userNotFoundException";
 import JoinRequestNotFoundException from "../exceptions/joinRequestNotFoundException";
 
 import authenticationMiddleware from "../middlewares/authenticationMiddleware";
@@ -51,14 +52,31 @@ class ClubController implements Controller {
      }
 
      /**
-      * GET /club
+      * GET /club?uid=...
       * 
       * getClubs() allow users to view registered clubs
+      * 
+      * If UID is passed to the query, then it should return all clubs where the president's
+      * UID is equal to the passed UID
       */
      private getClubs = async(request: Request, response: Response, next: NextFunction) => {
+          const uid: string = request.query["uid"];
+          
           try {
-               const clubs = await this.clubService
-                                       .getClubs();
+               let clubs;
+               if (uid) {
+                    const user = await this.userService
+                                           .getUserInfoByUID(uid) as User;
+                    if (user) {
+                         clubs = await this.clubService
+                                           .getClubsByPresidentId(user.id);
+                    } else {
+                         next(new UserNotFoundException());
+                    }
+               } else {
+                    clubs = await this.clubService
+                                      .getClubs();
+               }
                response.send(clubs);
           } catch(e) {
                next(e);
@@ -194,7 +212,6 @@ class ClubController implements Controller {
           try {
                const results = await this.clubService
                                          .getUserHasJoinedClubs(uid);
-               console.log(results);
                response.send(results);
           } catch(e) {
                next(e);

@@ -4,9 +4,11 @@ import authenticationHeader from "./authenticationHeader";
 const API_URL = "http://localhost:3000/activity";
 
 class ActivityService {
-     getOngoingActivities() {
+     getOngoingActivities(userId = "") {
           return axios
-               .get(`${API_URL}`)
+               .get(`${API_URL}`, {
+                    params: { uid: userId },
+               })
                .then(
                     response => {
                          return response.data.activities;
