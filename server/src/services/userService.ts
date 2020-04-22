@@ -24,6 +24,17 @@ class UserService {
           return user;
      }
 
+     public getActivityCreatorByActivityId = async (activityId: number) => {
+          const user = await this.userRepository
+                                 .createQueryBuilder("user")
+                                 .innerJoin("user.activities", "activity")
+                                 .where(`activity.Id = :activityId`, {
+                                      activityId: activityId
+                                 })
+                                 .getOne();
+          return user;
+     }
+
      public insertUser = async (userData: UserDto, hashedPassword: string) => {
           const user = await this.userRepository
                                  .create({

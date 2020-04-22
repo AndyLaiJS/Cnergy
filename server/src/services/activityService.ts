@@ -58,6 +58,8 @@ class ActivityService {
                                           creator: creator
                                      })
                                      .save();
+          await this.postUserJoinActivity(activity.id, creator.id);
+          await this.updateActivityParticipantsCount(activity.id, 1);
           return activity;
      }
 

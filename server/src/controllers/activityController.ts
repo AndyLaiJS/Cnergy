@@ -9,6 +9,7 @@ import ActivityRequestDto from "../dtos/activityRequestDto";
 import CreateActivityDto from "../dtos/createActivityDto";
 import UpdateActivityDto from "../dtos/updateActivityDto";
 import JoinActivityDto from "../dtos/joinActivityDto";
+import CreatorLeaveActivityException from "../exceptions/creatorLeaveActivityExceptions";
 import UnauthorizedException from "../exceptions/unauthorizedException";
 import UserHasSignedUpException from "../exceptions/userHasSignedUpException";
 import UserHasNotSignedUpException from "../exceptions/userHasNotSignedUpException";
@@ -210,7 +211,7 @@ class ActivityController implements Controller {
      }
 
      /**
-      * DELETE /activity/join
+      * DELETE /activity/join?uid=...
       * 
       * cancelJoinActivity() allow user to cancel the activity that he/she signed up for
       */
@@ -218,14 +219,21 @@ class ActivityController implements Controller {
           const uid: string = request.query["uid"];
           const user = await this.userService
                                     .getUserInfoByUID(uid) as User;
-          const activityData: JoinActivityDto = request.body;
 
+          const activityData: JoinActivityDto = request.body;
           const hasSignedUp = await this.activityService
                                         .getJoinActivityCount(activityData.id, user.id);
           if (hasSignedUp == 0) {
                next(new UserHasNotSignedUpException(this.context))
           } else {
                try {
+                    const creator = await this.userService
+                                              .getActivityCreatorByActivityId(activityData.id);
+                    if (uid == creator?.id) {
+                         next(new CreatorLeaveActivityException());
+                         return;
+                    }
+
                     const hasApproved = await this.activityService
                                                   .getUserJoinActivityHasApprovedStatus(activityData.id, user.id);
                     const type = await this.activityService
