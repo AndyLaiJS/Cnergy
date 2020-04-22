@@ -176,37 +176,38 @@ class ActivityController implements Controller {
           const activityData: JoinActivityDto = request.body;
           const hasSignedUp = await this.activityService
                                         .getJoinActivityCount(activityData.id, user.id);
+          const type = await this.activityService
+                                   .getActivityTypeById(activityData.id);
+
+          let hasApproved: boolean = true;
+          if (type == "Private") {
+               hasApproved = false;
+          }
 
           // If the user request is recorded, then he/she can't request to join the activity again
           if (hasSignedUp != 0) {
-               next(new UserHasSignedUpException(this.context));
-          } else {
-               try {
-                    const type = await this.activityService
-                                           .getActivityTypeById(activityData.id);
-                    let hasApproved: boolean = true;
-                    if (type == "Private") {
-                         hasApproved = false;
-                    }
+               next(new UserHasSignedUpException(this.context, hasApproved));
+               return;
+          }
+
+          try {
+               await this.activityService
+                         .postUserJoinActivity(activityData.id, user.id, hasApproved);
+
+               let additionalMsg: string = (type == "Private")
+                    ?    " Please wait for the confirmation from the activity creator"
+                    :    ""
+               if (additionalMsg.length == 0) {
                     await this.activityService
-                              .postUserJoinActivity(activityData.id, user.id, hasApproved);
-
-                    let additionalMsg: string = (type == "Private")
-                         ?    " Please wait for the confirmation from the activity creator"
-                         :    ""
-                    if (additionalMsg.length == 0) {
-                         await this.activityService
-                                   .updateActivityParticipantsCount(activityData.id, 1);
-                    }
-
-                    response.send({
-                         message: `You have successfully signed up for the activity.${additionalMsg}`,
-                         status: 200
-                    });
-                    
-               } catch(e) {
-                    next(e);
+                              .updateActivityParticipantsCount(activityData.id, 1);
                }
+
+               response.send({
+                    message: `You have successfully signed up for the activity.${additionalMsg}`,
+                    status: 200
+               });
+          } catch(e) {
+               next(e);
           }
      }
 

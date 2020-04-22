@@ -147,20 +147,33 @@ class ClubController implements Controller {
           const hasSignedUp = await this.clubService
                                         .getUserJoinClubCount(joinClubInfo.id, user.id);
 
+          const isPresident = await this.clubService
+                                        .getUserIsPresidentStatus(joinClubInfo.id, user.id);
+
+          // Prevent the president to request joining the club
+          if (isPresident) {
+               next(new UnauthorizedException());
+               return;
+          }
+
           // If the user request is recorded, then he/she can't request to join the club again
           if (hasSignedUp != 0) {
-               next(new UserHasSignedUpException(this.context));
-          } else {
-               try {
-                    await this.clubService
-                              .postUserJoinClub(joinClubInfo, user.id);
-                    response.send({
-                         message: "You have successfully signed up for this club. Please wait for the confirmation",
-                         status: 200
-                    })
-               } catch(e) {
-                    next(e);    
-               }
+               const hasJoined = await this.clubService
+                                           .getUserHasJoinedClubStatus(joinClubInfo.id, user.id) || false;
+
+               next(new UserHasSignedUpException(this.context, hasJoined));
+               return;
+          }
+
+          try {
+               await this.clubService
+                         .postUserJoinClub(joinClubInfo, user.id);
+               response.send({
+                    message: "You have successfully signed up for this club. Please wait for the confirmation",
+                    status: 200
+               })
+          } catch(e) {
+               next(e);
           }
      }
 

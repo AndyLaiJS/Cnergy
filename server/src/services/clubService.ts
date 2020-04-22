@@ -27,6 +27,14 @@ class ClubService {
           return clubs;
      }
 
+     public getUserIsPresidentStatus = async (clubId: number, userId: string) => {
+          const exists = await this.clubRepository
+                                   .findOne({
+                                        where: { id: clubId, presidentId: userId }
+                                   });
+          return exists;
+     }
+
      public getClubById = async (clubId: number) => {
           const club = await this.clubRepository
                                  .createQueryBuilder("club")
@@ -110,13 +118,13 @@ class ClubService {
           return result;
      }
      
-     public postUserJoinClub = async (clubData: JoinClubDto, userId: string) => {
+     public postUserJoinClub = async (clubData: JoinClubDto, userId: string, hasJoined: boolean = false) => {
           const result = await this.joinClubRepository
                                    .insert({
                                         userId: userId,
                                         clubId: clubData.id,
                                         reason: clubData.reason,
-                                        hasJoined: false
+                                        hasJoined: hasJoined,
                                    });
           return result;
      }
