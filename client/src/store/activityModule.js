@@ -27,12 +27,8 @@ export const activity = {
                return ActivityService
                     .createActivity(user, activity)
                     .then(
-                         response => {
-                              return Promise.resolve(response);
-                         },
-                         error => {
-                              return Promise.reject(error);
-                         }
+                         response => Promise.resolve(response),
+                         error => Promise.reject(error),
                     );
           }
      },

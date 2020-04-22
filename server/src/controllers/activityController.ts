@@ -33,7 +33,7 @@ class ActivityController implements Controller {
           this.router
               .get(`${this.path}`, this.getAllOngoingActivities)
               .post(`${this.path}`, validationMiddleware(CreateActivityDto), this.createActivity)
-              .patch(`${this.path}`, this.updateUserActivity);
+              .put(`${this.path}`, this.updateUserActivity);
 
           this.router
               .get(`${this.path}/past`, this.getAllPastActivities)
@@ -134,7 +134,7 @@ class ActivityController implements Controller {
      }
 
      /**
-      * PATCH /activity?uid=...
+      * PUT /activity?uid=...
       * 
       * updateUserActivity() allow user to update the activity's specification
       */

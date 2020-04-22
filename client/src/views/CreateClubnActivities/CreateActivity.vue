@@ -29,7 +29,9 @@
                         />
                     </div>
                     <div class="form-group">
-                        <select>
+                        <select
+                            v-model="activity.type"
+                        >
                             <option v-for="option in options" :key="option">
                                 {{ option }}
                             </option>
@@ -76,11 +78,10 @@
 <script>
 import NavBar from "../NavBar";
 import Footer from "../Footer";
-
 import Activity from "../../models/Activity";
 import User from "../../models/User";
-
-import utils from "../../utils/validator";
+import alerter from "../../utils/alerter";
+import validator from "../../utils/validator";
 
 export default {
     components: {
@@ -95,54 +96,42 @@ export default {
         }
     },
     computed: {
-        isLoggedIn() {
-            return this.$store.state.auth.status.loggedIn;
-        },
         getCurrentUser() {
-            return this.$store.state.auth.user.user;
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user; 
         }
     },
     methods: {
         createActivity() {
-            let err = utils.createActivityChecker(this.activity);
+            let err = validator.createActivityChecker(this.activity);
             if (err.length != 0) {
-                this.$fire({
-                    title: "Create Activity Failed",
-                    "text": err,
-                    type: "error",
-                    timer: 3000
-                });
-
+                this.$fire(alerter.errorAlert(
+                    "Create Activity Failed", err,
+                ));
                 return;
             }
 
             this.$store
-                .dispatch("activity/createActivity", [this.user, this.activity] )
+                .dispatch(
+                    "activity/createActivity", 
+                    [ this.user, this.activity ],
+                )
                 .then(
-                    response => {
-                        if (response.status == 200) {
-                            this.$fire({
-                                title: "Create an Activity Success",
-                                type: "success",
-                                timer: 3000
-                            });
-                        } else {
-                            console.log(response);
-                            this.$fire({
-                                title: "Create an Activity Fail",
-                                type: "error",
-                                timer: 3000
-                            });
-                        }
-                    }
+                    response => response.status == 200
+                        ?   this.$fire(alerter.successAlert(
+                                "Create Activity Success"
+                            ))
+                        :   this.$fire(alerter.errorAlert(
+                                "Create Activity Failed"
+                            )),
                 )
         }
     },
     mounted () {
-        if (this.isLoggedIn) {
-            this.user = this.getCurrentUser;
-        } else {
+       this.user = this.getCurrentUser;
+        if (!this.user) {
             this.$router.push("/");
+            return;
         }
     }
 }

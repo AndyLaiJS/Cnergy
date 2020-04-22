@@ -59,6 +59,10 @@
 
 <script>
 import PopupModal from "../components/PopupModal";
+
+import Activity from "../models/Activity";
+import ActivityService from "../services/activityService";
+import ClubService from "../services/clubService";
 export default {
     data() {
         return {
@@ -71,7 +75,7 @@ export default {
                 { name: "Dummy Club Name", description: "WOWWWW" },
                 { name: "Dummy Club Name", description: "WOWWWW" },
             ],
-            activity: [
+            activities: [
                 { name: "Dummy Activity Name", description: "WOWWWW" },
                 { name: "Dummy Activity Name", description: "WOWWWW" },
                 { name: "Another Activity Club Name", description: "How would you like it if you don't join this activity?" },
@@ -87,6 +91,18 @@ export default {
             this.viewType = !this.viewType;
         }
     },
+    // async mounted() {
+    //     if (!this.isLoggedIn) {
+    //         this.$router.push("/");
+    //         return;
+    //     }
+    //     this.activities = 
+    //         await ActivityService
+    //             .getOngoingActivities();
+    //     this.clubs = 
+    //         await ClubService
+    //             .getClubs();
+    // }
 }
 </script>
 

@@ -7,6 +7,36 @@
             <div class="cards-container">
                 <ViewPanel/>
             </div> 
+
+            <!-- <div class="cards">
+                <div class="card-title">
+                    <h1>Clubs</h1>
+                </div>
+                <div 
+                    class="card"
+                    v-for="(club, index) in clubs"
+                    v-bind:key="index"
+                >
+                    <b>{{ club.name }}</b>
+                    {{ club.description }}
+                    <PopupModal/>
+                </div>
+            </div>
+            <div class="cards">
+                <div class="card-title">
+                    <h1>Activities</h1>
+                </div>
+                <div
+                    class="card"
+                    v-for="(activity, index) in activities"
+                    v-bind:key="index"
+                >
+                    <b>{{ activity.name }}</b>
+                    {{ activity.description }}
+                    <PopupModal/>
+                </div>
+            </div> -->
+
         </div>
 
         <Footer/>
@@ -20,6 +50,7 @@ import ViewPanel from "./View"
 
 import Activity from "../models/Activity";
 import ActivityService from "../services/activityService";
+import ClubService from "../services/clubService";
 
 export default {
     name: "Home",
@@ -42,33 +73,23 @@ export default {
         isLoggedIn() {
             return this.$store.state.auth.status.loggedIn;
         },
-        getCurrentUser() {
-            return this.$store.state.auth.user.user;
-        },
     },
     components: {
         NavBar,
         Footer,
         ViewPanel
     },
-    mounted() {
+    async mounted() {
         if (!this.isLoggedIn) {
             this.$router.push("/");
             return;
         }
-        ActivityService
-            .getOngoingActivities()
-            .then(
-                response => {
-                    this.activities = response.data.activities;
-                },
-                error => {
-                    this.message =
-                        (error.response && error.response.data) ||
-                         error.message ||
-                         error.toString()
-                }
-            );
+        this.activities = 
+            await ActivityService
+                .getOngoingActivities();
+        this.clubs = 
+            await ClubService
+                .getClubs();
     }
 }
 </script>

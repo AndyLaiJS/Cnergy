@@ -64,10 +64,10 @@
 <script>
 import NavBar from "../NavBar"
 import Footer from "../Footer"
-
 import User from "../../models/User";
-import utils from "../../utils/validator";
+import validator from "../../utils/validator";
 import formatter from "../../utils/formatter";
+import alerter from "../../utils/alerter";
 
 export default {
     data() {
@@ -82,59 +82,49 @@ export default {
         Footer,
     },
     computed: {
-        isLoggedIn() {
-            return this.$store.state.auth.status.loggedIn;
-        },
         getCurrentUser() {
-            return this.$store.state.auth.user.user;
-        },
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user; 
+        }
     },
     methods: {
-        getFormattedName(firstName, lastName) {
-            return formatter.getFormattedName(firstName, lastName);
-        },
+        getFormattedName: (firstName, lastName) => formatter.getFormattedName(firstName, lastName),
         logout() {
             this.$store.dispatch("auth/logout");
             this.$router.push("/");
         },
         changePassword() {
-            let err = utils.changePasswordChecker(this.password, this.confirmPassword);
+            let err = validator.changePasswordChecker(
+                this.password, this.confirmPassword,
+            );
             if (err.length != 0) {
-                this.$fire({
-                    title: "Password Error",
-                    text: err,
-                    type: "error",
-                    timer: 3000
-                })
-
+                this.$fire(alerter.errorAlert(
+                    "Password Error", err,
+                ));
                 return;
             }
 
-            this.$store.dispatch("user/updatePassword", [this.user.id, this.password])
+            this.$store
+                .dispatch(
+                    "user/updatePassword", 
+                    [this.user.id, this.password],
+                )
                 .then(
-                    response => {
-                        if (response.data.status == 200) {
-                            this.$fire({
-                                title: "Update Password Succeed",
-                                type: "success",
-                                timer: 3000
-                            })                    
-                        } else {
-                            this.$fire({
-                                title: "Update Password Failed",
-                                type: "error",
-                                timer: 3000
-                            })                    
-                        }
-                    },
+                    response => response.data.status == 200
+                        ?   this.$fire(alerter.successAlert(
+                                "Update Password Success"
+                            ))
+                        :   this.$fire(alerter.errorAlert(
+                                "Update Password Failed"
+                            )),
                 );
         }
     },
     mounted() {
-        if (this.isLoggedIn) {
-            this.user = this.getCurrentUser;
-        } else {
+        this.user = this.getCurrentUser;
+        if (!this.user) {
             this.$router.push("/");
+            return;
         }
     }
 }

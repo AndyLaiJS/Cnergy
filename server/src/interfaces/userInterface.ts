@@ -6,6 +6,7 @@ export default interface User {
      password: string;
      college: string;
      major: string;
+     about: string;
      activities?: Array<{
           id: number;
           name: string;

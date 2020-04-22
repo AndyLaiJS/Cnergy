@@ -22,6 +22,10 @@ class UserDto {
 
      @IsString()
      public major: string;
+
+     @IsOptional()
+     @IsString()
+     public about: string;
      
      @IsOptional()
      @ValidateNested()

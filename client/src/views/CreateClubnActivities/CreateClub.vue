@@ -30,41 +30,29 @@
                                     <label id="reset" for="reset" class="reset create-button">Reset Club Logo</label>
                                 </div>
                             </div>
-                            <input id="logo" type="file" name="clubLogo"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <input 
                             class="form-control"
                             type="text"
-                            name="club-name"
+                            v-model="club.name"
                             placeholder="Name of Club"
                             />
                     </div>
                     <div class="form-group">
                         <textarea 
-                            required name="club" 
-                            rows="6" placeholder="Club Description" 
-                            v-model="eventDescription">
+                            rows="6" 
+                            placeholder="Club Description" 
+                            v-model="club.description">
                         </textarea>
                     </div>
-                    <!-- <div class="compress-form">
-                    <input 
-                        id="first-box"
-                        class="form-control"
-                        type="text"
-                        name="creator-name"
-                        placeholder="Your name"
-                        />
-                    <input 
-                        id="second-box"
-                        class="form-control"
-                        type="text"
-                        name="sid"
-                        placeholder="Your SID"
-                        />
-                    </div> -->
-                    <router-link to="/create-activities"><button class="create-button">Create</button></router-link>
+                    <router-link to="/create-club">
+                        <button
+                            class="create-button"
+                            @click="createClub"    
+                        >Create</button>
+                    </router-link>
                 </form>
             </div>
         </div>
@@ -75,58 +63,97 @@
 <script>
 import NavBar from "../NavBar";
 import Footer from "../Footer";
+import Club from "../../models/Club";
+import User from "../../models/User";
+import validator from '../../utils/validator';
+import alerter from '../../utils/alerter';
+
 export default {
-  components: {
-    NavBar,
-    Footer
-  },
-  data () {
-    return {
-        clubName: "",
-        clubLogo: "",
-        clubDescription: "",
-        creatorName: "",
-        creatorSID: ""
+    components: {
+        NavBar,
+        Footer
+    },
+    data () {
+        return {
+            club: new Club(),
+            user: new User(),
+        }
+    },
+    computed: {
+        getCurrentUser() {
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user; 
+        }
+    },
+    methods: {
+        createClub() {
+            let err = validator.createClubChecker(this.club);
+            if (err.length != 0) {
+                this.$fire(alerter.errorAlert(
+                    "Create Club Failed", err
+                ));
+                return;
+            }
+
+            this.$store
+                .dispatch(
+                    "club/createClub",
+                    [ this.user, this.club ],
+                )
+                .then(
+                    response => response.status == 200
+                        ?   this.$fire(alerter.successAlert(
+                                "Create Club Success"
+                            ))
+                        :   this.$fire(alerter.errorAlert(
+                                "Create Club Failed"
+                            )),
+                )
+        }
+    },
+    mounted () {
+        this.user = this.getCurrentUser;
+        if (!this.user) {
+            this.$router.push("/");
+            return;
+        }
+        // const inpLogo = document.getElementById("logo");
+        // const displayContainer = document.getElementById("display-logo");
+        // const displayImage = displayContainer.querySelector(".display-logo-img");
+        // const displayDefaultText = displayContainer.querySelector(".display-logo-default");
+        // const resetLogoButton = document.getElementById("reset");
+
+        // inpLogo.addEventListener("change", function () {
+        //     const file = this.files[0];
+            
+        //     if (file) {
+        //         const reader = new FileReader();
+
+        //         displayDefaultText.style.display = "none";
+        //         displayImage.style.display = "block";
+
+        //         reader.addEventListener("load", function() {
+        //             displayImage.setAttribute("src", this.result);
+        //             displayContainer.style.border = "none";
+        //         });
+
+        //         reader.readAsDataURL(file);
+        //     } 
+        // // else {
+        // //     displayDefaultText.style.display = null;
+        // //     displayImage.style.display = null;
+        // //     displayContainer.style = null;
+        // //     displayImage.setAttribute("src", "");
+        // // }
+        // });
+
+        // resetLogoButton.addEventListener("click", function () {
+        //     displayDefaultText.style.display = null;
+        //     displayImage.style.display = null;
+        //     displayContainer.style = null;
+        //     displayImage.setAttribute("src", "");
+        // });
     }
-  },
-  mounted () {
-    const inpLogo = document.getElementById("logo");
-    const displayContainer = document.getElementById("display-logo");
-    const displayImage = displayContainer.querySelector(".display-logo-img");
-    const displayDefaultText = displayContainer.querySelector(".display-logo-default");
-    const resetLogoButton = document.getElementById("reset");
-
-    inpLogo.addEventListener("change", function () {
-        const file = this.files[0];
-        
-        if (file) {
-            const reader = new FileReader();
-
-            displayDefaultText.style.display = "none";
-            displayImage.style.display = "block";
-
-            reader.addEventListener("load", function() {
-                displayImage.setAttribute("src", this.result);
-                displayContainer.style.border = "none";
-            });
-
-            reader.readAsDataURL(file);
-        } 
-    // else {
-    //     displayDefaultText.style.display = null;
-    //     displayImage.style.display = null;
-    //     displayContainer.style = null;
-    //     displayImage.setAttribute("src", "");
-    // }
-    });
-
-    resetLogoButton.addEventListener("click", function () {
-        displayDefaultText.style.display = null;
-        displayImage.style.display = null;
-        displayContainer.style = null;
-        displayImage.setAttribute("src", "");
-    });
-  }
 }
 </script>
 
@@ -175,6 +202,9 @@ export default {
     height: 100px;
     background-position: center;
     background-size: cover;
+}
+.form-group {
+    margin-top: 15px;
 }
 </style>
 

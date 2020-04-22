@@ -48,7 +48,7 @@
                         </div>
                         <div class="card-container" id="desc">
                             <h2>About me</h2>
-                            I am the rarest of ponies, the SILVER PONY!
+                            {{ this.user.about }}
                         </div>
                     </div>
                     <!-- <div class="flex-container"> -->
@@ -75,6 +75,7 @@
                                     Type: {{ activity.type }}<br>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -116,9 +117,10 @@
 <script>
 import NavBar from "../NavBar";
 import Footer from "../Footer";
-
 import User from "../../models/User";
-import utils from  "../../utils/formatter";
+import ActivityService from "../../services/activityService";
+import ClubService from "../../services/clubService";
+import formatter from  "../../utils/formatter";
 
 export default {
     data() {
@@ -140,41 +142,33 @@ export default {
         Footer,
     },
     computed: {
-        isLoggedIn() {
-            return this.$store.state.auth.status.loggedIn;
-        },
         getCurrentUser() {
-            return this.$store.state.auth.user.user;
-        },
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user; 
+        }
     },
     methods: {
-        getFormattedName(firstName, lastName) {
-            return utils.getFormattedName(firstName, lastName);
-        },
-        getSIDFromEmail(email) {
-            let sid = email.split("@");
-            return sid[0];
-        },
-        getFormattedDate(tanggal) {
-            return utils.getFormattedDate(tanggal);
-        },
+        getFormattedName: (firstName, lastName) => formatter.getFormattedName(firstName, lastName),
+        getFormattedDate: (date) => formatter.getFormattedDate(date),
+        getSIDFromEmail: (email) => email.split("@")[0],
         logout() {
             this.$store.dispatch("auth/logout");
             this.$router.push("/");
         },
     },
-    mounted() {
-        if (this.isLoggedIn) {
-            this.user = this.getCurrentUser;
-
-            this.$store
-                .dispatch("activity/getJoinedActivities", this.user)
-                .then(() => {
-                    this.userJoinedActivities = this.$store.state.activity.joinedActivities;
-                });
-        } else {
+    async mounted() {
+        this.user = this.getCurrentUser;
+        if (!this.user) {
             this.$router.push("/");
+            return;
         }
+
+        this.userJoinedActivities =
+            await ActivityService
+                .getJoinedActivities(this.user.id);
+        this.userJoinedClubs =
+            await ClubService
+                .getJoinedClubs(this.user.id);
     },
 };
 </script>

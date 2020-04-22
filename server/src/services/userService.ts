@@ -47,6 +47,20 @@ class UserService {
                                    .execute();
           return result;
      }
+
+     public updateUserAbout = async (userId: string, about: string) => {
+          const result = await this.userRepository
+                                   .createQueryBuilder("user")
+                                   .update(User)
+                                   .set({
+                                        about: about
+                                   })
+                                   .where(`id = :userId`, {
+                                        userId: userId
+                                   })
+                                   .execute();
+          return result;
+     }
 }
 
 export default UserService;

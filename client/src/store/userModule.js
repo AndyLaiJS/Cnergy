@@ -21,11 +21,27 @@ export const user = {
                               return Promise.reject(error);
                          }
                     )
+          },
+          updateAbout({ commit }, [ userId, about ]) {
+               return UserService
+                    .updateAbout(userId, about)
+                    .then(
+                         response => {
+                              commit("updateAboutSuccess", about);
+                              return Promise.resolve(response);
+                         },
+                         error => {
+                              return Promise.reject(error);
+                         }
+                    )
           }
      },
      mutations: {
           updatePasswordSuccess(state, password) {
                state.user.password = password;
+          },
+          updateAboutSuccess(state, about) {
+               state.user.about = about;
           },
      }
 };

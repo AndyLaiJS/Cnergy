@@ -17,6 +17,16 @@ class ClubService {
           return clubs;
      }
 
+     public getClubsByPresidentId = async (presidentId: string) => {
+          const clubs = await this.clubRepository
+                                  .createQueryBuilder("club")
+                                  .where(`club.presidentId = :presidentId`, {
+                                       presidentId: presidentId
+                                  })
+                                  .getMany();
+          return clubs;
+     }
+
      public getClubById = async (clubId: number) => {
           const club = await this.clubRepository
                                  .createQueryBuilder("club")
@@ -47,6 +57,18 @@ class ClubService {
                                    .where("id = :id", { id: clubData.id })
                                    .execute();
           return result;
+     }
+
+     public getUserHasJoinedClubs = async(userId: string) => {
+          const results = await this.clubRepository
+                                    .createQueryBuilder("club")
+                                    .innerJoin("club.members", "member")
+                                    .where(`member.userId = :userId AND
+                                            member.hasJoined = TRUE`, {
+                                                 userId: userId
+                                    })
+                                    .getMany();
+          return results;
      }
 
      public getUserJoinClubCount = async (clubId: number, userId: string) => {

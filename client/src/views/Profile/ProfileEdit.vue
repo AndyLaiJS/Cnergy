@@ -31,7 +31,12 @@
                         <div class="card-container" id="desc">
                             <h2> About me </h2>
                             <div class="content-lists">
-                                <input type="text" class="input-box-desc" placeholder="I am the rarest of ponies, the SILVER PONY!">
+                                <input
+                                    type="text"
+                                    class="input-box-desc"
+                                    v-model="user.about"
+                                    placeholder="About Me"
+                                >
                             </div>
                         </div>
                         <div class="card-container" id="edit">
@@ -44,7 +49,11 @@
                                     <label for="fname">College </label>
                                     <input type="text" name="fname" class="input-box" placeholder="New Asia College">
                                 </div>
-                            <button id="one"> Edit </button>
+                            <button
+                                id="one"
+                                @click="changeAbout"
+                            > Edit 
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -59,14 +68,14 @@
 <script>
 import NavBar from "../NavBar"
 import Footer from "../Footer"
-
 import User from "../../models/User";
-import utils from  "../../utils/formatter";
+import formatter from  "../../utils/formatter";
+import alerter from '../../utils/alerter';
 
 export default {
     data() {
         return {
-            user: new User()
+            user: new User(),
         }
     },
     components: {
@@ -74,23 +83,30 @@ export default {
         Footer,
     },
     computed: {
-        isLoggedIn() {
-            return this.$store.state.auth.status.loggedIn;
-        },
         getCurrentUser() {
-            return this.$store.state.auth.user.user;
-            },
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user; 
+        }
     },
     methods: {
-        getFormattedName(firstName, lastName) {
-            return utils.getFormattedName(firstName, lastName);
-        },
-        getSIDFromEmail(email) {
-            let sid = email.split("@");
-            return sid[0];
-        },
-        getFormattedDate(tanggal) {
-            return utils.getFormattedDate(tanggal);
+        getFormattedName: (firstName, lastName) => formatter.getFormattedName(firstName, lastName),
+        getFormattedDate: (date) => formatter.getFormattedDate(date),
+        getSIDFromEmail: (email) => email.split("@")[0],
+        changeAbout() {
+            this.$store
+                .dispatch(
+                    "user/updateAbout",
+                    [this.user.id, this.user.about],
+                )
+                .then(
+                    response => response.data.status == 200
+                        ?   this.$fire(alerter.successAlert(
+                                "Update About Success"
+                            ))
+                        :   this.$fire(alerter.errorAlert(
+                                "Update About Failed"
+                            )),
+                );
         },
         logout() {
             this.$store.dispatch("auth/logout");
@@ -98,10 +114,10 @@ export default {
         },
     },
     mounted() {
-        if (this.isLoggedIn) {
-            this.user = this.getCurrentUser;
-        } else {
+        this.user = this.getCurrentUser;
+        if (!this.user) {
             this.$router.push("/");
+            return;
         }
     }
 }
