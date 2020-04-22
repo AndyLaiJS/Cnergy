@@ -9,6 +9,7 @@ import ActivityRequestDto from "../dtos/activityRequestDto";
 import CreateActivityDto from "../dtos/createActivityDto";
 import UpdateActivityDto from "../dtos/updateActivityDto";
 import JoinActivityDto from "../dtos/joinActivityDto";
+import CreatorLeaveActivityException from "../exceptions/creatorLeaveActivityExceptions";
 import UnauthorizedException from "../exceptions/unauthorizedException";
 import UserHasSignedUpException from "../exceptions/userHasSignedUpException";
 import UserHasNotSignedUpException from "../exceptions/userHasNotSignedUpException";
@@ -52,23 +53,22 @@ class ActivityController implements Controller {
      }
 
      /**
-      * GET /activity?sid=...
+      * GET /activity?uid=...
       * 
       * getAllOngoingActivities() allow all users to view on-going activities
       * 
-      * If SID is passed to the query, then it should return all activities created by the user with the corresponding SID
+      * If UID is passed to the query, then it should return all activities created by the user with the corresponding id
       * else, it will return all on-going activities.
       */
      private getAllOngoingActivities = async (request: Request, response: Response, next: NextFunction) => {
-          const userSid = request.query["sid"];
+          const userId = request.query["uid"];
           const timestamp = utils.getCurrentTimestamp();
 
           try {
                let activities;
-               if (userSid) {
-                    const userEmail = utils.getEmail(userSid);
+               if (userId) {
                     activities = await this.activityService
-                                           .getActivitiesByEmailAndTimestamp(userEmail, timestamp);
+                                           .getActivitiesByUIDAndTimestamp(userId, timestamp);
                } else {
                     activities = await this.activityService
                                            .getActivitiesByTimestamp(timestamp);
@@ -83,23 +83,22 @@ class ActivityController implements Controller {
      }
 
      /**
-      * GET /activity/past?sid=...
+      * GET /activity/past?uid=...
       * 
       * getAllPastActivities() allow all users to view past activities
       * 
-      * If SID is passed to the query, then it should return all activities created by the user with the corresponding SID
+      * If UID is passed to the query, then it should return all activities created by the user with the corresponding id
       * else, it will return all past activities.
       */
      private getAllPastActivities = async (request: Request, response: Response, next: NextFunction) => {
-          const userSid = request.query["sid"];
+          const userId = request.query["uid"];
           const timestamp = utils.getCurrentTimestamp();
 
           try {
                let activities;
-               if (userSid) {
-                    const userEmail = utils.getEmail(userSid);
+               if (userId) {
                     activities = await this.activityService
-                                           .getActivitiesByEmailAndTimestamp(userEmail, timestamp, "<");
+                                           .getActivitiesByUIDAndTimestamp(userId, timestamp, "<");
                } else {
                     activities = await this.activityService
                                            .getActivitiesByTimestamp(timestamp, "<");
@@ -175,42 +174,43 @@ class ActivityController implements Controller {
           const activityData: JoinActivityDto = request.body;
           const hasSignedUp = await this.activityService
                                         .getJoinActivityCount(activityData.id, user.id);
+          const type = await this.activityService
+                                   .getActivityTypeById(activityData.id);
+
+          let hasApproved: boolean = true;
+          if (type == "Private") {
+               hasApproved = false;
+          }
 
           // If the user request is recorded, then he/she can't request to join the activity again
           if (hasSignedUp != 0) {
-               next(new UserHasSignedUpException(this.context));
-          } else {
-               try {
-                    const type = await this.activityService
-                                           .getActivityTypeById(activityData.id);
-                    let hasApproved: boolean = true;
-                    if (type == "Private") {
-                         hasApproved = false;
-                    }
+               next(new UserHasSignedUpException(this.context, hasApproved));
+               return;
+          }
+
+          try {
+               await this.activityService
+                         .postUserJoinActivity(activityData.id, user.id, hasApproved);
+
+               let additionalMsg: string = (type == "Private")
+                    ?    " Please wait for the confirmation from the activity creator"
+                    :    ""
+               if (additionalMsg.length == 0) {
                     await this.activityService
-                              .postUserJoinActivity(activityData.id, user.id, hasApproved);
-
-                    let additionalMsg: string = (type == "Private")
-                         ?    " Please wait for the confirmation from the activity creator"
-                         :    ""
-                    if (additionalMsg.length == 0) {
-                         await this.activityService
-                                   .updateActivityParticipantsCount(activityData.id, 1);
-                    }
-
-                    response.send({
-                         message: `You have successfully signed up for the activity.${additionalMsg}`,
-                         status: 200
-                    });
-                    
-               } catch(e) {
-                    next(e);
+                              .updateActivityParticipantsCount(activityData.id, 1);
                }
+
+               response.send({
+                    message: `You have successfully signed up for the activity.${additionalMsg}`,
+                    status: 200
+               });
+          } catch(e) {
+               next(e);
           }
      }
 
      /**
-      * DELETE /activity/join
+      * DELETE /activity/join?uid=...
       * 
       * cancelJoinActivity() allow user to cancel the activity that he/she signed up for
       */
@@ -218,14 +218,21 @@ class ActivityController implements Controller {
           const uid: string = request.query["uid"];
           const user = await this.userService
                                     .getUserInfoByUID(uid) as User;
-          const activityData: JoinActivityDto = request.body;
 
+          const activityData: JoinActivityDto = request.body;
           const hasSignedUp = await this.activityService
                                         .getJoinActivityCount(activityData.id, user.id);
           if (hasSignedUp == 0) {
                next(new UserHasNotSignedUpException(this.context))
           } else {
                try {
+                    const creator = await this.userService
+                                              .getActivityCreatorByActivityId(activityData.id);
+                    if (uid == creator?.id) {
+                         next(new CreatorLeaveActivityException());
+                         return;
+                    }
+
                     const hasApproved = await this.activityService
                                                   .getUserJoinActivityHasApprovedStatus(activityData.id, user.id);
                     const type = await this.activityService
