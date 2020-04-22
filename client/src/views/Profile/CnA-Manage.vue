@@ -26,52 +26,47 @@
 
 
                 <div class="content-container">
-                    <!-- <div class="flex-container"> -->
-                        <h1> Manage Your Creation </h1>
-                        <!-- <div class="card-container"> -->
-                            <div class="card-title">
-                                <h2>Clubs</h2>
-                            </div>
-                            <div class="main-container">
-                                <div class="cna-view">
-                                    <div
-                                        class="card"
-                                        id="smaller-card"
-                                        v-for="(club, index) in this.createdClubs"
-                                        v-bind:key = "index"
-                                    >   
-                                        <div class="card-content">
-                                            <b>{{ club.name }}</b>
-                                            <!-- {{ club.description }} -->
-                                            <PopupModal />
-                                        </div>
-                                    </div>
+                    <h1> Manage Your Creation </h1>
+                    <div class="card-title">
+                        <h2>Clubs</h2>
+                    </div>
+                    <div class="main-container">
+                        <div class="cna-view">
+                            <div
+                                class="card"
+                                id="smaller-card"
+                                v-for="(club, index) in this.createdClubs"
+                                v-bind:key = "index"
+                            >   
+                                <div class="card-content">
+                                    <b>{{ club.name }}</b>
+                                    <!-- {{ club.description }} -->
+                                    <br><br>
+                                    <COPopupModal />
                                 </div>
                             </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="card-container"> -->
-                            <div class="card-title">
-                                <h2>Activities</h2>
-                            </div>
-                            <div class="main-container">
-                                <div class="cna-view">
-                                    <div 
-                                        class="card" 
-                                        id="smaller-card"
-                                        v-for="(activity, index) in this.createdActivities" 
-                                        v-bind:key = "index"
-                                    >
-                                        <div class="card-content">
-                                            <b>{{ activity.name }}</b>
-                                            <!-- {{ activity.description }} -->
-                                            <PopupModal/>
-                                        </div>
-                                    </div>
+                        </div>
+                    </div>
+                    <div class="card-title">
+                        <h2>Activities</h2>
+                    </div>
+                    <div class="main-container">
+                        <div class="cna-view">
+                            <div 
+                                class="card" 
+                                id="smaller-card"
+                                v-for="(activity, index) in this.createdActivities" 
+                                v-bind:key = "index"
+                            >
+                                <div class="card-content">
+                                    <b>{{ activity.name }}</b><br>
+                                    Event Date: {{ activity.activityDate}}<br><br>
+                                    <!-- {{ activity.description }} -->
+                                    <AOPopupModal/>
                                 </div>
                             </div>
-                        <!-- </div> -->
-                    <!-- </div> -->
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -85,7 +80,8 @@
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 import User from "../../models/User";
-import PopupModal from "../../components/PopupModal";
+import COPopupModal from "../../components/COPopupModal";   // club manage
+import AOPopupModal from "../../components/AOPopupModal";   //activity manage
 import ActivityService from '../../services/activityService';
 import ClubService from '../../services/clubService';
 import formatter from "../../utils/formatter";
@@ -101,7 +97,8 @@ export default {
     components: {
         NavBar,
         Footer,
-        PopupModal,
+        AOPopupModal,
+        COPopupModal,
     },
     computed: {
         getCurrentUser() {

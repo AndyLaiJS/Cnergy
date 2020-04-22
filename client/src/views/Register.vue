@@ -38,6 +38,7 @@
                         <select 
                             v-model="user.major"
                         >
+                            <option value="" disabled selected hidden> Major </option>
                             <option 
                                 v-for="major in majors" 
                                 :key="major"
@@ -48,6 +49,7 @@
                         <select 
                             v-model="user.college"
                         >
+                            <option value="" disabled selected hidden> College </option>
                             <option 
                                 v-for="college in colleges" 
                                 :key="college"

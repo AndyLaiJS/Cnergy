@@ -67,8 +67,9 @@
                                 <!-- TODO: Create an additional component to store this -->
                                 <!-- Consider using Icon instead of words -->
                                 <div class="card-content">
-                                    Name: <b> {{ club.name }} </b><br>
+                                    <b> {{ club.name }} </b><br><br>
                                     <!-- Description: {{ club.description }}<br> -->
+                                    <InfoPopupModal/>
                                 </div>
                             </div>
 
@@ -89,12 +90,13 @@
                                 <!-- TODO: Create an additional component to store this -->
                                 <!-- Consider using Icon instead of words -->
                                 <div class="card-content">
-                                    Name: <b> {{ activity.name }} </b><br>
+                                    <b> {{ activity.name }} </b><br>
                                     <!-- Description: {{ activity.description }}<br>
                                     {{ activity.activityDate }}
                                     Min. Participants: {{ activity.minParticipants }}<br>
-                                    Max. Participants: {{ activity.maxParticipants }}<br>
-                                    Type: {{ activity.type }}<br> -->
+                                    Max. Participants: {{ activity.maxParticipants }}<br> -->
+                                    Type: {{ activity.type }}<br> <br>
+                                    <InfoPopupModal/>
                                 </div>
                             </div>
                         </div>
@@ -113,6 +115,7 @@
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 import User from "../../models/User";
+import InfoPopupModal from "../../components/InfoPopupModal"
 import ActivityService from "../../services/activityService";
 import ClubService from "../../services/clubService";
 import formatter from  "../../utils/formatter";
@@ -128,6 +131,7 @@ export default {
     components: {
         NavBar,
         Footer,
+        InfoPopupModal,
     },
     computed: {
         getCurrentUser() {

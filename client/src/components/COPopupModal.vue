@@ -1,5 +1,5 @@
 <template>
-    <!-- For Activity Owner manage -->
+    <!-- For Club Owner manage -->
     <div class="text-center">
         <button @click="opendialog()">Edit</button>
         <v-dialog
@@ -15,14 +15,9 @@
                 </v-card-title>
                 
                 <textarea 
-                    rows="6" 
-                    placeholder="Whatever the previous description was" 
+                            rows="6" 
+                            placeholder="Whatever the previous description was" 
                 />
-                
-                <v-card-text>
-                    Participants: <br>
-                    People's name
-                </v-card-text>
 
                 <v-divider></v-divider>
 

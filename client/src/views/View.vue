@@ -52,7 +52,8 @@
                 >
                     <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
                     <div class="card-content">
-                        <b>{{ club.name }}</b>
+                        <b>{{ club.name }}</b><br>
+                        Participants: 3 <br><br>
                         <!-- <div class="description">
                             {{ club.description }}
                         </div> -->
@@ -74,7 +75,8 @@
                 >
                 <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
                     <div class="card-content">
-                        <b>{{ activity.name }}</b>
+                        <b>{{ activity.name }}</b><br>
+                        Participants: 20/30 <br><br>
                         <!-- <div class="description">
                             {{ activity.description }}
                         </div> -->

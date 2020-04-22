@@ -4,7 +4,7 @@
             <router-link to="/home">
                 <div class="navLogo">
                     <img src="../assets/CUHK.png">
-                    <b>CUHK</b> CNERGY
+                    <b>CUHK</b> Cnergy
                 </div>
             </router-link>
             <div class="navLink">

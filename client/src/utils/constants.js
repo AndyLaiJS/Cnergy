@@ -44,6 +44,7 @@ const cuhk = {
           "Morningside College",
           "Shaw College",
           "S.H. Ho College",
+          "New Asia College",
           "United College",
           "Wu Yee Sun College"
      ],
