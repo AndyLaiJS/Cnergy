@@ -18,7 +18,7 @@ export class Activity extends BaseEntity {
     })
     name: string;
     
-    @Column({
+    @Column("text", {
         nullable: false
     })
     description: string;

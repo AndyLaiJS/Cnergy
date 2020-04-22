@@ -2,54 +2,87 @@
 <div>
     <div class="search-container">
             <i class="el-icon-search"></i>
-            <input v-model="search" placeholder="Search" class="search-bar" type="text" name="search bar">
-
-            <div class="view-icon" v-if="viewType==true">
-                <el-tooltip class="item" effect="dark" content="Club view" placement="bottom-start" open-delay=450 hide-after=1650>
+            <input 
+                v-model="search"
+                placeholder="Search"
+                class="search-bar"
+                type="text"
+                name="search bar"
+            >
+            <div 
+                v-if="viewType == true"
+                class="view-icon" 
+            >
+                <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="Club view"
+                    placement="bottom-start"
+                    open-delay=450
+                    hide-after=1650
+                >
                     <i class="el-icon-sort" @click="viewClick()"></i>
                 </el-tooltip>
             </div>
-            <div class="view-icon" v-else>
-                <el-tooltip class="item" effect="dark" content="Activity view" placement="bottom-start" open-delay=450 hide-after=1650>
+            <div
+                v-else
+                class="view-icon"
+            >
+                <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="Activity view"
+                    placement="bottom-start"
+                    open-delay=450
+                    hide-after=1650
+                >
                     <i class="el-icon-sort" @click="viewClick()"></i>
                 </el-tooltip>
             </div>
-                
         </div>
     <div class="main-container">
-
-            <span v-if="viewType==true" class="cna-view">
-                <div class="card" v-for="(club, index) in clubs" v-bind:key="index">
+            <span
+                v-if="viewType == true"
+                class="cna-view"
+            >
+                <div
+                    class="card"
+                    v-for="(club, index) in clubs"
+                    v-bind:key="index"
+                >
                     <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
-                    
                     <div class="card-content">
                         <b>{{ club.name }}</b>
-
                         <!-- <div class="description">
                             {{ club.description }}
                         </div> -->
-
-                        <PopupModal/>
+                        <PopupModal 
+                            v-bind:data="club"
+                            v-bind:context="`club`"
+                        />
                     </div>
-                    
-                    
                 </div>
             </span>
-            <span v-else class="cna-view">
-                <div class="card" v-for="(act, index) in activities" v-bind:key="index">
+            <span
+                v-else
+                class="cna-view"
+            >
+                <div
+                    class="card"
+                    v-for="(activity, index) in activities"
+                    v-bind:key="index"
+                >
                 <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
-                
                     <div class="card-content">
-                        <b>{{ act.name }}</b>
-
+                        <b>{{ activity.name }}</b>
                         <!-- <div class="description">
-                            {{ act.description }}
+                            {{ activity.description }}
                         </div> -->
-
-                        <PopupModal/>
+                        <PopupModal
+                            v-bind:data="activity"
+                            v-bind:context="`activity`"
+                        />
                     </div>
-                  
-                    
                 </div>
             </span>
             <!--<el-button type="success" circle icon="el-icon-plus" id="add" @click="addList"></el-button>-->
@@ -59,19 +92,16 @@
 
 <script>
 import PopupModal from "../components/PopupModal";
-
 import Activity from "../models/Activity";
 import ActivityService from "../services/activityService";
 import ClubService from "../services/clubService";
 export default {
     data() {
         return {
-            someStuff: [],
             search: '',
             viewType: true,
             activities: [],
             clubs: [],
-            message: "",
         };
     },
     computed: {
@@ -93,11 +123,9 @@ export default {
             return;
         }
         this.activities = 
-            await ActivityService
-                .getOngoingActivities();
+            await ActivityService.getOngoingActivities();
         this.clubs = 
-            await ClubService
-                .getClubs();
+            await ClubService.getClubs();
     }
 }
 </script>

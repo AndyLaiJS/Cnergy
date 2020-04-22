@@ -173,7 +173,6 @@ class ActivityController implements Controller {
                                  .getUserInfoByUID(uid) as User;
 
           const activityData: JoinActivityDto = request.body;
-
           const hasSignedUp = await this.activityService
                                         .getJoinActivityCount(activityData.id, user.id);
 

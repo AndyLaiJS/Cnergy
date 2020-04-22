@@ -44,6 +44,27 @@ class ActivityService {
                     params: { uid: user.id }
                });
      }
+
+     joinActivity(userId, activityId) {
+          console.log(`In act service : ${userId}`);
+          console.log(`in act service: ${activityId}`);
+          return axios
+               .post(`${API_URL}/join`,{
+                    id: activityId
+               }, {
+                    params: { uid: userId }
+               })
+               .then(response => {
+                    console.log("ini response woy");
+                    return response;
+               })
+               .catch(err => err.response);
+               // .catch(err => {
+               //      console.log("ini error woy");
+               //      console.log(err.response);
+               //      return err;
+               // });
+     }
 }
 
 export default new ActivityService();
