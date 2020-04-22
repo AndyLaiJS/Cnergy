@@ -53,23 +53,22 @@ class ActivityController implements Controller {
      }
 
      /**
-      * GET /activity?sid=...
+      * GET /activity?uid=...
       * 
       * getAllOngoingActivities() allow all users to view on-going activities
       * 
-      * If SID is passed to the query, then it should return all activities created by the user with the corresponding SID
+      * If UID is passed to the query, then it should return all activities created by the user with the corresponding id
       * else, it will return all on-going activities.
       */
      private getAllOngoingActivities = async (request: Request, response: Response, next: NextFunction) => {
-          const userSid = request.query["sid"];
+          const userId = request.query["uid"];
           const timestamp = utils.getCurrentTimestamp();
 
           try {
                let activities;
-               if (userSid) {
-                    const userEmail = utils.getEmail(userSid);
+               if (userId) {
                     activities = await this.activityService
-                                           .getActivitiesByEmailAndTimestamp(userEmail, timestamp);
+                                           .getActivitiesByUIDAndTimestamp(userId, timestamp);
                } else {
                     activities = await this.activityService
                                            .getActivitiesByTimestamp(timestamp);
@@ -84,23 +83,22 @@ class ActivityController implements Controller {
      }
 
      /**
-      * GET /activity/past?sid=...
+      * GET /activity/past?uid=...
       * 
       * getAllPastActivities() allow all users to view past activities
       * 
-      * If SID is passed to the query, then it should return all activities created by the user with the corresponding SID
+      * If UID is passed to the query, then it should return all activities created by the user with the corresponding id
       * else, it will return all past activities.
       */
      private getAllPastActivities = async (request: Request, response: Response, next: NextFunction) => {
-          const userSid = request.query["sid"];
+          const userId = request.query["uid"];
           const timestamp = utils.getCurrentTimestamp();
 
           try {
                let activities;
-               if (userSid) {
-                    const userEmail = utils.getEmail(userSid);
+               if (userId) {
                     activities = await this.activityService
-                                           .getActivitiesByEmailAndTimestamp(userEmail, timestamp, "<");
+                                           .getActivitiesByUIDAndTimestamp(userId, timestamp, "<");
                } else {
                     activities = await this.activityService
                                            .getActivitiesByTimestamp(timestamp, "<");

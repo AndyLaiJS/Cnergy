@@ -19,13 +19,13 @@ class ActivityService {
           return activities;
      }
 
-     public getActivitiesByEmailAndTimestamp = async (userEmail: string, timestamp: string, comparator: string = ">=") => {
+     public getActivitiesByUIDAndTimestamp = async (userId: string, timestamp: string, comparator: string = ">=") => {
           const activities = await this.activityRepository
                                        .createQueryBuilder("activity")
                                        .innerJoinAndSelect("activity.creator", "creator")
-                                       .where(`creator.email=:email AND
+                                       .where(`creator.id = :userId AND
                                                activity.activityDate ${comparator} :time`, {
-                                                  email: userEmail,
+                                                  userId: userId,
                                                   time: timestamp
                                              })
                                        .getMany();
