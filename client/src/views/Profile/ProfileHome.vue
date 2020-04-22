@@ -39,6 +39,7 @@
                     <!-- log out via vuetify icons -->
                 </div>
                 <div class="content-container">
+                    <h1> Profile </h1>
                     <div class="flex-container">
                         <div class="card-container" id="info">
                             <h2>Intro</h2>
@@ -67,7 +68,7 @@
                                 <!-- Consider using Icon instead of words -->
                                 <div class="card-content">
                                     Name: <b> {{ club.name }} </b><br>
-                                    Description: {{ club.description }}<br>
+                                    <!-- Description: {{ club.description }}<br> -->
                                 </div>
                             </div>
 
@@ -89,12 +90,11 @@
                                 <!-- Consider using Icon instead of words -->
                                 <div class="card-content">
                                     Name: <b> {{ activity.name }} </b><br>
-                                    Description: {{ activity.description }}<br>
-                                    <!-- {{ activity.activityDate }} -->
-                                    <!-- Date: {{ getFormattedDate(activity.activityDate) }}<br> -->
+                                    <!-- Description: {{ activity.description }}<br>
+                                    {{ activity.activityDate }}
                                     Min. Participants: {{ activity.minParticipants }}<br>
                                     Max. Participants: {{ activity.maxParticipants }}<br>
-                                    Type: {{ activity.type }}<br>
+                                    Type: {{ activity.type }}<br> -->
                                 </div>
                             </div>
                         </div>
@@ -268,7 +268,6 @@ i:hover, v-icon:hover {
     color: black !important;
     margin-bottom: 3px !important;
 }
-
 .flex-container {
     display: flex;
     flex-wrap: wrap;
@@ -291,26 +290,18 @@ i:hover, v-icon:hover {
     padding-top: 25px;
     padding-bottom: 25px;
 }
-// .card {
-//     background-color: white;
-//     min-width: 50px;
-//     margin-top: 15px;
-//     margin-left: 15px;
-//     margin-right: 15px;
-//     margin-bottom: 5px;
-//     padding: 20px 0;
-//     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-//     transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-//     position: relative;
-//     overflow: auto;
-//     cursor: pointer;
-// }
-// .card:hover {
-//     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
-//     transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-// }
-// .card:active {
-//     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-//     transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
-// }
+.main-container {
+    min-height: 0;
+}
+.card-title {
+    border-radius: 10px 10px 0 0;
+}
+.card-content {
+    b {
+        font-size: 25px;
+    }
+}
+</style>
+<style scoped lang="scss">
+
 </style>

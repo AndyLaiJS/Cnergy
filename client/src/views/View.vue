@@ -25,9 +25,9 @@
                     <div class="card-content">
                         <b>{{ club.name }}</b>
 
-                        <div class="description">
+                        <!-- <div class="description">
                             {{ club.description }}
-                        </div>
+                        </div> -->
 
                         <PopupModal/>
                     </div>
@@ -42,9 +42,9 @@
                     <div class="card-content">
                         <b>{{ act.name }}</b>
 
-                        <div class="description">
+                        <!-- <div class="description">
                             {{ act.description }}
-                        </div>
+                        </div> -->
 
                         <PopupModal/>
                     </div>
@@ -180,7 +180,6 @@ export default {
     box-shadow: 0 1px 3px 0 rgba(186,188,217, 0.4);
     transition: box-shadow .1s ease-in-out, transform .1s ease-in-out;
     position: relative;
-    overflow: auto;
     background-color: white;
 }
 .card:hover {
@@ -191,9 +190,7 @@ export default {
 
 .card-content {
     text-align: left;
-    margin: 0 30px;
     position: absolute;
-    width: 100%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -206,8 +203,8 @@ export default {
     color:#F2F6FC;
 }
 .description {
-    margin: 10px;
-    padding: 10px;
+    margin: 10px 0;
+    padding: 10px 0;
 }
 
 </style>

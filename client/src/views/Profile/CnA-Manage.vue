@@ -23,38 +23,55 @@
                         <v-icon size="20px"> mdi-logout </v-icon>
                     </a>
                 </div>
+
+
                 <div class="content-container">
-                    <div class="flex-container">
-                        <div class="card-container">
+                    <!-- <div class="flex-container"> -->
+                        <h1> Manage Your Creation </h1>
+                        <!-- <div class="card-container"> -->
                             <div class="card-title">
                                 <h2>Clubs</h2>
                             </div>
-                            <div
-                                class="card"
-                                v-for="(club, index) in this.createdClubs"
-                                v-bind:key = "index"
-                            >
-                                <b>{{ club.name }}</b>
-                                {{ club.description }}
-                                <PopupModal />
+                            <div class="main-container">
+                                <div class="cna-view">
+                                    <div
+                                        class="card"
+                                        id="smaller-card"
+                                        v-for="(club, index) in this.createdClubs"
+                                        v-bind:key = "index"
+                                    >   
+                                        <div class="card-content">
+                                            <b>{{ club.name }}</b>
+                                            <!-- {{ club.description }} -->
+                                            <PopupModal />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        <!-- </div> -->
 
-                        <div class="card-container">
+                        <!-- <div class="card-container"> -->
                             <div class="card-title">
                                 <h2>Activities</h2>
                             </div>
-                            <div 
-                                class="card" 
-                                v-for="(activity, index) in this.createdActivities" 
-                                v-bind:key = "index"
-                            >
-                                <b>{{ activity.name }}</b>
-                                {{ activity.description }}
-                                <PopupModal/>
+                            <div class="main-container">
+                                <div class="cna-view">
+                                    <div 
+                                        class="card" 
+                                        id="smaller-card"
+                                        v-for="(activity, index) in this.createdActivities" 
+                                        v-bind:key = "index"
+                                    >
+                                        <div class="card-content">
+                                            <b>{{ activity.name }}</b>
+                                            <!-- {{ activity.description }} -->
+                                            <PopupModal/>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        <!-- </div> -->
+                    <!-- </div> -->
                 </div>
 
             </div>
@@ -117,5 +134,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.main-container {
+    min-height: 0;
+}
+.card-title {
+    border-radius: 10px 10px 0 0;
+}
+.card-content {
+    b {
+        font-size: 25px;
+    }
+}
 </style>

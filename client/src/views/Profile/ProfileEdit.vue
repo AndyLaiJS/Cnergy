@@ -27,6 +27,7 @@
                 </div>
                 
                 <div class="content-container">
+                    <h1> Edit Your Profile </h1>
                     <div class="flex-container">
                         <div class="card-container" id="desc">
                             <h2> About me </h2>
