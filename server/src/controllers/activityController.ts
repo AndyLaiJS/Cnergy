@@ -172,18 +172,12 @@ class ActivityController implements Controller {
           const user = await this.userService
                                  .getUserInfoByUID(uid) as User;
 
-          console.log(uid);
-          console.log(user);
-
           const activityData: JoinActivityDto = request.body;
-          console.log(activityData);
-
           const hasSignedUp = await this.activityService
                                         .getJoinActivityCount(activityData.id, user.id);
 
           // If the user request is recorded, then he/she can't request to join the activity again
           if (hasSignedUp != 0) {
-               console.log("Dah signed up");
                next(new UserHasSignedUpException(this.context));
           } else {
                try {
@@ -204,15 +198,12 @@ class ActivityController implements Controller {
                                    .updateActivityParticipantsCount(activityData.id, 1);
                     }
 
-                    console.log("Done");
                     response.send({
                          message: `You have successfully signed up for the activity.${additionalMsg}`,
                          status: 200
                     });
                     
                } catch(e) {
-                    console.log("Error woy");
-                    console.log(e);
                     next(e);
                }
           }

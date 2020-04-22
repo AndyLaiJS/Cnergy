@@ -6,26 +6,33 @@
             v-model="dialog"
             width="500"
         >
-
             <v-card>
                 <v-card-title
                     class="headline"
                     primary-title
-                > Title
+                > 
+                    {{ data.name }}
                 </v-card-title>
-                
-                <v-card-text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <v-card-text
+                    v-if="context == `club`"
+                >
+                    {{ data.description }}
                 </v-card-text>
-
-                <v-divider></v-divider>
-
+                <v-card-text
+                    v-else
+                >
+                </v-card-text>
+                <v-divider/>
                 <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <button @click="dialog = false" id="greenbtn"> Join </button>
-                    <v-spacer></v-spacer>
+                    <v-spacer/>
+                    <button
+                        id="greenbtn"
+                        @click="handleJoin"
+                    > Join
+                    </button>
+                    <v-spacer/>
                     <button @click="dialog = false"> Ok </button>
-                    <v-spacer></v-spacer>
+                    <v-spacer/>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -33,16 +40,60 @@
 </template>
 
 <script>
+import ActivityService from "../services/activityService";
+import ClubService from "../services/clubService";
+import User from "../models/User";
+import alerter from '../utils/alerter';
+
 export default {
     data () {
-      return {
-        dialog: false,
-      }
+        return {
+            user: new User(),
+            dialog: false,
+        }
+    },
+    props: {
+        data: { type: Object },
+        context: { type: String },
+    },
+    computed: {
+        getCurrentUser() {
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user; 
+        }
     },
     methods: {
         opendialog() {
             this.dialog = true;
+        },
+        handleJoinClub() {
+            // TODO: Create another pop up to allow user to fill the required fields:
+            // Reason: Why the user want to join the club
+        },
+        async handleJoinActivity() {
+            let response = 
+                await ActivityService
+                    .joinActivity(this.user.id, this.data.id)
+                    .then(response => response.status == 200
+                        ?   this.$fire(alerter.successAlert(
+                                "Signed Up Success",
+                                response.data.message
+                            ))
+                        :   this.$fire(alerter.errorAlert(
+                                "Signed Up Failed",
+                                response.data.message
+                        )));
+        },
+        handleJoin() {
+            if (this.context == "club") {
+                this.handleJoinClub();
+                return;
+            }
+            this.handleJoinActivity();
         }
+    },
+    mounted() {
+        this.user = this.getCurrentUser;
     }
 }
 </script>
