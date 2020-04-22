@@ -56,17 +56,8 @@ export default {
     name: "Home",
     data() {
         return {
-            clubs: [
-                { name: "Dummy Club Name", description: "WOWWWW" },
-                { name: "Dummy Club Name", description: "WOWWWW" },
-                { name: "Another Dummy Club Name", description: "How would you like it if you don't join this club?" },
-            ],
-            activity: [
-                { name: "Dummy Activity Name", description: "WOWWWW" },
-                { name: "Dummy Activity Name", description: "WOWWWW" },
-                { name: "Another Activity Club Name", description: "How would you like it if you don't join this club?" },
-            ],
-            message: "",
+            activities: [],
+            clubs: [],
         };
     },
     computed: {
@@ -79,17 +70,11 @@ export default {
         Footer,
         ViewPanel
     },
-    async mounted() {
+    mounted() {
         if (!this.isLoggedIn) {
             this.$router.push("/");
             return;
         }
-        this.activities = 
-            await ActivityService
-                .getOngoingActivities();
-        this.clubs = 
-            await ClubService
-                .getClubs();
     }
 }
 </script>

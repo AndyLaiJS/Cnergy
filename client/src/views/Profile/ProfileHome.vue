@@ -53,26 +53,21 @@
                     </div>
                     <!-- <div class="flex-container"> -->
                     <div class="card-title">
-                        <h2>Activities</h2>
+                        <h2>Clubs</h2>
                     </div>
                     <div class="main-container">
                         <div class="cna-view">
                             <div
                                 class="card"
                                 id="smaller-card"
-                                v-for="(activity, index) in usera"
+                                v-for="(club, index) in joinedClubs"
                                 v-bind:key="index"
                             >
                                 <!-- TODO: Create an additional component to store this -->
                                 <!-- Consider using Icon instead of words -->
                                 <div class="card-content">
-                                    Name: <b> {{ activity.name }} </b><br>
-                                    Description: {{ activity.description }}<br>
-                                    <!-- {{ activity.activityDate }} -->
-                                    <!-- Date: {{ getFormattedDate(activity.activityDate) }}<br> -->
-                                    Min. Participants: {{ activity.minParticipants }}<br>
-                                    Max. Participants: {{ activity.maxParticipants }}<br>
-                                    Type: {{ activity.type }}<br>
+                                    Name: <b> {{ club.name }} </b><br>
+                                    Description: {{ club.description }}<br>
                                 </div>
                             </div>
 
@@ -87,7 +82,7 @@
                             <div
                                 class="card"
                                 id="smaller-card"
-                                v-for="(activity, index) in usera"
+                                v-for="(activity, index) in joinedActivities"
                                 v-bind:key="index"
                             >
                                 <!-- TODO: Create an additional component to store this -->
@@ -126,15 +121,8 @@ export default {
     data() {
         return {
             user: new User(),
-            userJoinedClubs: [],
-            // To Andrew: Idk why but if I change the name to user or literally anything else it renders on the top... 
-            usera: [
-                { name: "Dummy Activity Name", description: "A brief description", activityDate: 2020-12-12, minParticipants: 5, maxParticipants: 10, type: "Private"},
-                { name: "SkyMelon", description: "The first", activityDate: 2020-12-12, minParticipants: 5, maxParticipants: 10, type: "Private"},
-                { name: "SkyMango", description: "The wishful second", activityDate: 2020-12-12, minParticipants: 5, maxParticipants: 10, type: "Private"},
-                { name: "SkyKiwi", description: "The powerful third", activityDate: 2020-12-12, minParticipants: 5, maxParticipants: 10, type: "Private"},
-                { name: "SkyCherry", description: "The revised fourth", activityDate: 2020-12-12, minParticipants: 5, maxParticipants: 10, type: "Private"},
-            ],
+            joinedClubs: [],
+            joinedActivities: [],
         };
     },
     components: {
@@ -163,10 +151,10 @@ export default {
             return;
         }
 
-        this.userJoinedActivities =
+        this.joinedActivities =
             await ActivityService
                 .getJoinedActivities(this.user.id);
-        this.userJoinedClubs =
+        this.joinedClubs =
             await ClubService
                 .getJoinedClubs(this.user.id);
     },

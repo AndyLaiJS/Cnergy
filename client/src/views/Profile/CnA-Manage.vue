@@ -78,6 +78,7 @@ export default {
         return {
             user: new User(),
             createdClubs: [],
+            createdActivities: [],
         }
     },
     components: {

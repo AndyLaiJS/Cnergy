@@ -36,7 +36,7 @@
                 </div>
             </span>
             <span v-else class="cna-view">
-                <div class="card" v-for="(act, index) in activity" v-bind:key="index">
+                <div class="card" v-for="(act, index) in activities" v-bind:key="index">
                 <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
                 
                     <div class="card-content">
@@ -69,19 +69,15 @@ export default {
             someStuff: [],
             search: '',
             viewType: true,
-            clubs: [
-                { name: "Dummy Club Name", description: "WOWWWW" },
-                { name: "Dummy Club Name", description: "WOWWWW" },
-                { name: "Dummy Club Name", description: "WOWWWW" },
-                { name: "Dummy Club Name", description: "WOWWWW" },
-            ],
-            activities: [
-                { name: "Dummy Activity Name", description: "WOWWWW" },
-                { name: "Dummy Activity Name", description: "WOWWWW" },
-                { name: "Another Activity Club Name", description: "How would you like it if you don't join this activity?" },
-            ],
+            activities: [],
+            clubs: [],
             message: "",
         };
+    },
+    computed: {
+        isLoggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        },
     },
     components: {
         PopupModal,
@@ -91,18 +87,18 @@ export default {
             this.viewType = !this.viewType;
         }
     },
-    // async mounted() {
-    //     if (!this.isLoggedIn) {
-    //         this.$router.push("/");
-    //         return;
-    //     }
-    //     this.activities = 
-    //         await ActivityService
-    //             .getOngoingActivities();
-    //     this.clubs = 
-    //         await ClubService
-    //             .getClubs();
-    // }
+    async mounted() {
+        if (!this.isLoggedIn) {
+            this.$router.push("/");
+            return;
+        }
+        this.activities = 
+            await ActivityService
+                .getOngoingActivities();
+        this.clubs = 
+            await ClubService
+                .getClubs();
+    }
 }
 </script>
 
