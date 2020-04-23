@@ -8,6 +8,7 @@ import ClubRequestDto from "../dtos/clubRequestDto";
 import CreateClubDto from "../dtos/createClubDto";
 import JoinClubDto from "../dtos/joinClubDto";
 import UpdateClubDto from "../dtos/updateClubDto";
+import ActivityNotFoundException from "../exceptions/activityNotFoundException";
 import ClubNotFoundException from "../exceptions/clubNotFoundException";
 import UnauthorizedException from "../exceptions/unauthorizedException";
 import UserHasSignedUpException from "../exceptions/userHasSignedUpException";
@@ -248,19 +249,31 @@ class ClubController implements Controller {
       */
      private getPendingClubRequests = async (request: Request, response: Response, next: NextFunction) => {
           const uid: string = request.query["uid"];
-          const user = await this.userService
-                                 .getUserInfoByUID(uid) as User;
-          const results = await this.clubService
-                                    .getPendingRequestsByUID(user);
+          const clubId: number = request.body["id"];          
 
-          for (let i = 0; i < results.length; i ++) {
-               results[i]["club"] = ( await this.clubService
-                                                .getClubById(results[i].clubId) )!;
-               results[i]["user"] = ( await this.userService
-                                                .getUserInfoByUID(results[i].userId) )!;
+          const results = await this.clubService
+                                    .getClubPresident(clubId);
+          if (results.length == 0) {
+               next(new ActivityNotFoundException());
+               return;
           }
 
-          response.send(results);
+          // Only the creator of the activity can view the activity pending requests
+          const presidentId = results[0].presidentId;
+          if (presidentId == uid) {
+               const users = await this.clubService
+                                       .getClubPendingRequest(clubId);
+
+               for (let i = 0; i < users.length; i ++) {
+                    const reason = await this.clubService
+                                             .getJoinClubReason(clubId, users[i].id);
+                    users[i]["reason"] = reason;
+               }
+               response.send(users);
+
+          } else {
+               next(new UnauthorizedException());
+          }
      }
 
      /**
@@ -270,35 +283,54 @@ class ClubController implements Controller {
       */
      private rejectJoinClubRequest = async (request: Request, response: Response, next: NextFunction) => {
           const uid: string = request.query["uid"];
-          const user = await this.userService
-                                 .getUserInfoByUID(uid) as User;
-          const clubInfo: ClubRequestDto = request.body;
+          const joinRequest: ClubRequestDto = request.body;
+
+          const results = await this.clubService
+                                    .getClubPresident(joinRequest.clubId);
+          if (results.length == 0) {
+               next(new ActivityNotFoundException());
+               return;
+          }
+
+          // Only the president of the club can reject the pending requests
+          const presidentId = results[0].presidentId;
+          if (presidentId != uid) {
+               next(new UnauthorizedException());
+               return;
+          }
+
           const hasSignedUp = await this.clubService
                                         .getUserJoinClubCount(
-                                             clubInfo.club.id,
-                                             clubInfo.user.id
+                                             joinRequest.clubId,
+                                             joinRequest.userId
                                         );
           if (hasSignedUp == 0) {
                next(new JoinRequestNotFoundException(this.context));
-          } else {
-               const hasJoined = await this.clubService
-                                           .getUserHasJoinedClubStatus(
-                                                clubInfo.club.id,
-                                                clubInfo.user.id
-                                           );
-               if (hasJoined) {
-                    next(new UserHasJoinedException(this.context))
-               } else {
-                    await this.clubService
-                              .deleteUserJoinClub(
-                                   clubInfo.club.id,
-                                   clubInfo.user.id
-                              );
-                    response.send({
-                         message: "You have successfully rejecting club request",
-                         status: 200
-                    });          
-               }
+               return;
+          }
+
+          const hasJoined = await this.clubService
+                                      .getUserHasJoinedClubStatus(
+                                           joinRequest.clubId,
+                                           joinRequest.userId
+                                      );
+          if (hasJoined) {
+               next(new UserHasJoinedException(this.context));
+               return;
+          }
+
+          try {
+               await this.clubService
+                         .deleteUserJoinClub(
+                              joinRequest.clubId,
+                              joinRequest.userId
+                         );
+               response.send({
+                    message: "You have successfully rejecting club request",
+                    status: 200
+               });
+          } catch(e) {
+               next(e);
           }
      }
 
@@ -308,35 +340,56 @@ class ClubController implements Controller {
       * acceptJoinClubRequest() allow club president to accept a sign up request from user
       */
      private acceptJoinClubRequest = async (request: Request, response: Response, next: NextFunction) => {
-          const clubInfo: ClubRequestDto = request.body;
+          const uid: string = request.query["uid"];
+          const joinRequest: ClubRequestDto = request.body;
+
+          const results = await this.clubService
+                                    .getClubPresident(joinRequest.clubId);
+          if (results.length == 0) {
+               next(new ActivityNotFoundException());
+               return;
+          }
+
+          // Only the president of the club can reject the pending requests
+          const presidentId = results[0].presidentId;
+          if (presidentId != uid) {
+               next(new UnauthorizedException());
+               return;
+          }
+          
           const hasSignedUp = await this.clubService
                                         .getUserJoinClubCount(
-                                             clubInfo.club.id,
-                                             clubInfo.user.id
+                                             joinRequest.clubId,
+                                             joinRequest.userId
                                         );
           if (hasSignedUp == 0) {
-               next(new JoinRequestNotFoundException(this.context))
+               next(new JoinRequestNotFoundException(this.context));
+               return;
           }
-           else {
-               const hasJoined = await this.clubService
-                                           .getUserHasJoinedClubStatus(
-                                                clubInfo.club.id,
-                                                clubInfo.user.id
-                                           );
-               if (hasJoined) {
-                    next(new UserHasJoinedException(this.context))
-               } else {
-                    await this.clubService
-                              .updateUserHasJoinedClubStatus(
-                                   clubInfo.club.id,
-                                   clubInfo.user.id
-                              );
-                    response.send({
-                         message: "You have successfully accepting club request",
-                         status: 200
-                    })
-               }
+
+          const hasJoined = await this.clubService
+                                      .getUserHasJoinedClubStatus(
+                                           joinRequest.clubId,
+                                           joinRequest.userId
+                                      );
+          if (hasJoined) {
+               next(new UserHasJoinedException(this.context));
+               return;
           }
+
+          try {
+               await this.clubService
+                         .updateUserHasJoinedClubStatus(
+                              joinRequest.clubId,
+                              joinRequest.userId
+                         );
+               response.send({
+                    message: "You have successfully accepting club request",
+                    status: 200
+               });
+          } catch(e) {
+               next(e);
+          }          
      }
 
      /**

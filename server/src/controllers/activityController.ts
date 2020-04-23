@@ -295,12 +295,13 @@ class ActivityController implements Controller {
       */
      private getJoinedActivities = async (request: Request, response: Response, next: NextFunction) => {
           const uid: string = request.query["uid"];
-          const user = await this.userService
-                                 .getUserInfoByUID(uid) as User;
-          const activities = await this.activityService
-                                       .getUserHasJoinedActvities(user.id);
-                            
-          response.send(activities);
+          try {
+               const activities = await this.activityService
+                                            .getUserHasJoinedActvities(uid);
+               response.send(activities);
+          } catch(e) {
+               next(e);
+          }                            
      }
 
      /**
@@ -321,8 +322,6 @@ class ActivityController implements Controller {
           }
 
           const creatorId = results[0].creatorId;
-          console.log(creatorId);
-          console.log(activityData.id);
 
           // Only the creator of the activity can view the activity pending requests
           if (creatorId == uid) {
@@ -404,7 +403,7 @@ class ActivityController implements Controller {
                return;
           }
 
-          // // Only the creator of the activity can accept the pending requests
+          // Only the creator of the activity can accept the pending requests
           const creatorId = results[0].creatorId;
           if (creatorId != uid) {
                next(new UnauthorizedException());
