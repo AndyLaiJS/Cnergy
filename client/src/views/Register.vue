@@ -15,12 +15,14 @@
                     <div class="compress-form">
                         <input 
                             class="form-control"
+                            id="first-inp"
                             type="text"
                             v-model="user.firstName"
                             placeholder="First name"
                         />
                         <input 
                             class="form-control"
+                            id="second-inp"
                             type="text"
                             v-model="user.lastName"
                             placeholder="Last name"
@@ -34,7 +36,7 @@
                             placeholder="CULink Email adress"
                         />
                     </div>
-                    <div class="compress-form">
+                    <div class="form-group">
                         <select 
                             v-model="user.major"
                         >
@@ -46,7 +48,10 @@
                                 {{ major }}
                             </option>
                         </select>
+                    </div>
+                    <div class="compress-form">
                         <select 
+                            id="first-inp"
                             v-model="user.college"
                         >
                             <option value="" disabled selected hidden> College </option>
@@ -55,6 +60,17 @@
                                 :key="college"
                             >
                                 {{ college }}
+                            </option>
+                        </select>
+                        <select
+                            id="second-inp"
+                        >
+                            <option value="" disabled selected hidden> Gender </option>
+                            <option 
+                                v-for="gender in genders" 
+                                :key="gender"
+                            > 
+                                {{ gender }}
                             </option>
                         </select>
                     </div>
@@ -98,6 +114,7 @@ export default {
             confirmPassword: "",
             colleges: cuhk.COLLEGES,
             majors: cuhk.MAJOR_CODES,
+            genders: ["Male", "Female"],
         }
     },
     components: {
@@ -137,6 +154,12 @@ export default {
 </script>
 
 <style scope lang="scss">
+#first-inp, #second-inp {
+    flex: 1;
+}
+#second-inp {
+    margin-right: 0;
+}
 .register-container{
     position: relative;
 }
