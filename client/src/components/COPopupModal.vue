@@ -22,7 +22,7 @@
                 <v-divider/>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <button @click="dialogMember = true"><i class="el-icon-user"></i></button>
+                    <button @click="handleMembers"><i class="el-icon-user"></i></button>
                     <v-spacer/>
                     <button @click="handleEdit" id="greenbtn"><i class="el-icon-edit"></i></button>
                     <v-spacer></v-spacer>
@@ -110,13 +110,17 @@
                             > 
                                 Current members
                             </v-card-title>
-
                             <v-card-text 
                                 class="v-card-text-content"
                             >   
-                                <div v-for="(participant, index) in participants" :key="index"> 
+<!-- <<<<<<< HEAD -->
+                                <!-- <div v-for="(participant, index) in participants" :key="index"> 
                                     <span> {{ participant }} </span>
-                                    <button @click="dialogDuoInfo = true"><i class="el-icon-edit"></i></button>
+                                    <button @click="dialogDuoInfo = true"><i class="el-icon-edit"></i></button> -->
+<!-- ======= -->
+                                <div v-for="(member, index) in clubMembers" :key="index"> 
+                                    <span> {{ getFormattedName(member.user.firstName, member.user.lastName) }} </span>
+<!-- >>>>>>> 8cee54cc7b95f2b6c565343c893dd2dbd2a2e982 -->
                                 </div>
                             </v-card-text>
 
@@ -176,6 +180,7 @@ export default {
             dialogMember: false,
             dialogDecision: false,
             joinRequestUsers: [],
+            clubMembers: [],
             pos: "",
         }
     },
@@ -271,6 +276,15 @@ export default {
                             )));
             
             this.dialogDecision = false
+        },
+        async handleMembers() {
+            let response =
+                await ClubService
+                    .getClubMembers(this.clubId)
+                    .then(response => this.clubMembers = response.data);
+                console.log(this.clubMembers);
+
+            this.dialogMember = true
         }
     },
     mounted() {

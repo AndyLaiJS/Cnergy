@@ -101,6 +101,15 @@ class ClubService {
                .then(response => response)
                .catch(err => err.response);
      }
+
+     getClubMembers(clubId) {
+          return axios
+               .get(`${API_URL}/members`, {
+                    params: { id: clubId }
+               })
+               .then(response => response)
+               .catch(err => err.response);
+     }
 }
 
 export default new ClubService();
