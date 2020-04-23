@@ -37,9 +37,11 @@
                             >   
                                 <div class="card-content">
                                     <b>{{ club.name }}</b>
-                                    <!-- {{ club.description }} -->
                                     <br><br>
-                                    <COPopupModal />
+                                    <COPopupModal 
+                                        v-bind:clubId="club.id"
+                                        v-bind:clubName="club.name"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -58,11 +60,9 @@
                                 <div class="card-content">
                                     <b>{{ activity.name }}</b><br>
                                     Event Date: {{ getFormattedDate(activity.activityDate) }}<br><br>
-                                    <!-- {{ activity.description }} -->
                                     <AOPopupModal
                                         v-bind:activityId="activity.id"
                                         v-bind:activityName="activity.name"
-                                        v-bind:activityDescription="activity.description"
                                     />
                                 </div>
                             </div>

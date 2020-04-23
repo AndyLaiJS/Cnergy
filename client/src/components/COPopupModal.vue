@@ -1,34 +1,40 @@
 <template>
     <!-- For Club Owner manage -->
     <div class="text-center">
-        <button @click="opendialog()">Edit</button>
+        <button @click="openDialog()">Edit</button>
         <v-dialog
             v-model="dialog"
             width="500"
         >
-
             <v-card>
                 <v-card-title
                     class="headline"
                     primary-title
-                > Title
-                </v-card-title>
-                
+                > 
+                    {{ this.clubName }}
+                </v-card-title>       
                 <textarea 
-                            rows="6" 
-                            placeholder="Whatever the previous description was" 
+                    rows="6"
+                    v-model="updatedDescription"
+                    placeholder="Enter your updated description here" 
                 />
-
-                <v-divider></v-divider>
-
+                <v-divider/>
                 <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <button @click="dialog = false" id="redbtn"> Delete </button>
-                    <v-spacer></v-spacer>
-                    <button @click="dialog = false" id="greenbtn"> Edit </button>
-                    <v-spacer></v-spacer>
-                    <button @click="dialog = false"> Ok </button>
-                    <v-spacer></v-spacer>
+                    <v-spacer/>
+                    <button
+                        id="redbtn"
+                        @click="dialog = false"
+                    > Delete </button>
+                    <v-spacer/>
+                    <button
+                        id="greenbtn"
+                        @click="handleEdit"
+                    > Edit </button>
+                    <v-spacer/>
+                    <button
+                        @click="dialog = false"
+                    > Ok </button>
+                    <v-spacer/>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -36,15 +42,68 @@
 </template>
 
 <script>
+import User from "../models/User";
+import alerter from '../utils/alerter';
+import validator from '../utils/validator';
+import clubService from '../services/clubService';
+
 export default {
     data () {
-      return {
-        dialog: false,
-      }
+        return {
+            user: new User(),
+            updatedDescription: "",
+            dialog: false,
+        }
+    },
+    props: {
+        clubId: { type: Number },
+        clubName: { type: String },
+    },
+    computed: {
+        getCurrentUser() {
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user;
+        }
     },
     methods: {
-        opendialog() {
+        openDialog() {
             this.dialog = true;
+        },
+        closeDialog() {
+            this.dialog = false;
+        },
+        async handleEdit() {
+            let err = validator.updateActivityClubChecker(this.updatedDescription);
+            if (err.length != 0) {
+                this.$fire(alerter.errorAlert(
+                    "Update Description Failed", err
+                ));
+                return;
+            }
+            let response =
+                await clubService
+                    .updateClub(
+                        this.user.id,
+                        this.clubId,
+                        this.updatedDescription
+                    )
+                    .then(response => response.status == 200
+                        ?   this.$fire(alerter.successAlert(
+                                "Update Description Success",
+                                response.data.message
+                            ))
+                        :   this.$fire(alerter.errorAlert(
+                                "Update Description Failed",
+                                response.data.message
+                            )));
+            this.closeDialog();
+        }
+    },
+    mounted() {
+        this.user = this.getCurrentUser;
+        if (!this.user) {
+            this.$router.push("/");
+            return;
         }
     }
 }

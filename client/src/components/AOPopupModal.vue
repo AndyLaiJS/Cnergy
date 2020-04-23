@@ -78,7 +78,7 @@ export default {
             this.dialog = false;
         },
         async handleEdit() {
-            let err = validator.updateActivityChecker(this.updatedDescription);
+            let err = validator.updateActivityClubChecker(this.updatedDescription);
             if (err.length != 0) {
                 this.$fire(alerter.errorAlert(
                     "Update Description Failed", err

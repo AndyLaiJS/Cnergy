@@ -36,6 +36,17 @@ class ClubService {
                })
                .then(response => response.data );
      }
+     updateClub(userId, clubId, description) {
+          return axios
+               .put(`${API_URL}`, {
+                    id: clubId,
+                    description: description
+               }, {
+                    params: { uid: userId }
+               })
+               .then(response => response)
+               .catch(err => err.response);
+     }
 }
 
 export default new ClubService();
