@@ -21,28 +21,13 @@
                 />
                 <v-divider/>
                 <v-card-actions>
-<<<<<<< HEAD
                     <v-spacer></v-spacer>
                     <button @click="dialogMember = true"><i class="el-icon-user"></i></button>
                     <v-spacer/>
                     <button @click="handleEdit" id="greenbtn"><i class="el-icon-edit"></i></button>
                     <v-spacer></v-spacer>
-                    <button @click="dialogP = true"> <i class="el-icon-info"></i> </button>
+                    <button @click="handleRequest"> <i class="el-icon-info"></i> </button>
                     <!-- See who joined the club -->
-=======
-                    <v-spacer/>
-                    <button
-                        id="greenbtn"
-                        @click="handleEdit"
-                    >
-                        <i class="el-icon-edit"></i>
-                    </button>
-                    <v-spacer/>
-                    <button
-                        @click="handleRequest">
-                            <i class="el-icon-info"></i>
-                    </button>
->>>>>>> andrew
                     <v-dialog
                         v-model="dialogP"
                         width="500"
