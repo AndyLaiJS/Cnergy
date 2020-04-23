@@ -28,6 +28,20 @@
                             placeholder="Event Description" 
                         />
                     </div>
+                    <div class="compress-form">
+                        <input
+                            id="first-box"
+                            class="form-control"
+                            v-model="activity.activityDate"
+                            type="date"
+                            max="9999-12-31"
+                        />
+                        <input
+                            id="second-box"
+                            class="form-control"
+                            type="time"
+                        />
+                    </div>
                     <div class="form-group">
                         <select
                             v-model="activity.type"
@@ -37,14 +51,6 @@
                                 {{ option }}
                             </option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <input
-                            class="form-control"
-                            v-model="activity.activityDate"
-                            type="date"
-                            max="9999-12-31"
-                        />
                     </div>
                     <div class="compress-form">
                         <input 

@@ -11,7 +11,7 @@
                     class="headline"
                     primary-title
                 > 
-                    test
+                    testfasasa
                 </v-card-title>
                 <v-card-text>
                     Description: {{ description }}<br>

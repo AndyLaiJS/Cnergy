@@ -31,12 +31,13 @@
                         <div class="card-container" id="desc">
                             <h2> About me </h2>
                             <div class="content-lists">
-                                <input
+                                <textarea
+                                    rows="5"
                                     type="text"
                                     class="input-box-desc"
                                     v-model="user.about"
                                     placeholder="About Me"
-                                >
+                                />
                             </div>
                         </div>
                     </div>
@@ -140,6 +141,9 @@ export default {
 .content-lists {
     display: flex;
     margin: 10px;
+    textarea {
+        resize: none;
+    }
 }
 label {
     font-size: 17px;
