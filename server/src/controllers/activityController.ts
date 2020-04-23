@@ -9,8 +9,9 @@ import ActivityRequestDto from "../dtos/activityRequestDto";
 import CreateActivityDto from "../dtos/createActivityDto";
 import UpdateActivityDto from "../dtos/updateActivityDto";
 import JoinActivityDto from "../dtos/joinActivityDto";
-import CreatorLeaveActivityException from "../exceptions/creatorLeaveActivityExceptions";
 import ActivityNotFoundException from "../exceptions/activityNotFoundException";
+import CreatorLeaveActivityException from "../exceptions/creatorLeaveActivityExceptions";
+import ParticipantsCountLimitExceededException from "../exceptions/participantsCountLimitExceededException";
 import UnauthorizedException from "../exceptions/unauthorizedException";
 import UserHasSignedUpException from "../exceptions/userHasSignedUpException";
 import UserHasNotSignedUpException from "../exceptions/userHasNotSignedUpException";
@@ -19,6 +20,7 @@ import JoinRequestNotFoundException from "../exceptions/joinRequestNotFoundExcep
 
 import validationMiddleware from "../middlewares/validationMiddleware";
 import utils from "../utils";
+import { Activity } from "src/entity/Activity";
 
 class ActivityController implements Controller {
      public path = "/activity";
@@ -42,11 +44,11 @@ class ActivityController implements Controller {
 
           this.router
               .get(`${this.path}/join`, this.getJoinedActivities)
-              .post(`${this.path}/join`, this.joinActivity)
+              .post(`${this.path}/join`, validationMiddleware(JoinActivityDto) ,this.joinActivity)
               .delete(`${this.path}/join`, this.cancelJoinActivity);
 
           this.router
-              .post(`${this.path}/accept`, this.acceptActivityRequest);
+              .post(`${this.path}/accept`, validationMiddleware(ActivityRequestDto), this.acceptActivityRequest);
           this.router
               .delete(`${this.path}/reject`, validationMiddleware(ActivityRequestDto), this.rejectActivityRequest);
           this.router
@@ -127,6 +129,13 @@ class ActivityController implements Controller {
           try {
                const result = await this.activityService
                                         .postActivity(activityData, creator);
+
+               // Activity creator join the activity by default
+               await this.activityService
+                         .postUserJoinActivity(result.id, creator.id);
+               await this.activityService
+                         .updateActivityParticipantsCount(result.id, 1);
+
                response.send(result);
           } catch(e) {
                next(e);
@@ -183,27 +192,36 @@ class ActivityController implements Controller {
                                  .getUserInfoByUID(uid) as User;
 
           const activityData: JoinActivityDto = request.body;
-          const hasSignedUp = await this.activityService
-                                        .getJoinActivityCount(activityData.id, user.id);
-          const type = await this.activityService
-                                   .getActivityTypeById(activityData.id);
+          const activity = await this.activityService
+                                     .getActivityById(activityData.id) as Activity;
+          if (!activity) {
+               next(new ActivityNotFoundException());
+               return;
+          }
 
           let hasApproved: boolean = true;
-          if (type == "Private") {
+          if (activity.type == "Private") {
                hasApproved = false;
           }
+          
+          const hasSignedUp = await this.activityService
+                                        .getJoinActivityCount(activityData.id, user.id);
 
           // If the user request is recorded, then he/she can't request to join the activity again
           if (hasSignedUp != 0) {
                next(new UserHasSignedUpException(this.context, hasApproved));
                return;
           }
-
+          if (activity.participantsCount == activity.maxParticipants) {
+               next(new ParticipantsCountLimitExceededException());
+               return;
+          }
+          
           try {
                await this.activityService
                          .postUserJoinActivity(activityData.id, user.id, hasApproved);
 
-               let additionalMsg: string = (type == "Private")
+               let additionalMsg: string = (activity.type == "Private")
                     ?    " Please wait for the confirmation from the activity creator"
                     :    ""
                if (additionalMsg.length == 0) {
@@ -291,98 +309,150 @@ class ActivityController implements Controller {
       * getPendingActivityRequests() allow activity creator to check
       * who signed up to the activity and has not been accepted yet
       */
-     private getPendingActivityRequests = async (request: Request, response: Response) => {
+     private getPendingActivityRequests = async (request: Request, response: Response, next: NextFunction) => {
           const uid: string = request.query["uid"];
-          const user = await this.userService
-                                    .getUserInfoByUID(uid) as User;
-          const results = await this.activityService
-                                    .getPendingRequestByUID(user.id);
+          const activityData: JoinActivityDto = request.body;
 
-          for (let i = 0; i < results.length; i ++) {
-               results[i]["activity"] = ( await this.activityService
-                                                    .getActivityById(results[i].activityId) )!;
-               results[i]["user"] = ( await this.userService
-                                                .getUserInfoByUID(results[i].userId) )!;
+          const results = await this.activityService
+                                    .getActivityCreatorId(activityData.id);
+          if (results.length == 0) {
+               next(new ActivityNotFoundException());
+               return;
           }
-          response.send(results);
+
+          const creatorId = results[0].creatorId;
+          console.log(creatorId);
+          console.log(activityData.id);
+
+          // Only the creator of the activity can view the activity pending requests
+          if (creatorId == uid) {
+               const users = await this.activityService
+                                       .getActivityPendingRequest(activityData.id);
+               response.send(users);
+          } else {
+               next(new UnauthorizedException());
+          }
      }
 
      /**
-      * DELETE /activity/reject
+      * DELETE /activity/reject?uid=...
       * 
       * rejectActivityRequest() allow activity creator to reject a join request from different user
       */
      private rejectActivityRequest = async (request: Request, response: Response, next: NextFunction) => {
-          const activityData: ActivityRequestDto = request.body;
+          const uid: string = request.query["uid"];
+          const joinRequest: ActivityRequestDto = request.body;
+
+          const results = await this.activityService
+                                    .getActivityCreatorId(joinRequest.activityId);
+          if (results.length == 0) {
+               next(new ActivityNotFoundException());
+               return;
+          }
+
+          // Only the creator of the activity can reject the pending requests
+          const creatorId = results[0].creatorId;
+          if (creatorId != uid) {
+               next(new UnauthorizedException());
+               return;
+          }
+
           const hasSignedUp = await this.activityService
                                         .getJoinActivityCount(
-                                             activityData.activity.id,
-                                             activityData.user.id
+                                             joinRequest.activityId,
+                                             joinRequest.userId
                                         );
-
           // No joinActivity record is found
           if (hasSignedUp == 0) {
                next(new JoinRequestNotFoundException(this.context));
+               return;
+          }
+
+          const hasApproved = await this.activityService
+                                        .getUserJoinActivityHasApprovedStatus(
+                                             joinRequest.activityId,
+                                             joinRequest.userId
+                                        );
+          if (!hasApproved) {
+               await this.activityService
+                         .deleteUserJoinActivity(
+                              joinRequest.activityId,
+                              joinRequest.userId
+                         );
+               response.send({
+                    message: "You have successfully rejecting activity request",
+                    status: 200
+               });
           } else {
-               const hasApproved = await this.activityService
-                                             .getUserJoinActivityHasApprovedStatus(
-                                                  activityData.activity.id,
-                                                  activityData.user.id
-                                             );
-               if (hasApproved) {
-                    next(new UserHasJoinedException(this.context));
-               } else {
-                    await this.activityService
-                              .deleteUserJoinActivity(
-                                   activityData.activity.id,
-                                   activityData.user.id
-                              );
-                    response.send({
-                         message: "You have successfully rejecting activity request",
-                         status: 200
-                    });
-               }
+               next(new UserHasJoinedException(this.context));
           }
      }
 
      /**
-      * POST /activity/accept
+      * POST /activity/accept?uid=...
       * 
       * acceptActivityRequest() allow activity creator to accept a join request from different user
       */
      private acceptActivityRequest = async (request: Request, response: Response, next: NextFunction) => {
-          const activityData: ActivityRequestDto = request.body;
+          const uid: string = request.query["uid"];
+          const joinRequest: ActivityRequestDto = request.body;
+          
+          const results = await this.activityService
+                                    .getActivityCreatorId(joinRequest.activityId);
+          if (results.length == 0) {
+               next(new ActivityNotFoundException());
+               return;
+          }
+
+          // // Only the creator of the activity can accept the pending requests
+          const creatorId = results[0].creatorId;
+          if (creatorId != uid) {
+               next(new UnauthorizedException());
+               return;
+          }
+          
+          // If no join activity request found, throw an error message
           const hasSignedUp = await this.activityService
                                         .getJoinActivityCount(
-                                             activityData.activity.id,
-                                             activityData.user.id
+                                             joinRequest.activityId,
+                                             joinRequest.userId
                                         );
-
-          // No joinActivity record is found
           if (hasSignedUp == 0) {
                next(new JoinRequestNotFoundException(this.context));
-          } else {
-               const hasApproved = await this.activityService
-                                             .getUserJoinActivityHasApprovedStatus(
-                                                  activityData.activity.id,
-                                                  activityData.user.id
-                                             );
-               if (hasApproved == false) {
-                    await this.activityService
-                              .updateJoinActivityApprovedStatus(
-                                   activityData.activity.id,
-                                   activityData.user.id
-                              );
-                    await this.activityService
-                              .updateActivityParticipantsCount(activityData.activity.id, 1);
+               return;
+          }
+          
+          const hasApproved = await this.activityService
+                                        .getUserJoinActivityHasApprovedStatus(
+                                             joinRequest.activityId,
+                                             joinRequest.userId
+                                        );
+          if (!hasApproved) {
+               const activity = await this.activityService
+                                             .getActivityById(
+                                                  joinRequest.activityId
+                                             ) as Activity;
 
-                    response.send({
-                         message: "You have successfully accepting activity request",
-                         status: 200
-                    });
-               } else {
-                    next(new UserHasJoinedException(this.context));
+               // Can't accept activity request if the participant counts has reached the limit
+               if (activity.participantsCount == activity.maxParticipants) {
+                    next(new ParticipantsCountLimitExceededException());
+                    return;
                }
+
+               await this.activityService
+                         .updateJoinActivityApprovedStatus(
+                              joinRequest.activityId,
+                              joinRequest.userId
+                         );
+               await this.activityService
+                         .updateActivityParticipantsCount(joinRequest.activityId, 1);
+
+               response.send({
+                    message: "You have successfully accepting activity request",
+                    status: 200
+               });
+          } else {
+               next(new UserHasJoinedException(this.context));
           }
      }
 }

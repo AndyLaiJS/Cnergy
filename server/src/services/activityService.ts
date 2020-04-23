@@ -1,13 +1,14 @@
 import { getRepository } from "typeorm";
 import { Activity } from "../entity/Activity";
 import { JoinActivity } from "../entity/JoinActivity";
+import { User } from "../entity/User";
 import CreateActivityDto from "src/dtos/createActivityDto";
-import User from "src/interfaces/userInterface";
 import UpdateActivityDto from "src/dtos/updateActivityDto";
 
 class ActivityService {
      private activityRepository = getRepository(Activity);
      private joinActivityRepository = getRepository(JoinActivity);
+     private userRepository = getRepository(User);
 
      public getActivitiesByTimestamp = async (timestamp: string, comparator: string = ">=") => {
           const activities = await this.activityRepository
@@ -40,6 +41,17 @@ class ActivityService {
           return activity;
      }
 
+     public getActivityParticipantsCount = async (activityId: number) => {
+          const activity = await this.activityRepository
+                                  .createQueryBuilder("activity")
+                                  .select("activity.maxParticipants")
+                                  .where(`activity.id = :id`, {
+                                       id: activityId
+                                  })
+                                  .getOne();
+          return activity;
+     }
+
      public getActivityTypeById = async (activityId: number) => {
           const activity = await this.activityRepository
                                      .createQueryBuilder("activity")
@@ -61,15 +73,13 @@ class ActivityService {
           return user;
      }
 
-     public postActivity = async (activityData: CreateActivityDto, creator: User) => {
+     public postActivity = async (activityData: CreateActivityDto, creator) => {
           const activity = await this.activityRepository
                                      .create({
                                           ...activityData,
                                           creator: creator
                                      })
                                      .save();
-          await this.postUserJoinActivity(activity.id, creator.id);
-          await this.updateActivityParticipantsCount(activity.id, 1);
           return activity;
      }
 
@@ -166,15 +176,14 @@ class ActivityService {
           return result;
      }
 
-     public getPendingRequestByUID = async (userId: string) => {
-          const result = await this.joinActivityRepository
-                                   .createQueryBuilder("joinActivity")
-                                   .innerJoin("joinActivity.activity", "activity")
-                                   .innerJoin("joinActivity.user", "user")
-                                   .where(`activity.creatorId = :userId AND
-                                           joinActivity.hasApproved = false`, {
-                                             userId: userId
-                                   })
+     public getActivityPendingRequest = async (activityId: number) => {
+          const result = await this.userRepository
+                                   .createQueryBuilder("user")
+                                   .innerJoin("user.joinedActivities", "activity")
+                                   .where(`activity.activityId = :activityId AND
+                                           activity.hasApproved = FALSE`, {
+                                             activityId: activityId
+                                        })
                                    .getMany();
           return result;
      }
