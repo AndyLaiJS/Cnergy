@@ -25,13 +25,6 @@
 
                 <v-card-actions>
                     <v-spacer/>
-                    <button 
-                        id="redbtn"
-                        @click="dialog = false"
-                    >
-                        <i class="el-icon-delete"></i> 
-                    </button>
-                    <v-spacer/>
                     <button
                         id="greenbtn"
                         @click="handleEdit">
