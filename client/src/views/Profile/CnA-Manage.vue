@@ -7,7 +7,7 @@
 
                 <div class="overlay">
                     <div class="pic">
-                        <img style="height: 145px; width: 145px;" src="../../assets/avatar.png">
+                        <img style="height: 145px; width: 145px;" :src="require('../../assets/'+img)">
                         <div class="name">
                             <h3>{{ getFormattedName(user.firstName, user.lastName) }}</h3>
                         </div>
@@ -99,6 +99,7 @@ export default {
             user: new User(),
             createdClubs: [],
             createdActivities: [],
+            img: '',
         }
     },
     components: {
@@ -126,6 +127,11 @@ export default {
         if (!this.user) {
             this.$router.push("/");
             return;
+        }
+        if (this.user.gender == "Female") {
+            this.img = 'FemaleAvatar.jpeg'
+        } else {
+            this.img = 'avatar.png'
         }
         this.createdActivities = 
             await ActivityService.getOngoingActivities(this.user.id);

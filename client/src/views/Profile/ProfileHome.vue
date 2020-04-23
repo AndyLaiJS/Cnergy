@@ -7,7 +7,7 @@
                     <div class="pic">
                         <img
                             style="height: 145px; width: 145px;"
-                            src="../../assets/avatar.png"
+                            :src="require('../../assets/'+img)"
                         />
                         <div class="name">
                             <h3>
@@ -136,6 +136,7 @@ export default {
             user: new User(),
             joinedClubs: [],
             joinedActivities: [],
+            img: '',
         };
     },
     components: {
@@ -158,11 +159,26 @@ export default {
             this.$router.push("/");
         },
     },
+    mounted() {
+        console.log(this.user.gender);
+        console.log("Hello World");
+        if (this.user.gender == "") {
+            this.img = 'FemaleAvatar.jpeg'
+        } else {
+            this.img = 'avatar.png'
+        }
+    },
     async mounted() {
         this.user = this.getCurrentUser;
         if (!this.user) {
             this.$router.push("/");
             return;
+        }
+
+        if (this.user.gender == "Female") {
+            this.img = 'FemaleAvatar.jpeg'
+        } else {
+            this.img = 'avatar.png'
         }
 
         this.joinedActivities =
