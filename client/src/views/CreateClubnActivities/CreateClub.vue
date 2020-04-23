@@ -13,25 +13,6 @@
                         <h1> Create a new club! </h1>
                         <p> It's quick and easy to share your passion </p>
                     </div>
-                    <div class="input-logo">
-                        <div class="logo-container">
-                            <div class="preview">
-                                <div id="display-logo" class="display-logo">
-                                    <img src="" alt="LOGO" class="display-logo-img">
-                                    <span class="display-logo-default">LOGO</span>
-                                </div>
-                            </div>
-                            <div class="upload-reset">
-                                <div class="upload">
-                                    <label for="logo" class="create-button">⬆︎ Upload Club Logo</label>
-                                </div>
-                                <br>
-                                <div class="reset">
-                                    <label id="reset" for="reset" class="reset create-button">Reset Club Logo</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="form-group">
                         <input 
                             class="form-control"

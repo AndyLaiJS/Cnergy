@@ -22,8 +22,6 @@
                 <v-divider/>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <button @click="dialog = false" id="redbtn"> <i class="el-icon-delete"></i> </button>
-                    <v-spacer></v-spacer>
                     <button @click="handleEdit" id="greenbtn"> <i class="el-icon-edit"></i> </button>
                     <v-spacer></v-spacer>
                     <button @click="dialogP = true"> <i class="el-icon-info"></i> </button>

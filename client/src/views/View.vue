@@ -53,7 +53,6 @@
                     <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
                     <div class="card-content">
                         <b>{{ club.name }}</b><br>
-                        Participants: 3 
                         <!-- <div class="description">
                             {{ club.description }}
                         </div> -->

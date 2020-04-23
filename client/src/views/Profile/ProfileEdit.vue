@@ -39,22 +39,6 @@
                                 >
                             </div>
                         </div>
-                        <div class="card-container" id="edit">
-                            <h2> Basic Info </h2>
-                                <div class="content-lists">
-                                    <label for="fname">Major </label>
-                                    <input type="text" name="fname" class="input-box" placeholder="Computer Science">
-                                </div>
-                                <div class="content-lists">
-                                    <label for="fname">College </label>
-                                    <input type="text" name="fname" class="input-box" placeholder="New Asia College">
-                                </div>
-                            <button
-                                id="one"
-                                @click="changeAbout"
-                            > Edit 
-                            </button>
-                        </div>
                     </div>
                 </div>
 
