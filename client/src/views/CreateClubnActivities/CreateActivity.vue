@@ -32,6 +32,7 @@
                         <select
                             v-model="activity.type"
                         >
+                            <option value="" disabled selected hidden> Private/Public Activity </option>
                             <option v-for="option in options" :key="option">
                                 {{ option }}
                             </option>

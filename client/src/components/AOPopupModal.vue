@@ -10,36 +10,57 @@
                 <v-card-title
                     class="headline"
                     primary-title
-                >                
-                    {{ this.activityName }}
-                </v-card-title>                
+                    > 
+                    <textarea 
+                        rows="0" 
+                        placeholder="Title, editable" 
+                    />
+                </v-card-title>
+                
                 <textarea 
                     rows="6"
                     v-model="updatedDescription"
                     placeholder="Enter your updated description here"
                 >
                 </textarea>
-                <v-card-text>
-                    Participants: <br>
-                    People's name
-                </v-card-text>
-                <v-divider/>
+
+                <v-divider></v-divider>
+
                 <v-card-actions>
-                    <v-spacer/>
-                    <button 
-                        @click="dialog = false"
-                        id="redbtn"
-                    > Delete </button>
-                    <v-spacer/>
-                    <button
-                        id="greenbtn"
-                        @click="handleEdit"
-                    > Edit </button>
-                    <v-spacer/>
-                    <button
-                        @click="dialog = false"
-                    > Ok </button>
-                    <v-spacer/>
+                    <v-spacer></v-spacer>
+                    <button @click="dialog = false" id="redbtn"> <i class="el-icon-delete"></i> </button>
+                    <v-spacer></v-spacer>
+                    <button @click="dialog = false" id="greenbtn"> <i class="el-icon-edit"></i> </button>
+                    <v-spacer></v-spacer>
+                    <button @click="dialogP = true"> <i class="el-icon-info"></i> </button>
+                    <!-- See who joined the activity -->
+                    <v-dialog
+                        v-model="dialogP"
+                        width="500"
+                    >
+                        <v-card>
+                            <v-card-title
+                                class="headline"
+                                primary-title
+                            > 
+                                Who has joined?
+                            </v-card-title>
+
+                            <v-card-text v-for="(participant, index) in participants" :key="index">
+                                {{ participant }}
+                            </v-card-text>
+
+                            <v-divider/>
+                            <v-card-actions>
+                                <v-spacer/>
+                                <button @click="dialogP = false"> Back </button>
+                                <v-spacer/>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                    <v-spacer></v-spacer>
+                    <button @click="dialog = false"> Ok </button>
+                    <v-spacer></v-spacer>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -58,6 +79,9 @@ export default {
             user: new User(),
             updatedDescription: "",
             dialog: false,
+            dialog: false,
+            dialogP: false,
+            participants: ["Andrew Fanggara", "Lai Jian Shin", "Wei Xuan Phor", "Nicholas Tanryo", "Aaron", "afijaofkaf", " asfijasifjaifjiasjfisa "],
         }
     },
     props: {
@@ -115,6 +139,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.headline {
+    textarea {
+        resize: none;
+    }
+}
 #info-btn {
     position: relative;
 }

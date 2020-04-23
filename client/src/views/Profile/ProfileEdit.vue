@@ -9,7 +9,6 @@
                     <div class="pic">
                         <img style="height: 145px; width: 145px;" src="../../assets/avatar.png">
                         <div class="name">
-                            <button id="whiteBtn">Edit</button> <!-- for the picture -->
                             <h3>{{ getFormattedName(user.firstName, user.lastName) }}</h3>
                         </div>
                     </div>

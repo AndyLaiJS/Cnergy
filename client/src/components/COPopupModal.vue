@@ -11,21 +11,52 @@
                 <v-card-title
                     class="headline"
                     primary-title
-                > Title
+                > 
+                    <textarea 
+                        rows="0" 
+                        placeholder="Title, editable" 
+                    />
                 </v-card-title>
                 
                 <textarea 
-                            rows="6" 
-                            placeholder="Whatever the previous description was" 
+                    rows="6" 
+                    placeholder="Whatever the previous description was" 
                 />
 
                 <v-divider></v-divider>
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <button @click="dialog = false" id="redbtn"> Delete </button>
+                    <button @click="dialog = false" id="redbtn"> <i class="el-icon-delete"></i> </button>
                     <v-spacer></v-spacer>
-                    <button @click="dialog = false" id="greenbtn"> Edit </button>
+                    <button @click="dialog = false" id="greenbtn"> <i class="el-icon-edit"></i> </button>
+                    <v-spacer></v-spacer>
+                    <button @click="dialogP = true"> <i class="el-icon-info"></i> </button>
+                    <!-- See who joined the club -->
+                    <v-dialog
+                        v-model="dialogP"
+                        width="500"
+                    >
+                        <v-card>
+                            <v-card-title
+                                class="headline"
+                                primary-title
+                            > 
+                                Who has joined?
+                            </v-card-title>
+
+                            <v-card-text v-for="(participant, index) in participants" :key="index">
+                                {{ participant }}
+                            </v-card-text>
+
+                            <v-divider/>
+                            <v-card-actions>
+                                <v-spacer/>
+                                <button @click="dialogP = false"> Back </button>
+                                <v-spacer/>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
                     <v-spacer></v-spacer>
                     <button @click="dialog = false"> Ok </button>
                     <v-spacer></v-spacer>
@@ -40,6 +71,8 @@ export default {
     data () {
       return {
         dialog: false,
+        dialogP: false,
+        participants: ["Andrew Fanggara", "Lai Jian Shin", "Wei Xuan Phor", "Nicholas Tanryo", "Aaron", "afijaofkaf", " asfijasifjaifjiasjfisa "],
       }
     },
     methods: {
@@ -51,6 +84,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.headline {
+    textarea {
+        resize: none;
+    }
+}
 #info-btn {
     position: relative;
 }

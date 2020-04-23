@@ -23,11 +23,56 @@
                 >
                 </v-card-text>
                 <v-divider/>
-                <v-card-actions>
+                <v-card-actions v-if="context == `club`">
                     <v-spacer/>
                     <button
                         id="greenbtn"
-                        @click="handleJoin"
+                        @click="dialogR = true"
+                    > Join
+                    </button>
+
+                    <!-- Reason for joining club -->
+                    <v-dialog
+                        v-model="dialogR"
+                        width="500"
+                    >
+                        <v-card>
+                            <v-card-title
+                                class="headline"
+                                primary-title
+                            > 
+                                Why do you wish to join us?
+                            </v-card-title>
+
+                            <textarea 
+                                rows="6" 
+                                placeholder="Whatever the previous description was" 
+                            />
+
+                            <v-divider/>
+                            <v-card-actions>
+                                <v-spacer/>
+                                <button id="greenbtn"> 
+                                    Submit
+                                </button>
+                                <v-spacer/>
+                                <button @click="dialogR = false"> Back </button>
+                                <v-spacer/>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                    <!-- Reason for joinning club/ -->
+
+                    <v-spacer/>
+                    <button @click="dialog = false"> Ok </button>
+                    <v-spacer/>
+                </v-card-actions>
+                
+                <v-card-actions v-else>
+                    <v-spacer/>
+                    <button
+                        id="greenbtn"
+                        @click="dialogR = true"
                     > Join
                     </button>
                     <v-spacer/>
@@ -50,6 +95,7 @@ export default {
         return {
             user: new User(),
             dialog: false,
+            dialogR: false,
         }
     },
     props: {
