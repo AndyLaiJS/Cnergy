@@ -67,8 +67,11 @@
                                 <!-- TODO: Create an additional component to store this -->
                                 <!-- Consider using Icon instead of words -->
                                 <div class="card-content">
-                                    <b> {{ club.name }} </b><br><br>
+                                    <b> {{ club.name }} </b>
                                     <!-- Description: {{ club.description }}<br> -->
+                                    
+                                </div>
+                                <div class="Title">
                                     <InfoPopupModal/>
                                 </div>
                             </div>
@@ -95,7 +98,10 @@
                                     {{ activity.activityDate }}
                                     Min. Participants: {{ activity.minParticipants }}<br>
                                     Max. Participants: {{ activity.maxParticipants }}<br> -->
-                                    Type: {{ activity.type }}<br> <br>
+                                    Type: {{ activity.type }}<br> 
+                                    
+                                </div>
+                                <div class="Title">
                                     <InfoPopupModal/>
                                 </div>
                             </div>
@@ -191,6 +197,9 @@ export default {
 #smaller-card {
     width: 400px;
     height: 200px;
+    .card-content {
+        height:155px;
+    }
 }
 .home {
     background-color: rgb(247, 247, 247);
@@ -305,7 +314,14 @@ i:hover, v-icon:hover {
         font-size: 20px;
     }
 }
-</style>
-<style scoped lang="scss">
-
+.Title {
+    overflow: hidden;
+    font-size: 14px;
+    padding: 0 10px 0 10px;
+    height: 45px;
+    width: 100%;
+    bottom: 0;
+    border-radius: 0 0 10px 10px;
+    position: absolute;
+}
 </style>

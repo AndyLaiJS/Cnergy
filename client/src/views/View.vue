@@ -53,10 +53,13 @@
                     <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
                     <div class="card-content">
                         <b>{{ club.name }}</b><br>
-                        Participants: 3 <br><br>
+                        Participants: 3 
                         <!-- <div class="description">
                             {{ club.description }}
                         </div> -->
+                        
+                    </div>
+                    <div class="Title">
                         <PopupModal 
                             v-bind:data="club"
                             v-bind:context="`club`"
@@ -76,10 +79,13 @@
                 <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
                     <div class="card-content">
                         <b>{{ activity.name }}</b><br>
-                        Participants: 20/30 <br><br>
+                        Participants: 20/30 
                         <!-- <div class="description">
                             {{ activity.description }}
                         </div> -->
+                        
+                    </div>
+                    <div class="Title">
                         <PopupModal
                             v-bind:data="activity"
                             v-bind:context="`activity`"
@@ -204,12 +210,12 @@ export default {
     min-width: 50px;
     margin-top: 0px;
     margin-bottom: 25px;
-    padding: 20px;
     width: 320px;
     height: 300px;
     box-shadow: 0 1px 3px 0 rgba(186,188,217, 0.4);
     transition: box-shadow .1s ease-in-out, transform .1s ease-in-out;
     position: relative;
+    overflow: auto;
     background-color: white;
 }
 .card:hover {
@@ -219,11 +225,17 @@ export default {
 }
 
 .card-content {
-    text-align: left;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    // text-align: left;
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    height: 255px;
 };
 .card-content a {
     text-decoration: none;
