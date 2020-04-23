@@ -72,7 +72,7 @@
                                     
                                 </div>
                                 <div class="Title">
-                                    <InfoPopupModal/>
+                                    <InfoC/>
                                 </div>
                             </div>
 
@@ -102,7 +102,7 @@
                                     
                                 </div>
                                 <div class="Title">
-                                    <InfoPopupModal/>
+                                    <InfoA/>
                                 </div>
                             </div>
                         </div>
@@ -121,7 +121,8 @@
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 import User from "../../models/User";
-import InfoPopupModal from "../../components/InfoPopupModal"
+import InfoA from "../../components/InfoActivityPopup"
+import InfoC from "../../components/InfoClubPopup"
 import ActivityService from "../../services/activityService";
 import ClubService from "../../services/clubService";
 import formatter from  "../../utils/formatter";
@@ -137,7 +138,8 @@ export default {
     components: {
         NavBar,
         Footer,
-        InfoPopupModal,
+        InfoA,
+        InfoC,
     },
     computed: {
         getCurrentUser() {
