@@ -47,7 +47,7 @@
             >
                 <div
                     class="card"
-                    v-for="(club, index) in clubs"
+                    v-for="(club, index) in filteredSearch"
                     v-bind:key="index"
                 >
                     <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
@@ -73,7 +73,7 @@
             >
                 <div
                     class="card"
-                    v-for="(activity, index) in activities"
+                    v-for="(activity, index) in filteredSearch"
                     v-bind:key="index"
                 >
                 <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
@@ -116,6 +116,18 @@ export default {
         isLoggedIn() {
             return this.$store.state.auth.status.loggedIn;
         },
+        filteredSearch: function() {
+            if (this.viewType == true) {
+                return this.clubs.filter((data) => {
+                    return data.name.toLowerCase().match(this.search.toLowerCase())
+                });
+            } else {
+                return this.activities.filter((data) => {
+                    return data.name.toLowerCase().match(this.search.toLowerCase())
+                });
+            }
+            
+        }
     },
     components: {
         PopupModal,
