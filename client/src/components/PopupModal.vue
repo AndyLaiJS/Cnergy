@@ -1,4 +1,3 @@
-
 <template>
     <div class="text-center">
         <button @click="opendialog()">More info</button>
@@ -21,7 +20,15 @@
                 <v-card-text
                     v-else
                 >
-                    {{ data.description }}
+                    <b>Description</b><br>
+                    {{ data.description }}<br>
+
+                    <b>Date</b>
+                    {{ getFormattedDate(data.activityDate) }}<br>
+                    
+                    <b>Minimum Participants: </b>{{ data.minParticipants }}<br>
+                    <b>Maximum Participants: </b>{{ data.maxParticipants }}<br>
+                    <b>Activity Type: </b>{{ data.type }}<br>
                 </v-card-text>
                 <v-divider/>
                 <v-card-actions v-if="context == `club`">
@@ -31,7 +38,6 @@
                         @click="dialogR = true"
                     > Join
                     </button>
-
                     <!-- Reason for joining club -->
                     <v-dialog
                         v-model="dialogR"
@@ -44,16 +50,18 @@
                             > 
                                 Why do you wish to join us?
                             </v-card-title>
-
                             <textarea 
-                                rows="6" 
-                                placeholder="Whatever the previous description was" 
+                                rows="6"
+                                v-model="reason"
+                                placeholder="Tell us the reason why you would like to join us" 
                             />
-
                             <v-divider/>
                             <v-card-actions>
                                 <v-spacer/>
-                                <button id="greenbtn"> 
+                                <button 
+                                    id="greenbtn"
+                                    @click="handleJoinClub"
+                                > 
                                     Submit
                                 </button>
                                 <v-spacer/>
@@ -69,11 +77,12 @@
                     <v-spacer/>
                 </v-card-actions>
                 
-                <v-card-actions v-else>
+                <v-card-actions 
+                    v-else>
                     <v-spacer/>
                     <button
                         id="greenbtn"
-                        @click="dialogR = true"
+                        @click="handleJoinActivity"
                     > Join
                     </button>
                     <v-spacer/>
@@ -90,11 +99,13 @@ import ActivityService from "../services/activityService";
 import ClubService from "../services/clubService";
 import User from "../models/User";
 import alerter from '../utils/alerter';
+import formatter from '../utils/formatter';
 
 export default {
     data () {
         return {
             user: new User(),
+            reason: "",
             dialog: false,
             dialogR: false,
         }
@@ -110,12 +121,24 @@ export default {
         }
     },
     methods: {
+        getFormattedDate: (date) => formatter.getFormattedDate(date), 
         opendialog() {
             this.dialog = true;
         },
-        handleJoinClub() {
-            // TODO: Create another pop up to allow user to fill the required fields:
-            // Reason: Why the user want to join the club
+        async handleJoinClub() {
+            let response =
+                await ClubService
+                    .joinClub(this.user.id, this.data.id, this.reason)
+                    .then(response => response.status == 200
+                        ?   this.$fire(alerter.successAlert(
+                                "Signed Up Success",
+                                response.data.message
+                            ))
+                        :   this.$fire(alerter.errorAlert(
+                                "Signed Up Failed",
+                                response.data.message
+                            )));
+            this.dialogR = true
         },
         async handleJoinActivity() {
             let response = 
@@ -130,6 +153,7 @@ export default {
                                 "Signed Up Failed",
                                 response.data.message
                         )));
+            this.dialogR = true
         },
         handleJoin() {
             if (this.context == "club") {

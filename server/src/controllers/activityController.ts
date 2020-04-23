@@ -52,7 +52,7 @@ class ActivityController implements Controller {
           this.router
               .delete(`${this.path}/reject`, validationMiddleware(ActivityRequestDto), this.rejectActivityRequest);
           this.router
-              .get(`${this.path}/pending`, validationMiddleware(JoinActivityDto), this.getPendingActivityRequests);
+              .get(`${this.path}/pending`, this.getPendingActivityRequests);
      }
 
      /**
@@ -312,10 +312,10 @@ class ActivityController implements Controller {
       */
      private getPendingActivityRequests = async (request: Request, response: Response, next: NextFunction) => {
           const uid: string = request.query["uid"];
-          const activityData: JoinActivityDto = request.body;
+          const activityId: number = request.query["aid"];
 
           const results = await this.activityService
-                                    .getActivityCreatorId(activityData.id);
+                                    .getActivityCreatorId(activityId);
           if (results.length == 0) {
                next(new ActivityNotFoundException());
                return;
@@ -326,7 +326,7 @@ class ActivityController implements Controller {
           // Only the creator of the activity can view the activity pending requests
           if (creatorId == uid) {
                const users = await this.activityService
-                                       .getActivityPendingRequest(activityData.id);
+                                       .getActivityPendingRequest(activityId);
                response.send(users);
           } else {
                next(new UnauthorizedException());

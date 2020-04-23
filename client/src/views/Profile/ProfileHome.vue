@@ -72,7 +72,7 @@
                                     
                                 </div>
                                 <div class="Title">
-                                    <InfoC/>
+                                    <!-- <InfoC/> -->
                                 </div>
                             </div>
 
@@ -102,14 +102,17 @@
                                     
                                 </div>
                                 <div class="Title">
-                                    <InfoA/>
+                                    <ActivityModal
+                                        v-bind:name="activity.name"
+                                        v-bind:description="activity.description"
+                                        v-bind:minParticipants="activity.minParticipants"
+                                        v-bind:maxParticipants="activity.maxParticipants"
+                                        v-bind:type="activity.type"
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                <!-- </div> -->
-
                 </div>
             </div>
         </div>
@@ -121,8 +124,7 @@
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 import User from "../../models/User";
-import InfoA from "../../components/InfoActivityPopup"
-import InfoC from "../../components/InfoClubPopup"
+import ActivityModal from "../../components/ActivityModal"
 import ActivityService from "../../services/activityService";
 import ClubService from "../../services/clubService";
 import formatter from  "../../utils/formatter";
@@ -138,8 +140,7 @@ export default {
     components: {
         NavBar,
         Footer,
-        InfoA,
-        InfoC,
+        ActivityModal,
     },
     computed: {
         getCurrentUser() {
