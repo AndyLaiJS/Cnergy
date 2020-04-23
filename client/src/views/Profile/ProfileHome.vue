@@ -136,7 +136,7 @@ export default {
             user: new User(),
             joinedClubs: [],
             joinedActivities: [],
-            img: '',
+            img: 'avatar.png',
         };
     },
     components: {
@@ -158,15 +158,6 @@ export default {
             this.$store.dispatch("auth/logout");
             this.$router.push("/");
         },
-    },
-    mounted() {
-        console.log(this.user.gender);
-        console.log("Hello World");
-        if (this.user.gender == "") {
-            this.img = 'FemaleAvatar.jpeg'
-        } else {
-            this.img = 'avatar.png'
-        }
     },
     async mounted() {
         this.user = this.getCurrentUser;

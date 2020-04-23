@@ -116,6 +116,7 @@
                             >   
                                 <div v-for="(participant, index) in participants" :key="index"> 
                                     <span> {{ participant }} </span>
+                                    <button @click="dialogDuoInfo = true"><i class="el-icon-edit"></i></button>
                                 </div>
                             </v-card-text>
 
