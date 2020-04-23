@@ -8,6 +8,7 @@ import ClubRequestDto from "../dtos/clubRequestDto";
 import CreateClubDto from "../dtos/createClubDto";
 import JoinClubDto from "../dtos/joinClubDto";
 import UpdateClubDto from "../dtos/updateClubDto";
+import ClubNotFoundException from "../exceptions/clubNotFoundException";
 import UnauthorizedException from "../exceptions/unauthorizedException";
 import UserHasSignedUpException from "../exceptions/userHasSignedUpException";
 import UserHasNotSignedUpException from "../exceptions/userHasNotSignedUpException";
@@ -112,16 +113,24 @@ class ClubController implements Controller {
       */
      private updateClubInfo = async (request: Request, response: Response, next: NextFunction) => {
           const uid: string = request.query["uid"];
-          const president = await this.userService
-                                      .getUserInfoByUID(uid) as User;
           const updatedClubInfo: UpdateClubDto = request.body;
 
+          const users = await this.clubService
+                                  .getClubPresident(updatedClubInfo.id);
+          if (users.length == 0) {
+               next(new ClubNotFoundException());
+               return;
+          }
+
+          const presidentId = users[0].presidentId;
+
           // Only the president of the club can update the club info
-          if (president.id == updatedClubInfo.president.id) {
+          if (presidentId == uid) {
                try {
                     await this.clubService
                               .updateClubInfo(updatedClubInfo);
                     response.send({
+                         message: "You have successfully update the club description",
                          status: 200
                     });
                } catch(e) {

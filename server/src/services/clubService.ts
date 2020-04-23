@@ -1,10 +1,10 @@
 import { getRepository } from "typeorm";
-import CreateClubDto from "../dtos/createClubDto";
 import { Club } from "../entity/Club";
-import User from "../interfaces/userInterface";
-import UpdateClubDto from "../dtos/updateClubDto";
 import { JoinClub } from "../entity/JoinClub";
-import JoinClubDto from "src/dtos/joinClubDto";
+import User from "../interfaces/userInterface";
+import CreateClubDto from "../dtos/createClubDto";
+import UpdateClubDto from "../dtos/updateClubDto";
+import JoinClubDto from "../dtos/joinClubDto";
 
 class ClubService {
      private clubRepository = getRepository(Club);
@@ -166,6 +166,16 @@ class ClubService {
                                    })
                                    .getMany();
           return results;
+     }
+
+     public getClubPresident = async (clubId: number) => {
+          const user = await this.clubRepository
+                                 .query(`SELECT presidentId 
+                                         FROM clubs 
+                                         WHERE id = ${clubId}
+                                         LIMIT 1
+                                  `);
+return user;
      }
 }
 

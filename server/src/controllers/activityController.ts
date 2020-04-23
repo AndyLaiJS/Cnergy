@@ -10,6 +10,7 @@ import CreateActivityDto from "../dtos/createActivityDto";
 import UpdateActivityDto from "../dtos/updateActivityDto";
 import JoinActivityDto from "../dtos/joinActivityDto";
 import CreatorLeaveActivityException from "../exceptions/creatorLeaveActivityExceptions";
+import ActivityNotFoundException from "../exceptions/activityNotFoundException";
 import UnauthorizedException from "../exceptions/unauthorizedException";
 import UserHasSignedUpException from "../exceptions/userHasSignedUpException";
 import UserHasNotSignedUpException from "../exceptions/userHasNotSignedUpException";
@@ -139,10 +140,16 @@ class ActivityController implements Controller {
       */
      private updateUserActivity = async (request: Request, response: Response, next: NextFunction) => {
           const uid: string = request.query["uid"];
-
           const activityData: UpdateActivityDto = request.body;
-          const creatorId = await this.activityService
-                                      .getActivityCreatorId(activityData.id);
+
+          const users = await this.activityService
+                                  .getActivityCreatorId(activityData.id);
+          if (users.length == 0) {
+               next(new ActivityNotFoundException());
+               return;
+          }
+
+          const creatorId = users[0].creatorId;
 
           // Only the creator of the activity can update the activity field
           if (creatorId == uid) {

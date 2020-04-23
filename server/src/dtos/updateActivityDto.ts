@@ -1,11 +1,6 @@
-import { IsNumber, IsString } from "class-validator"
+import UpdateDto from "./updateDto";
 
-class UpdateActivityDto  {
-     @IsNumber()
-     public id: number;
-
-     @IsString()
-     public description: string;
+class UpdateActivityDto extends UpdateDto  {
 }
 
 export default UpdateActivityDto;

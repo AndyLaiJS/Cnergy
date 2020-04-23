@@ -58,7 +58,7 @@ class ActivityService {
                                          WHERE id = ${activityId}
                                          LIMIT 1
                                   `);
-          return user[0].creatorId;
+          return user;
      }
 
      public postActivity = async (activityData: CreateActivityDto, creator: User) => {
@@ -140,16 +140,6 @@ class ActivityService {
      }
 
      public getUserHasJoinedActvities = async (userId: string) => {
-          // const joinedActivities = await this.joinActivityRepository
-          //                                    .createQueryBuilder("joinActivity")
-          //                                    .innerJoinAndSelect("joinActivity.activity", "activity")
-          //                                    .where(`joinActivity.userId = :userId AND
-          //                                            joinActivity.hasApproved = true AND
-          //                                            joinActivity.activityId = activity.id`, {
-          //                                                 userId: userId
-          //                                            })
-          //                                    .getMany();
-          // return joinedActivities;
           const activities = await this.activityRepository
                                        .createQueryBuilder("activity")
                                        .innerJoin("activity.participants", "participants")
