@@ -20,7 +20,6 @@ export default interface User {
      }>,
      clubs?: Array<{
           id: number;
-          avatar: Buffer;
           name: string;
           description: Text;
           createdAt: Date;

@@ -5,6 +5,7 @@ export default class User {
           email = "",
           password = "",
           college = "",
+          gender = "",
           major = "",
      ) {
           this.firstName = firstName;
@@ -13,6 +14,7 @@ export default class User {
           this.password = password;
           this.college = college;
           this.major = major;
+          this.gender = gender;
           this.about = "";
      }
 }

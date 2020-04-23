@@ -38,6 +38,11 @@ export class User extends BaseEntity {
     })
     major: string;
 
+    @Column({
+        nullable: false
+    })
+    gender: string;
+
     @Column("text", {
         nullable: true,
     })

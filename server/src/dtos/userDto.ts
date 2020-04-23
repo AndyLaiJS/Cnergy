@@ -23,6 +23,9 @@ class UserDto {
      @IsString()
      public major: string;
 
+     @IsString()
+     public gender: string;
+
      @IsOptional()
      @IsString()
      public about: string;

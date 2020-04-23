@@ -19,12 +19,6 @@ export class Club extends BaseEntity {
      )
      members: JoinClub[];
 
-     @Column({ 
-          type: "longblob",
-          nullable: true
-     })
-     avatar: Buffer;
-
      @Column({
           nullable: false
      })

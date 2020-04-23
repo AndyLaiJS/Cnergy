@@ -6,10 +6,6 @@ class CreateClubDto {
 
      @IsString()
      public description: string;
-
-     @IsObject()
-     @IsOptional()
-     public avatar: Buffer;
 }
 
 export default CreateClubDto;
