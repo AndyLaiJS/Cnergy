@@ -59,8 +59,6 @@
                         </v-card>
                     </v-dialog>
                     <v-spacer></v-spacer>
-                    <button @click="dialog = false"> Ok </button>
-                    <v-spacer></v-spacer>
                 </v-card-actions>
             </v-card>
         </v-dialog>
