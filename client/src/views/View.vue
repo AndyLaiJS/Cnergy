@@ -53,10 +53,6 @@
                     <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
                     <div class="card-content">
                         <b>{{ club.name }}</b><br>
-                        Participants: 3 <br><br>
-                        <!-- <div class="description">
-                            {{ club.description }}
-                        </div> -->
                         <PopupModal 
                             v-bind:data="club"
                             v-bind:context="`club`"
@@ -75,11 +71,8 @@
                 >
                 <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
                     <div class="card-content">
-                        <b>{{ activity.name }}</b><br>
-                        Participants: 20/30 <br><br>
-                        <!-- <div class="description">
-                            {{ activity.description }}
-                        </div> -->
+                        <b>{{ activity.name }}</b><br>  
+                        Participants: {{ activity.participantsCount }}/{{ activity.maxParticipants }} <br><br>
                         <PopupModal
                             v-bind:data="activity"
                             v-bind:context="`activity`"
