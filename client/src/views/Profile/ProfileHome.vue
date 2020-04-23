@@ -46,6 +46,7 @@
                             SID: {{ getSIDFromEmail(this.user.email) }}<br />
                             Major: {{ user.major }}<br />
                             College: {{ user.college }}<br />
+                            Gender: {{ user.gender }}<br/>
                         </div>
                         <div class="card-container" id="desc">
                             <h2>About me</h2>
