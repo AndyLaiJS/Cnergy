@@ -139,7 +139,7 @@ var validator = {
           return err;
      },
 
-     updateActivityChecker(description) {
+     updateActivityClubChecker(description) {
           let err = 
                fieldsShouldNotBeEmpty(description);
           return err;

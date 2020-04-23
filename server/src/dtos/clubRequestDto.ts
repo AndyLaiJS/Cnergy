@@ -1,14 +1,11 @@
-import { IsObject } from "class-validator";
-import JoinClubDto from "./joinClubDto";
-import { Club } from "../entity/Club";
-import { User } from "../entity/User";
+import { IsString, IsNumber } from "class-validator";
 
-class ClubRequestDto extends JoinClubDto {
-     @IsObject()
-     public club: Club;
+class ClubRequestDto {
+     @IsString()
+     public userId: string;
 
-     @IsObject()
-     public user: User;
+     @IsNumber()
+     public clubId: number;
 }
 
 export default ClubRequestDto;

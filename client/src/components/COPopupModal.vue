@@ -1,36 +1,30 @@
 <template>
     <!-- For Club Owner manage -->
     <div class="text-center">
-        <button @click="opendialog()">Edit</button>
+        <button @click="openDialog()">Edit</button>
         <v-dialog
             v-model="dialog"
             width="500"
             scrollable
         >
-
             <v-card>
                 <v-card-title
                     class="headline"
                     primary-title
                 > 
-                    <textarea 
-                        rows="0" 
-                        placeholder="Title, editable" 
-                    />
-                </v-card-title>
-                
+                    {{ this.clubName }}
+                </v-card-title>       
                 <textarea 
-                    rows="6" 
-                    placeholder="Whatever the previous description was" 
+                    rows="6"
+                    v-model="updatedDescription"
+                    placeholder="Enter your updated description here" 
                 />
-
-                <v-divider></v-divider>
-
+                <v-divider/>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <button @click="dialog = false" id="redbtn"> <i class="el-icon-delete"></i> </button>
                     <v-spacer></v-spacer>
-                    <button @click="dialog = false" id="greenbtn"> <i class="el-icon-edit"></i> </button>
+                    <button @click="handleEdit" id="greenbtn"> <i class="el-icon-edit"></i> </button>
                     <v-spacer></v-spacer>
                     <button @click="dialogP = true"> <i class="el-icon-info"></i> </button>
                     <!-- See who joined the club -->
@@ -95,18 +89,70 @@
 </template>
 
 <script>
+import User from "../models/User";
+import alerter from '../utils/alerter';
+import validator from '../utils/validator';
+import clubService from '../services/clubService';
+
 export default {
     data () {
-      return {
-        dialog: false,
-        dialogP: false,
-        dialogDecision: false,
-        participants: ["Andrew Fanggara", "Lai Jian Shin", "Wei Xuan Phor", "Nicholas Tanryo", "Aaron", "afijaofkaf", " asfijasifjaifjiasjfisa "],
-      }
+        return {
+            user: new User(),
+            updatedDescription: "",
+            dialog: false,
+            dialogP: false,
+            dialogDecision: false,
+        }
+    },
+    props: {
+        clubId: { type: Number },
+        clubName: { type: String },
+    },
+    computed: {
+        getCurrentUser() {
+            return this.$store.state.auth.status.loggedIn &&
+                   this.$store.state.auth.user.user;
+        }
     },
     methods: {
-        opendialog() {
+        openDialog() {
             this.dialog = true;
+        },
+        closeDialog() {
+            this.dialog = false;
+        },
+        async handleEdit() {
+            let err = validator.updateActivityClubChecker(this.updatedDescription);
+            if (err.length != 0) {
+                this.$fire(alerter.errorAlert(
+                    "Update Description Failed", err
+                ));
+                return;
+            }
+            let response =
+                await clubService
+                    .updateClub(
+                        this.user.id,
+                        this.clubId,
+                        this.updatedDescription
+                    )
+                    .then(response => response.status == 200
+                        ?   this.$fire(alerter.successAlert(
+                                "Update Description Success",
+                                response.data.message
+                            ))
+                        :   this.$fire(alerter.errorAlert(
+                                "Update Description Failed",
+                                response.data.message
+                            )));
+            this.closeDialog();
+        }
+    },
+    mounted() {
+        this.user = this.getCurrentUser;
+        if (!this.user) {
+            this.$router.push("/");
+            return;
         }
     }
 }

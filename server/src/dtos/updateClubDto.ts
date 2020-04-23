@@ -1,12 +1,6 @@
-import CreateClubDto from "./createClubDto";
-import { IsObject, IsNumber } from "class-validator";
+import UpdateDto from "./updateDto";
 
-class UpdateClubDto extends CreateClubDto {
-     @IsNumber()
-     public id: number;
-
-     @IsObject()
-     public president: any;
+class UpdateClubDto extends UpdateDto {
 }
 
 export default UpdateClubDto;

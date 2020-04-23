@@ -1,13 +1,12 @@
-import { IsObject } from "class-validator";
-import { Activity } from "../entity/Activity";
-import { User } from "../entity/User";
+import { IsNumber, IsString } from "class-validator";
 
 class ActivityRequestDto {
-     @IsObject()
-     public activity: Activity;
+     @IsString()
+     public userId: string;
 
-     @IsObject()
-     public user: User;
+     @IsNumber()
+     public activityId: number;
+
 }
 
 export default ActivityRequestDto;

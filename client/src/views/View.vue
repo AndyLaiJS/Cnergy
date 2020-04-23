@@ -78,8 +78,8 @@
                 >
                 <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
                     <div class="card-content">
-                        <b>{{ activity.name }}</b><br>
-                        Participants: 20/30 
+                        <b>{{ activity.name }}</b><br>  
+                        Participants: {{ activity.participantsCount }}/{{ activity.maxParticipants }} <br><br>
                         <!-- <div class="description">
                             {{ activity.description }}
                         </div> -->

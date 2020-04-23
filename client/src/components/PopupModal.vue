@@ -21,6 +21,7 @@
                 <v-card-text
                     v-else
                 >
+                    {{ data.description }}
                 </v-card-text>
                 <v-divider/>
                 <v-card-actions v-if="context == `club`">

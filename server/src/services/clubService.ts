@@ -1,14 +1,15 @@
 import { getRepository } from "typeorm";
-import CreateClubDto from "../dtos/createClubDto";
 import { Club } from "../entity/Club";
-import User from "../interfaces/userInterface";
-import UpdateClubDto from "../dtos/updateClubDto";
 import { JoinClub } from "../entity/JoinClub";
-import JoinClubDto from "src/dtos/joinClubDto";
+import { User } from "../entity/User";
+import CreateClubDto from "../dtos/createClubDto";
+import UpdateClubDto from "../dtos/updateClubDto";
+import JoinClubDto from "../dtos/joinClubDto";
 
 class ClubService {
      private clubRepository = getRepository(Club);
      private joinClubRepository = getRepository(JoinClub);
+     private userRepository = getRepository(User);
 
      public getClubs = async() => {
           const clubs = await this.clubRepository
@@ -29,9 +30,13 @@ class ClubService {
 
      public getUserIsPresidentStatus = async (clubId: number, userId: string) => {
           const exists = await this.clubRepository
-                                   .findOne({
-                                        where: { id: clubId, presidentId: userId }
-                                   });
+                                   .createQueryBuilder("club")
+                                   .where(`club.id = :clubId AND
+                                           club.presidentId = :presidentId`, {
+                                                clubId: clubId,
+                                                presidentId: userId
+                                   })
+                                   .getOne();
           return exists;
      }
 
@@ -45,7 +50,7 @@ class ClubService {
           return club;
      }
 
-     public postClub = async (clubData: CreateClubDto, user: User) => {
+     public postClub = async (clubData: CreateClubDto, user) => {
           const result = await this.clubRepository
                                    .create({
                                         ...clubData,
@@ -143,17 +148,29 @@ class ClubService {
           return result;
      }
 
-     public getPendingRequestsByUID = async (user: User) => {
-          const result = await this.joinClubRepository
-                                   .createQueryBuilder("joinClub")
-                                   .innerJoin("joinClub.club", "club")
-                                   .innerJoin("joinClub.user", "user")
-                                   .where(`club.presidentId = :userId AND
-                                           joinClub.hasJoined = false`, {
-                                                userId: user.id
+     public getClubPendingRequest = async (clubId: number) => {
+          const result = await this.userRepository
+                                   .createQueryBuilder("user")
+                                   .leftJoin("user.joinedClubs", "club")
+                                   .where(`club.clubId = :clubId AND
+                                           club.hasJoined = FALSE`, {
+                                                clubId: clubId
                                    })
                                    .getMany();
           return result;
+     }
+
+     public getJoinClubReason = async (clubId: number, userId: string) => {
+          const result = await this.joinClubRepository
+                                   .createQueryBuilder("joinClub")
+                                   .select("joinClub.reason")
+                                   .where(`joinClub.clubId = :clubId AND
+                                           joinClub.userId = :userId`, {
+                                                clubId: clubId,
+                                                userId: userId
+                                   }).
+                                   getOne();
+          return result?.reason;
      }
 
      public getClubMembers = async (clubId: number) => {
@@ -166,6 +183,16 @@ class ClubService {
                                    })
                                    .getMany();
           return results;
+     }
+
+     public getClubPresident = async (clubId: number) => {
+          const user = await this.clubRepository
+                                 .query(`SELECT presidentId 
+                                         FROM clubs 
+                                         WHERE id = ${clubId}
+                                         LIMIT 1
+                                  `);
+          return user;
      }
 }
 
