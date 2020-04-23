@@ -73,7 +73,7 @@
                                     
                                 </div>
                                 <div class="Title">
-                                    <!-- <InfoC/> -->
+                                    <ClubModal/>
                                 </div>
                             </div>
 
@@ -126,6 +126,7 @@ import NavBar from "../NavBar";
 import Footer from "../Footer";
 import User from "../../models/User";
 import ActivityModal from "../../components/ActivityModal"
+import ClubModal from "../../components/ClubModal"
 import ActivityService from "../../services/activityService";
 import ClubService from "../../services/clubService";
 import formatter from  "../../utils/formatter";
@@ -143,6 +144,7 @@ export default {
         NavBar,
         Footer,
         ActivityModal,
+        ClubModal,
     },
     computed: {
         getCurrentUser() {

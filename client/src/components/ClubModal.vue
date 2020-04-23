@@ -13,14 +13,11 @@
                 > 
                     test
                 </v-card-title>
-                <v-card-text
-                    v-if="context == `club`"
-                >
-                    {{ data.description }}
-                </v-card-text>
-                <v-card-text
-                    v-else
-                >
+                <v-card-text>
+                    Description: {{ description }}<br>
+                    Minimum Participants: {{ minParticipants }}<br>
+                    Maximum Participants: {{ maxParticipants }}<br>
+                    Activity Type: {{ type }}<br>
                 </v-card-text>
                 <v-divider/>
                 <v-card-actions>
