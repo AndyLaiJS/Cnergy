@@ -113,14 +113,40 @@
                             <v-card-text 
                                 class="v-card-text-content"
                             >   
-<!-- <<<<<<< HEAD -->
-                                <!-- <div v-for="(participant, index) in participants" :key="index"> 
-                                    <span> {{ participant }} </span>
-                                    <button @click="dialogDuoInfo = true"><i class="el-icon-edit"></i></button> -->
-<!-- ======= -->
                                 <div v-for="(member, index) in clubMembers" :key="index"> 
                                     <span> {{ getFormattedName(member.user.firstName, member.user.lastName) }} </span>
-<!-- >>>>>>> 8cee54cc7b95f2b6c565343c893dd2dbd2a2e982 -->
+                                    <i @click="dialogMemberInfo = true" class="el-icon-info"></i>
+                                    <!-- Andrew here, the new oneeeee  -->
+                                    <v-dialog
+                                        v-model="dialogMemberInfo"
+                                        width="500"
+                                    >
+                                        <v-card>
+                                            <v-card-title
+                                                class="headline"
+                                                primary-title
+                                            > 
+                                                {{ getFormattedName(user.firstName, user.lastName) }}
+                                            </v-card-title>
+                                            <v-card-text>
+                                                College: {{ user.college }}<br>
+                                                Major: {{ user.major }}<br>
+                                                Email: {{ user.email }}<br>
+                                                Reason: {{ user.reason }}<br>
+                                            </v-card-text>
+                                            <v-divider/>
+                                            <v-card-actions>
+                                                <v-spacer/>
+                                                <button
+                                                    @click="dialogMemberInfo = false"
+                                                >
+                                                    Ok
+                                                </button>
+                                                <v-spacer/>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-dialog>
+                                    <!-- sampai ke sini -->
                                 </div>
                             </v-card-text>
 
@@ -178,6 +204,7 @@ export default {
             dialog: false,
             dialogP: false,
             dialogMember: false,
+            dialogMemberInfo: false,
             dialogDecision: false,
             joinRequestUsers: [],
             clubMembers: [],
