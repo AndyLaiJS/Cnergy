@@ -62,7 +62,7 @@
                             placeholder="Maximum participants"
                         />
                     </div>
-                    <router-link to="/create-activities">
+                    <router-link to="/create-activity">
                         <button 
                             class="create-button" 
                             @click="createActivity"

@@ -9,7 +9,7 @@
             </router-link>
             <div class="navLink">
                 <router-link to="/create-club">+ Clubs</router-link> 
-                <router-link to="/create-activities">+ Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
+                <router-link to="/create-activity">+ Activities</router-link> <span style="color: rgb(211, 211, 211);">|</span>
                 <router-link to="/profile">Profile</router-link>
             </div>
         </div>
