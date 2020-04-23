@@ -71,10 +71,9 @@
                                     <!-- Description: {{ club.description }}<br> -->
                                     
                                 </div>
-                                <!-- TODO: Create a club popup modal -->
-                                <!-- <div class="Title">
-                                    <InfoPopupModal/>
-                                </div> -->
+                                <div class="Title">
+                                    <!-- <InfoC/> -->
+                                </div>
                             </div>
 
                         </div>
