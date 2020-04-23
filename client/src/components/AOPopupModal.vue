@@ -13,16 +13,13 @@
                     > 
                     {{ this.activityName }}
                 </v-card-title>
-                
                 <textarea 
                     rows="6"
                     v-model="updatedDescription"
                     placeholder="Enter your updated description here"
                 >
                 </textarea>
-
-                <v-divider></v-divider>
-
+                <v-divider/>
                 <v-card-actions>
                     <v-spacer/>
                     <button 
@@ -54,7 +51,6 @@
                             > 
                                 Join Requests
                             </v-card-title>
-
                             <v-card-text 
                                 class="v-card-text-content"
                             >   
@@ -95,7 +91,7 @@
                                                 <v-spacer/>
                                                 <button
                                                     id="redbtn"
-                                                    @click="handleRequestRequest(user.id)"
+                                                    @click="handleRejectRequest(user.id)"
                                                 > Reject 
                                                 </button>
                                                 <v-spacer/>
@@ -150,10 +146,6 @@ export default {
     },
     methods: {
         getFormattedName: (firstName, lastName) => formatter.getFormattedName(firstName, lastName),
-        setCurrentUserRequest(user) {
-            this.currentUserRequest = user;
-            this.dialogDecision = true;
-        },
         openDialog() {
             this.dialog = true;
         },
@@ -216,7 +208,7 @@ export default {
                             )));
             this.dialogDecision = false;
         },
-        async handleRequestRequest(requestUserId) {
+        async handleRejectRequest(requestUserId) {
             let response = 
                 await ActivityService
                     .rejectActivityRequest(

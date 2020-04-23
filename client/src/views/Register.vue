@@ -54,7 +54,14 @@
                             id="first-inp"
                             v-model="user.college"
                         >
-                            <option value="" disabled selected hidden> College </option>
+                            <option 
+                                value=""
+                                disabled
+                                selected
+                                hidden
+                            >
+                                College 
+                            </option>
                             <option 
                                 v-for="college in colleges" 
                                 :key="college"
@@ -64,8 +71,16 @@
                         </select>
                         <select
                             id="second-inp"
+                            v-model="user.gender"
                         >
-                            <option value="" disabled selected hidden> Gender </option>
+                            <option
+                                value=""
+                                disabled
+                                selected
+                                hidden
+                            > 
+                                Gender
+                            </option>
                             <option 
                                 v-for="gender in genders" 
                                 :key="gender"
@@ -129,6 +144,7 @@ export default {
                 ));
                 return;
             }
+            console.log(this.user);
             this.$store
                 .dispatch("auth/register", this.user)
                 .then(

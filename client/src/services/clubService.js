@@ -12,6 +12,7 @@ class ClubService {
                     params: { uid: user.id }
                });
      }
+
      joinClub(userId, clubId, reason) {
           console.log(`userId = ${userId}`);
           console.log(`clubId = ${clubId}`)
@@ -33,8 +34,8 @@ class ClubService {
                     console.log(err);
                     return err.response;
                })
-               // .then(response => response.data);
      }
+
      getClubs(userId = "") {
           return axios
                .get(`${API_URL}`, {
@@ -49,6 +50,46 @@ class ClubService {
                })
                .then(response => response.data );
      }
+
+     getPendingClubRequest(userId, clubId) {
+          console.log("in service");
+          console.log(userId);
+          console.log(clubId);
+          return axios
+               .get(`${API_URL}/pending`, {
+                    params: {
+                         cid: clubId,
+                         uid: userId,
+                    }
+               })
+               .then(response => response)
+               .catch(err => err.response);
+     }
+
+     acceptClubRequest(userId, requestUserId, requestClubId) {
+          return axios
+               .post(`${API_URL}/accept`, {
+                    userId: requestUserId,
+                    clubId: requestClubId
+               }, {
+                    params: { uid: userId }
+               })
+               .then(response => response)
+               .catch(err => err.response);
+     }
+
+     rejectClubRequest(userId, requestUserId, requestClubId) {
+          return axios
+               .delete(`${API_URL}/reject`, {
+                    userId: requestUserId,
+                    clubId: requestClubId
+               }, {
+                    params: { uid: userId }
+               })
+               .then(response => response)
+               .catch(err => err.response);
+     }
+
      updateClub(userId, clubId, description) {
           return axios
                .put(`${API_URL}`, {

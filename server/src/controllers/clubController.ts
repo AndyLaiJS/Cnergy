@@ -249,7 +249,7 @@ class ClubController implements Controller {
       */
      private getPendingClubRequests = async (request: Request, response: Response, next: NextFunction) => {
           const uid: string = request.query["uid"];
-          const clubId: number = request.body["id"];          
+          const clubId: number = request.query["cid"];          
 
           const results = await this.clubService
                                     .getClubPresident(clubId);

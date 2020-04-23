@@ -63,9 +63,7 @@
                                 <div class="card-content">
                                     <b>{{ activity.name }}</b><br>
                                     Event Date: {{ getFormattedDate(activity.activityDate) }}<br>
-                                    <!-- {{ activity.description }} -->
-                                    Type: {{activity.type}}
-                                    
+                                    Type: {{activity.type}}                                    
                                 </div>
                                 <div class="Title">
                                     <AOPopupModal

@@ -42,9 +42,9 @@ const cuhk = {
           "C.W Chu College",
           "Lee Woo Sing College",
           "Morningside College",
+          "New Asia College",
           "Shaw College",
           "S.H. Ho College",
-          "New Asia College",
           "United College",
           "Wu Yee Sun College"
      ],
