@@ -58,8 +58,34 @@ npm i element-ui -S
 npm install
 ```
 
-Configure .env
-Setup database
+### Configure the .env (or create it)
+It should be in the root of the /server/ folder
+```
+JWT_SECRET=someTextCanBeAnything
+```
+### Setting up the database
+```
+mysql -u root -p
+
+// or mysql, as long as you can get to the mysql terminal shell
+
+CREATE DATABASE yourDatabase;
+
+USE yourDatabase;
+```
+
+And you're set! 
+
+Just exit that terminal, open two new ones under the /server/ directory:
+First run:
+```
+npm run ts
+```
+...then:
+```
+npm run dev
+```
+Now you're backend is running, open the URL (with :3000) suggested by the terminal and you're done with Backend.
 
 Once VueJS and the dependencies are installed and the repository is cloned onto your system, open up a Terminal and navigate towards the directory
 holding the repository and type the following command:
