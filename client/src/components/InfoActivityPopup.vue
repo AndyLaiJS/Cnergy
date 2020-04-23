@@ -11,13 +11,13 @@
                     class="headline"
                     primary-title
                 > 
-                    test
+                    {{ name }}
                 </v-card-title>
                 <v-card-text>
-                    Description: {{ data.description }}<br>
-                    Minimum Participants: {{ data.minParticipants }}<br>
-                    Maximum Participants: {{ data.maxParticipants }}<br>
-                    Activity Type: {{ data.type }}<br>
+                    Description: {{ description }}<br>
+                    Minimum Participants: {{ minParticipants }}<br>
+                    Maximum Participants: {{ maxParticipants }}<br>
+                    Activity Type: {{ type }}<br>
                 </v-card-text>
                 <v-divider/>
                 <v-card-actions>

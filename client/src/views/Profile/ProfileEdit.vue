@@ -106,10 +106,13 @@ export default {
             return;
         }
 
-        if (this.user.gender == "Female") {
-            this.img = 'FemaleAvatar.jpeg'
-        } else {
-            this.img = 'avatar.png'
+        switch(this.user.gender) {
+            case "Female":
+                this.img = "femaleAvatar.png";
+                break;
+            default:
+                this.img = "maleAvatar.png";
+                break;
         }
     }
 }
