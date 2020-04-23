@@ -10,7 +10,6 @@ function passwordShouldBeSame(...passwords) {
 function fieldsShouldNotBeEmpty(...fields) {
      for (let i = 0; i < fields.length; i ++) {
           if (fields[i] == "") {
-               console.log(i);
                return "Fields should not be empty";
           }
      }
@@ -138,7 +137,13 @@ var validator = {
                     club.description
                );
           return err;
-     }
+     },
+
+     updateActivityChecker(description) {
+          let err = 
+               fieldsShouldNotBeEmpty(description);
+          return err;
+     } 
 }
 
 export default validator;

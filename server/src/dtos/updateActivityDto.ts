@@ -1,12 +1,11 @@
-import { IsNumber, IsObject } from "class-validator"
-import CreateActivityDto from "./createActivityDto";
+import { IsNumber, IsString } from "class-validator"
 
-class UpdateActivityDto extends CreateActivityDto {
+class UpdateActivityDto  {
      @IsNumber()
      public id: number;
 
-     @IsObject()
-     public creator: any;
+     @IsString()
+     public description: string;
 }
 
 export default UpdateActivityDto;

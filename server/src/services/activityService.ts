@@ -51,6 +51,16 @@ class ActivityService {
           return activity?.type;
      }
 
+     public getActivityCreatorId = async (activityId: number) => {
+          const user = await this.activityRepository
+                                 .query(`SELECT creatorId 
+                                         FROM activities 
+                                         WHERE id = ${activityId}
+                                         LIMIT 1
+                                  `);
+          return user[0].creatorId;
+     }
+
      public postActivity = async (activityData: CreateActivityDto, creator: User) => {
           const activity = await this.activityRepository
                                      .create({
@@ -63,11 +73,13 @@ class ActivityService {
           return activity;
      }
 
-     public updateActivity = async (activityData: UpdateActivityDto) => {
+     public updateActivityDescription = async (activityData: UpdateActivityDto) => {
           const activity = await this.activityRepository
-                                     .save({
-                                          ...activityData
-                                     });
+                                     .createQueryBuilder()
+                                     .update(Activity)
+                                     .set({ description: `${activityData.description}`})
+                                     .where(`id = 10`)
+                                     .execute();
           return activity;
      }
 

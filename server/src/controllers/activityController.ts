@@ -34,7 +34,7 @@ class ActivityController implements Controller {
           this.router
               .get(`${this.path}`, this.getAllOngoingActivities)
               .post(`${this.path}`, validationMiddleware(CreateActivityDto), this.createActivity)
-              .put(`${this.path}`, this.updateUserActivity);
+              .put(`${this.path}`, validationMiddleware(UpdateActivityDto), this.updateUserActivity);
 
           this.router
               .get(`${this.path}/past`, this.getAllPastActivities)
@@ -139,16 +139,20 @@ class ActivityController implements Controller {
       */
      private updateUserActivity = async (request: Request, response: Response, next: NextFunction) => {
           const uid: string = request.query["uid"];
-          const creator = await this.userService
-                                    .getUserInfoByUID(uid) as User;
-          const activityData: UpdateActivityDto = request.body;
 
-          // // Only the creator of the activity can update the activity field
-          if (creator.id == activityData.creator.id) {
+          const activityData: UpdateActivityDto = request.body;
+          const creatorId = await this.activityService
+                                      .getActivityCreatorId(activityData.id);
+
+          // Only the creator of the activity can update the activity field
+          if (creatorId == uid) {
                try {
-                    const result = await this.activityService
-                                             .updateActivity(activityData);
-                    response.send(result);
+                    await this.activityService
+                              .updateActivityDescription(activityData);
+                    response.send({
+                         message: "You have successfully update the activity description",
+                         status: 200
+                    });
                } catch(e) {
                     next(e);
                }

@@ -13,7 +13,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="nav-bar-setting">
                     <router-link to="/profile"><i class="el-icon-user"></i></router-link> <!-- clubs n activities -->
                     <router-link to="/manager" id="actif"><i class="el-icon-folder"></i></router-link> <!-- manage cna -->
@@ -23,8 +22,6 @@
                         <v-icon size="20px"> mdi-logout </v-icon>
                     </a>
                 </div>
-
-
                 <div class="content-container">
                     <h1> Manage Your Creation </h1>
                     <div class="card-title">
@@ -60,9 +57,13 @@
                             >
                                 <div class="card-content">
                                     <b>{{ activity.name }}</b><br>
-                                    Event Date: {{ activity.activityDate}}<br><br>
+                                    Event Date: {{ getFormattedDate(activity.activityDate) }}<br><br>
                                     <!-- {{ activity.description }} -->
-                                    <AOPopupModal/>
+                                    <AOPopupModal
+                                        v-bind:activityId="activity.id"
+                                        v-bind:activityName="activity.name"
+                                        v-bind:activityDescription="activity.description"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -108,6 +109,7 @@ export default {
     },
     methods: {
         getFormattedName: (firstName, lastName) => formatter.getFormattedName(firstName, lastName),
+        getFormattedDate: (date) => formatter.getFormattedDate(date),
         logout() {
             this.$store.dispatch("auth/logout");
             this.$router.push("/");
@@ -119,13 +121,10 @@ export default {
             this.$router.push("/");
             return;
         }
-
         this.createdActivities = 
-            await ActivityService
-                .getOngoingActivities(this.user.id);
+            await ActivityService.getOngoingActivities(this.user.id);
         this.createdClubs =
-            await ClubService
-                .getClubs(this.user.id);
+            await ClubService.getClubs(this.user.id);
     }
 }
 </script>

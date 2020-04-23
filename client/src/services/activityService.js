@@ -46,24 +46,26 @@ class ActivityService {
      }
 
      joinActivity(userId, activityId) {
-          console.log(`In act service : ${userId}`);
-          console.log(`in act service: ${activityId}`);
           return axios
                .post(`${API_URL}/join`,{
                     id: activityId
                }, {
                     params: { uid: userId }
                })
-               .then(response => {
-                    console.log("ini response woy");
-                    return response;
-               })
+               .then(response => response)
                .catch(err => err.response);
-               // .catch(err => {
-               //      console.log("ini error woy");
-               //      console.log(err.response);
-               //      return err;
-               // });
+     }
+
+     updateActivity(userId, activityId, description) {
+          return axios
+               .put(`${API_URL}`, {
+                    id: activityId,
+                    description: description
+               }, {
+                    params: { uid: userId }
+               })
+               .then(response => response)
+               .catch(err => err.response);
      }
 }
 
