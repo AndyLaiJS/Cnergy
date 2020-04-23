@@ -31,8 +31,14 @@
                     </div>
                     <div class="form-btn">
                         <span></span>
-                        <button class="btn btn-primary btn-block" :disabled="loading">
-                            <span v-show="loading" class="spinner-border spinner-border-sm"></span>
+                        <button
+                            class="btn btn-primary btn-block"
+                            :disabled="loading"
+                        >
+                            <span
+                                v-show="loading"
+                                class="spinner-border spinner-border-sm"
+                            />
                             <span>Login</span>
                         </button>
                     </div>
@@ -46,7 +52,6 @@
 <script>
 import User from "../models/User";
 import Register from "./Register";
-
 import alerter from "../utils/alerter";
 import validator from '../utils/validator';
 
@@ -59,7 +64,6 @@ export default {
         return {
             user: new User(),
             loading: false,
-            err: "",
         };
     },
     computed: {
@@ -75,11 +79,11 @@ export default {
     methods: {
         handleLogin() {
             this.loading = true;
-            this.err = validator.loginFieldChecker(this.user.email, this.user.password);
-            if (this.err.length != 0) {
+            let err = validator.loginFieldChecker(this.user.email, this.user.password);
+            if (err.length != 0) {
                 this.loading = false;
                 this.$fire(alerter.errorAlert(
-                    "Login Field Error", this.err,
+                    "Login Field Error", err,
                 ));
                 return;                
             }
@@ -90,12 +94,13 @@ export default {
                     () => this.$router.push("/home"),
                     error => {
                         this.loading = false;
-                        this.message = error.response.data;
+                        let err = error.response.data;
                         this.$fire(alerter.errorAlert(
-                            this.message.message,
+                            "Login Failed",
+                            err.message,
                         ));
                     }
-                );
+                )
         }
     },
 }

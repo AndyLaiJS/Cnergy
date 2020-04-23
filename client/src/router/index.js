@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import home from '../views/Home.vue'
-import login from '../views/Login.vue'
-import register from '../views/Register.vue'
-import profile from '../views/Profile/ProfileHome.vue'
-import profileEdit from '../views/Profile/ProfileEdit.vue'
-import profileSet from '../views/Profile/ProfileSettings.vue'
-import profileMngr from '../views/Profile/CnA-Manage.vue'
-import createAct from '../views/CreateClubnActivities/CreateActivity.vue'
-import createClub from '../views/CreateClubnActivities/CreateClub.vue'
+import Home from '../views/Home.vue'
+import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
+import Profile from '../views/Profile/ProfileHome.vue'
+import ProfileEdit from '../views/Profile/ProfileEdit.vue'
+import ProfileSettings from '../views/Profile/ProfileSettings.vue'
+import ProfileManager from '../views/Profile/ProfileManager.vue'
+import CreateActivity from '../views/CreateClubnActivities/CreateActivity.vue'
+import CreateClub from '../views/CreateClubnActivities/CreateClub.vue'
 
 import notfound from '../views/NotFound.vue'
 
@@ -18,38 +18,38 @@ const routes = [
   {
     path: '/',
     name: 'login',
-    component: login
+    component: Login
   },
   {
     path: '/home',
     name: 'home',
-    component: home
+    component: Home
   },
   {
     path: '/register',
     name: 'register',
-    component: register
+    component: Register
   },
   {
     path: '/profile',
     name: 'profile',
-    component: profile
+    component: Profile
   },
   {
     path: '/profile-edit',
     name: 'profile-edit',
-    component: profileEdit
+    component: ProfileEdit
   },
   {
     path: '/profile-settings',
     name: 'profile-settings',
-    component: profileSet
+    component: ProfileSettings
 
   },
   {
     path: '/manager',
     name: 'manager',
-    component: profileMngr
+    component: ProfileManager
   },
   {
     path: '/nf',
@@ -59,21 +59,13 @@ const routes = [
   {
     path: '/create-club',
     name: 'create-club',
-    component: createClub
+    component: CreateClub
   },
   {
-    path: '/create-activities',
-    name: 'create-activities',
-    component: createAct
+    path: '/create-activity',
+    name: 'create-activity',
+    component: CreateActivity
   },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
 ]
 
 const router = new VueRouter({

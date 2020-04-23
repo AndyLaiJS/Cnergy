@@ -98,42 +98,6 @@ export default {
             this.$router.push("/");
             return;
         }
-        // const inpLogo = document.getElementById("logo");
-        // const displayContainer = document.getElementById("display-logo");
-        // const displayImage = displayContainer.querySelector(".display-logo-img");
-        // const displayDefaultText = displayContainer.querySelector(".display-logo-default");
-        // const resetLogoButton = document.getElementById("reset");
-
-        // inpLogo.addEventListener("change", function () {
-        //     const file = this.files[0];
-            
-        //     if (file) {
-        //         const reader = new FileReader();
-
-        //         displayDefaultText.style.display = "none";
-        //         displayImage.style.display = "block";
-
-        //         reader.addEventListener("load", function() {
-        //             displayImage.setAttribute("src", this.result);
-        //             displayContainer.style.border = "none";
-        //         });
-
-        //         reader.readAsDataURL(file);
-        //     } 
-        // // else {
-        // //     displayDefaultText.style.display = null;
-        // //     displayImage.style.display = null;
-        // //     displayContainer.style = null;
-        // //     displayImage.setAttribute("src", "");
-        // // }
-        // });
-
-        // resetLogoButton.addEventListener("click", function () {
-        //     displayDefaultText.style.display = null;
-        //     displayImage.style.display = null;
-        //     displayContainer.style = null;
-        //     displayImage.setAttribute("src", "");
-        // });
     }
 }
 </script>

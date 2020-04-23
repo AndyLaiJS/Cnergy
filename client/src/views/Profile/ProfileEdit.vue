@@ -15,16 +15,14 @@
                 </div>
 
                 <div class="nav-bar-setting">
-                    <router-link to="/profile"><i class="el-icon-user"></i></router-link><!-- clubs n activities -->
-                    <router-link to="/manager"><i class="el-icon-folder"></i></router-link> <!-- manage cna -->
-                    <router-link to="/profile-edit" id="actif"><i class="el-icon-edit"></i></router-link> <!-- edit profile -->
-                    <router-link to="/profile-settings"><i class="el-icon-setting"></i></router-link><!-- self-explanatory-->
+                    <router-link to="/profile"><i class="el-icon-user"></i></router-link>
+                    <router-link to="/manager"><i class="el-icon-folder"></i></router-link>
+                    <router-link to="/profile-edit" id="actif"><i class="el-icon-edit"></i></router-link>
+                    <router-link to="/profile-settings"><i class="el-icon-setting"></i></router-link>
                     <a id="log-out" @click="logout()">
                         <v-icon size="20px"> mdi-logout </v-icon>
                     </a>
-                    <!-- log out via vuetify icons -->
-                </div>
-                
+                </div>                
                 <div class="content-container">
                     <h1> Edit Your Profile </h1>
                     <div class="flex-container">
@@ -40,11 +38,14 @@
                             </div>
                         </div>
                     </div>
-                    <button id="one" @click="changeAbout()">Edit</button>
+                    <button
+                        id="one"
+                        @click="changeAbout()"
+                    >
+                        Edit
+                    </button>
                 </div>
-            
             </div>
-            
         </div>
         <Footer/>
     </v-app>

@@ -41,64 +41,53 @@
             </div>
         </div>
     <div class="main-container">
-            <span
-                v-if="viewType == true"
-                class="cna-view"
+        <span
+            v-if="viewType == true"
+            class="cna-view"
+        >
+            <div
+                class="card"
+                v-for="(club, index) in filteredSearch"
+                v-bind:key="index"
             >
-                <div
-                    class="card"
-                    v-for="(club, index) in filteredSearch"
-                    v-bind:key="index"
-                >
-                    <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
-                    <div class="card-content">
-                        <b>{{ club.name }}</b><br>
-                        <!-- <div class="description">
-                            {{ club.description }}
-                        </div> -->
-                        
-                    </div>
-                    <div class="Title">
-                        <PopupModal 
-                            v-bind:data="club"
-                            v-bind:context="`club`"
-                        />
-                    </div>
+                <div class="card-content">
+                    <b>{{ club.name }}</b><br>
                 </div>
-            </span>
-            <span
-                v-else
-                class="cna-view"
+                <div class="Title">
+                    <JoinActivityClubModal 
+                        v-bind:data="club"
+                        v-bind:context="`club`"
+                    />
+                </div>
+            </div>
+        </span>
+        <span
+            v-else
+            class="cna-view"
+        >
+            <div
+                class="card"
+                v-for="(activity, index) in filteredSearch"
+                v-bind:key="index"
             >
-                <div
-                    class="card"
-                    v-for="(activity, index) in filteredSearch"
-                    v-bind:key="index"
-                >
-                <!--<el-button type="danger" circle icon="el-icon-minus" id="min" @click="remove(index)"></el-button>--> 
-                    <div class="card-content">
-                        <b>{{ activity.name }}</b><br>  
-                        Participants: {{ activity.participantsCount }}/{{ activity.maxParticipants }} <br><br>
-                        <!-- <div class="description">
-                            {{ activity.description }}
-                        </div> -->
-                        
-                    </div>
-                    <div class="Title">
-                        <PopupModal
-                            v-bind:data="activity"
-                            v-bind:context="`activity`"
-                        />
-                    </div>
+                <div class="card-content">
+                    <b>{{ activity.name }}</b><br>  
+                    Participants: {{ activity.participantsCount }}/{{ activity.maxParticipants }} <br><br>
                 </div>
-            </span>
-            <!--<el-button type="success" circle icon="el-icon-plus" id="add" @click="addList"></el-button>-->
+                <div class="Title">
+                    <JoinActivityClubModal
+                        v-bind:data="activity"
+                        v-bind:context="`activity`"
+                    />
+                </div>
+            </div>
+        </span>
     </div>
 </div>
 </template>
 
 <script>
-import PopupModal from "../components/PopupModal";
+import JoinActivityClubModal from "../components/JoinActivityClubModal";
 import Activity from "../models/Activity";
 import ActivityService from "../services/activityService";
 import ClubService from "../services/clubService";
@@ -129,7 +118,7 @@ export default {
         }
     },
     components: {
-        PopupModal,
+        JoinActivityClubModal,
     },
     methods: {
         viewClick() {
