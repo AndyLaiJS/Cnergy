@@ -398,7 +398,7 @@ class ClubController implements Controller {
       * getClubMembers() allow user to view all members in a specific club
       */
      private getClubMembers = async (request: Request, response: Response, next: NextFunction) => {
-          const clubId = request.body["id"];
+          const clubId = request.query["id"];
 
           try {
                const members = await this.clubService
