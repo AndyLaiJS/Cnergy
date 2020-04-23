@@ -22,7 +22,9 @@
                 <v-divider/>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <button @click="handleEdit" id="greenbtn"> <i class="el-icon-edit"></i> </button>
+                    <button @click="dialogMember = true"><i class="el-icon-user"></i></button>
+                    <v-spacer/>
+                    <button @click="handleEdit" id="greenbtn"><i class="el-icon-edit"></i></button>
                     <v-spacer></v-spacer>
                     <button @click="dialogP = true"> <i class="el-icon-info"></i> </button>
                     <!-- See who joined the club -->
@@ -51,6 +53,35 @@
                             <v-card-actions>
                                 <v-spacer/>
                                 <button @click="dialogP = false"> Back </button>
+                                <v-spacer/>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                    <!-- See who joined the club/ -->
+                    <v-dialog
+                        v-model="dialogMember"
+                        width="500"
+                    >
+                        <v-card>
+                            <v-card-title
+                                class="headline"
+                                primary-title
+                            > 
+                                Current members
+                            </v-card-title>
+
+                            <v-card-text 
+                                class="v-card-text-content"
+                            >   
+                                <div v-for="(participant, index) in participants" :key="index"> 
+                                    <span> {{ participant }} </span>
+                                </div>
+                            </v-card-text>
+
+                            <v-divider/>
+                            <v-card-actions>
+                                <v-spacer/>
+                                <button @click="dialogMember = false"> Back </button>
                                 <v-spacer/>
                             </v-card-actions>
                         </v-card>
@@ -99,6 +130,7 @@ export default {
             updatedDescription: "",
             dialog: false,
             dialogP: false,
+            dialogMember: false,
             dialogDecision: false,
         }
     },
