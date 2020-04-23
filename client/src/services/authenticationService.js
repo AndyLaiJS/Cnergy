@@ -30,6 +30,7 @@ class AuthenticationService {
                     email: user.email,
                     password: user.password,
                     college: user.college,
+                    gender: user.gender,
                     major: user.major,
                });
      }

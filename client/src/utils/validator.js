@@ -89,6 +89,7 @@ var validator = {
                     user.email,
                     user.password,
                     user.college,
+                    user.gender,
                     user.major,
                ) ||
                onlyAcceptAlphabeticCharacters(
