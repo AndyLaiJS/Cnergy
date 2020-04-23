@@ -40,8 +40,9 @@
                             </div>
                         </div>
                     </div>
+                    <button id="one" @click="changeAbout()">Edit</button>
                 </div>
-
+            
             </div>
             
         </div>
@@ -120,6 +121,7 @@ export default {
 #one {
     margin-top: 10px;
     width: 100px;
+    background-color: white;
 }
 .card-container {
     text-align: left;
