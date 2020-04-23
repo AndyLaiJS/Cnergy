@@ -1,4 +1,4 @@
-# swe
+# CSCI3100 Group 16
 CSCI3100 Software Engineering 
 
 A group project that revolves around creating a centralised Club Web Application for CUHK, where students can easily discover and join
@@ -7,6 +7,7 @@ their desired club.
 The application is built using VueJS. 
 
 NodeJS, npm and MySQL are assumed to be already installed on your system
+## For Frontend
 
 ### Installing VueJS
 ```
@@ -50,6 +51,15 @@ vue add vuetify
 ```
 npm i element-ui -S
 ```
+
+## For Backend
+
+```
+npm install
+```
+
+Configure .env
+Setup database
 
 Once VueJS and the dependencies are installed and the repository is cloned onto your system, open up a Terminal and navigate towards the directory
 holding the repository and type the following command:
