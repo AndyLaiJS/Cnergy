@@ -3,7 +3,9 @@
         <NavBar/>
 
         <div class="card-box">
-            <p> <span id="dscvr">SEEK.</span> <b>SEARCH YOUR PASSION.</b> <span id="join">JOIN.</span></p> 
+            <p>
+                    <span id="dscvr">SEEK.</span> <b>SEARCH YOUR PASSION.</b> <span id="join">JOIN.</span>
+            </p> 
             <div class="cards-container">
                 <ViewPanel/>
             </div> 
@@ -36,9 +38,7 @@
                     <PopupModal/>
                 </div>
             </div> -->
-
         </div>
-
         <Footer/>
     </div>
 </template>

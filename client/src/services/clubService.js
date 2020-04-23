@@ -12,15 +12,28 @@ class ClubService {
                     params: { uid: user.id }
                });
      }
-     joinClub(userId, data) {
+     joinClub(userId, clubId, reason) {
+          console.log(`userId = ${userId}`);
+          console.log(`clubId = ${clubId}`)
+          console.log(`reason = ${reason}`);
           return axios
                .post(`${API_URL}/join`, {
-                    id: data.id,
-                    reason: data.reason
+                    id: clubId,
+                    reason: reason
                }, {
                     params: { uid: userId }
                })
-               .then(response => response.data);
+               .then(response => {
+                    console.log("ini response");
+                    console.log(response);
+                    return response;
+               })
+               .catch(err => {
+                    console.log("error coy");
+                    console.log(err);
+                    return err.response;
+               })
+               // .then(response => response.data);
      }
      getClubs(userId = "") {
           return axios

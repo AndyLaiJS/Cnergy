@@ -13,14 +13,11 @@
                 > 
                     test
                 </v-card-title>
-                <v-card-text
-                    v-if="context == `club`"
-                >
-                    {{ data.description }}
-                </v-card-text>
-                <v-card-text
-                    v-else
-                >
+                <v-card-text>
+                    Description: {{ data.description }}<br>
+                    Minimum Participants: {{ data.minParticipants }}<br>
+                    Maximum Participants: {{ data.maxParticipants }}<br>
+                    Activity Type: {{ data.type }}<br>
                 </v-card-text>
                 <v-divider/>
                 <v-card-actions>
@@ -47,8 +44,11 @@ export default {
         }
     },
     props: {
-        data: { type: Object },
-        context: { type: String },
+        name: { type: String },
+        description: { type: String },
+        minParticipants: { type: Number },
+        maxParticipants: { type: Number },
+        type: { type: String }
     },
     computed: {
         getCurrentUser() {

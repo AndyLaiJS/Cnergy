@@ -71,9 +71,10 @@
                                     <!-- Description: {{ club.description }}<br> -->
                                     
                                 </div>
-                                <div class="Title">
+                                <!-- TODO: Create a club popup modal -->
+                                <!-- <div class="Title">
                                     <InfoPopupModal/>
-                                </div>
+                                </div> -->
                             </div>
 
                         </div>
@@ -102,14 +103,17 @@
                                     
                                 </div>
                                 <div class="Title">
-                                    <InfoPopupModal/>
+                                    <ActivityModal
+                                        v-bind:name="activity.name"
+                                        v-bind:description="activity.description"
+                                        v-bind:minParticipants="activity.minParticipants"
+                                        v-bind:maxParticipants="activity.maxParticipants"
+                                        v-bind:type="activity.type"
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                <!-- </div> -->
-
                 </div>
             </div>
         </div>
@@ -121,7 +125,7 @@
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 import User from "../../models/User";
-import InfoPopupModal from "../../components/InfoPopupModal"
+import ActivityModal from "../../components/ActivityModal"
 import ActivityService from "../../services/activityService";
 import ClubService from "../../services/clubService";
 import formatter from  "../../utils/formatter";
@@ -137,7 +141,7 @@ export default {
     components: {
         NavBar,
         Footer,
-        InfoPopupModal,
+        ActivityModal,
     },
     computed: {
         getCurrentUser() {
