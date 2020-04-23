@@ -67,6 +67,42 @@ class ActivityService {
                .then(response => response)
                .catch(err => err.response);
      }
+
+     getPendingActivityRequest(userId, activityId) {
+          return axios
+               .get(`${API_URL}/pending`, {
+                    params: { 
+                         aid: activityId, 
+                         uid: userId,
+                    }
+               })
+               .then(response => response)
+               .catch(err => err.response);
+     }
+
+     acceptActivityRequest(userId, requestUserId, requestActivityId) {
+          return axios
+               .post(`${API_URL}/accept`, {
+                    userId: requestUserId,
+                    activityId: requestActivityId
+               }, {
+                    params: { uid: userId }
+               })
+               .then(response => response)
+               .catch(err => err.response);
+     }
+
+     rejectActivityRequest(userId, requestUserId, requestActivityId) {
+          return axios
+               .delete(`${API_URL}/reject`, {
+                    userId: requestUserId,
+                    activityId: requestActivityId
+               }, {
+                    params: { uid: userId }
+               })
+               .then(response => response)
+               .catch(err => err.response);
+     }
 }
 
 export default new ActivityService();

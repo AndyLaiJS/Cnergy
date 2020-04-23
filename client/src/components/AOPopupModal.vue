@@ -27,12 +27,24 @@
                 <v-divider></v-divider>
 
                 <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <button @click="dialog = false" id="redbtn"> <i class="el-icon-delete"></i> </button>
-                    <v-spacer></v-spacer>
-                    <button @click="dialog = false" id="greenbtn"> <i class="el-icon-edit"></i> </button>
-                    <v-spacer></v-spacer>
-                    <button @click="dialogP = true"> <i class="el-icon-info"></i> </button>
+                    <v-spacer/>
+                    <button 
+                        id="redbtn"
+                        @click="dialog = false"
+                    >
+                        <i class="el-icon-delete"></i> 
+                    </button>
+                    <v-spacer/>
+                    <button
+                        id="greenbtn"
+                        @click="handleEdit">
+                            <i class="el-icon-edit"></i> 
+                    </button>
+                    <v-spacer/>
+                    <button 
+                        @click="handleRequest"> 
+                            <i class="el-icon-info"></i>
+                    </button>
                     <!-- See who joined the activity -->
                     <v-dialog
                         v-model="dialogP"
@@ -43,18 +55,58 @@
                                 class="headline"
                                 primary-title
                             > 
-                                Join requests
+                                Join Requests
                             </v-card-title>
 
                             <v-card-text 
                                 class="v-card-text-content"
                             >   
-                                <div v-for="(participant, index) in participants" :key="index"> 
-                                    <span> {{ participant }} </span>
-                                    <i class="el-icon-info" @click="dialogDecision = true"></i>
+                                <div
+                                    v-for="(user, index) in this.joinRequestUsers"
+                                    :key="index"
+                                > 
+                                    <span> {{ getFormattedName(user.firstName, user.lastName) }} </span>
+                                    <i
+                                        class="el-icon-info"
+                                        @click="dialogDecision = true, pos = index"
+                                    />
+
+                                     <v-dialog
+                                        v-model="dialogDecision"
+                                        width="500"
+                                    >
+                                        <v-card>
+                                            <v-card-title
+                                                class="headline"
+                                                primary-title
+                                            > 
+                                                {{ getFormattedName(user.firstName, user.lastName) }}
+                                            </v-card-title>
+                                            <v-card-text>
+                                                College: {{ user.college }}<br>
+                                                Major: {{ user.major }}<br>
+                                                Email: {{ user.email }}<br>
+                                            </v-card-text>
+                                            <v-divider/>
+                                            <v-card-actions>
+                                                <v-spacer/>
+                                                <button
+                                                    id="greenbtn"
+                                                    @click="handleAcceptRequest(user.id)"
+                                                > Accept 
+                                                </button>
+                                                <v-spacer/>
+                                                <button
+                                                    id="redbtn"
+                                                    @click="handleRequestRequest(user.id)"
+                                                > Reject 
+                                                </button>
+                                                <v-spacer/>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-dialog>
                                 </div>
                             </v-card-text>
-
                             <v-divider/>
                             <v-card-actions>
                                 <v-spacer/>
@@ -67,32 +119,6 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-
-        <v-dialog
-            v-model="dialogDecision"
-            width="500"
-        >
-            <v-card>
-                <v-card-title
-                    class="headline"
-                    primary-title
-                > 
-                    The participant's name (no idea how to do that here :( )
-                </v-card-title>
-                <v-card-text>
-                    His/Her reason to joining
-                </v-card-text>
-                <v-divider/>
-                <v-card-actions>
-                    <v-spacer/>
-                    <button @click="dialogDecision = false" id="greenbtn"> Accept </button>
-                    <v-spacer/>
-                    <button @click="dialogDecision = false" id="redbtn"> Reject </button>
-                    <v-spacer/>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
     </div>
 </template>
 
@@ -101,6 +127,7 @@ import ActivityService from "../services/activityService";
 import User from "../models/User";
 import alerter from '../utils/alerter';
 import validator from '../utils/validator';
+import formatter from "../utils/formatter";
 
 export default {
     data () {
@@ -110,7 +137,8 @@ export default {
             dialog: false,
             dialogP: false,
             dialogDecision: false,
-            participants: ["Andrew Fanggara", "Lai Jian Shin", "Wei Xuan Phor", "Nicholas Tanryo", "Aaron", "afijaofkaf", " asfijasifjaifjiasjfisa "],
+            joinRequestUsers: [],
+            pos: "",
         }
     },
     props: {
@@ -124,6 +152,11 @@ export default {
         }
     },
     methods: {
+        getFormattedName: (firstName, lastName) => formatter.getFormattedName(firstName, lastName),
+        setCurrentUserRequest(user) {
+            this.currentUserRequest = user;
+            this.dialogDecision = true;
+        },
         openDialog() {
             this.dialog = true;
         },
@@ -156,6 +189,56 @@ export default {
                             )));
             this.closeDialog();
         },
+        async handleRequest() {
+            let response = 
+                await ActivityService
+                    .getPendingActivityRequest(
+                        this.user.id,
+                        this.activityId
+                    )
+                    .then(response => this.joinRequestUsers = response.data);
+
+                this.dialogP = true;
+        },
+        async handleAcceptRequest(requestUserId) {
+            let response = 
+                await ActivityService
+                    .acceptActivityRequest(
+                        this.user.id,
+                        requestUserId,
+                        this.activityId
+                    )
+                    .then(response => response.status == 200
+                        ?   this.$fire(alerter.successAlert(
+                                "Accept Request Success",
+                                response.data.message
+                            ))
+                        :   this.$fire(alerter.errorAlert(
+                                "Accept Request Failed",
+                                response.data.message
+                            )));
+            this.dialogDecision = false;
+        },
+        async handleRequestRequest(requestUserId) {
+            let response = 
+                await ActivityService
+                    .rejectActivityRequest(
+                        this.user.id,
+                        requestUserId,
+                        this.activityId
+                    )
+                    .then(response => response.status == 200
+                        ?   this.$fire(alerter.successAlert(
+                                "Reject Request Success",
+                                response.data.message
+                            ))
+                        :   this$fire(alerter.errorAlert(
+                                "Reject Request Failed",
+                                response.data.message
+                            )));
+            
+            this.dialogDecision = false
+        }
     },
     mounted() {
         this.user = this.getCurrentUser;

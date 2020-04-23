@@ -28,7 +28,7 @@
                     <v-spacer/>
                     <button
                         id="greenbtn"
-                        @click="dialogR = true"
+                        @click="handleJoinClub"
                     > Join
                     </button>
 
@@ -69,11 +69,12 @@
                     <v-spacer/>
                 </v-card-actions>
                 
-                <v-card-actions v-else>
+                <v-card-actions 
+                    v-else>
                     <v-spacer/>
                     <button
                         id="greenbtn"
-                        @click="dialogR = true"
+                        @click="handleJoinActivity"
                     > Join
                     </button>
                     <v-spacer/>
@@ -116,6 +117,7 @@ export default {
         handleJoinClub() {
             // TODO: Create another pop up to allow user to fill the required fields:
             // Reason: Why the user want to join the club
+            this.dialogR = true
         },
         async handleJoinActivity() {
             let response = 
@@ -130,6 +132,7 @@ export default {
                                 "Signed Up Failed",
                                 response.data.message
                         )));
+            this.dialogR = true
         },
         handleJoin() {
             if (this.context == "club") {
