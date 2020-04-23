@@ -43,11 +43,16 @@
                                 class="headline"
                                 primary-title
                             > 
-                                Who has joined?
+                                Join requests
                             </v-card-title>
 
-                            <v-card-text v-for="(participant, index) in participants" :key="index">
-                                {{ participant }}
+                            <v-card-text 
+                                class="v-card-text-content"
+                            >   
+                                <div v-for="(participant, index) in participants" :key="index"> 
+                                    <span> {{ participant }} </span>
+                                    <i class="el-icon-info" @click="dialogDecision = true"></i>
+                                </div>
                             </v-card-text>
 
                             <v-divider/>
@@ -62,6 +67,32 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <v-dialog
+            v-model="dialogDecision"
+            width="500"
+        >
+            <v-card>
+                <v-card-title
+                    class="headline"
+                    primary-title
+                > 
+                    The participant's name (no idea how to do that here :( )
+                </v-card-title>
+                <v-card-text>
+                    His/Her reason to joining
+                </v-card-text>
+                <v-divider/>
+                <v-card-actions>
+                    <v-spacer/>
+                    <button @click="dialogDecision = false" id="greenbtn"> Accept </button>
+                    <v-spacer/>
+                    <button @click="dialogDecision = false" id="redbtn"> Reject </button>
+                    <v-spacer/>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </div>
 </template>
 
@@ -77,8 +108,8 @@ export default {
             user: new User(),
             updatedDescription: "",
             dialog: false,
-            dialog: false,
             dialogP: false,
+            dialogDecision: false,
             participants: ["Andrew Fanggara", "Lai Jian Shin", "Wei Xuan Phor", "Nicholas Tanryo", "Aaron", "afijaofkaf", " asfijasifjaifjiasjfisa "],
         }
     },
@@ -181,5 +212,20 @@ button:hover {
 button:active {
     box-shadow: 0 1px silver;
     transform: translateY(3px);
+}
+.v-card-text-content {
+    height: 200px;
+    overflow: auto;
+    div {
+        padding: 10px;
+        display: flex;
+        span {
+            flex: 2;
+        }
+        i {
+            font-size: 17px;
+            flex: 1;
+        } 
+    }
 }
 </style>

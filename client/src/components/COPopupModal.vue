@@ -48,7 +48,6 @@
 
                             <v-card-text 
                                 class="v-card-text-content"
-                                
                             >   
                                 <div v-for="(participant, index) in participants" :key="index"> 
                                     <span> {{ participant }} </span>
@@ -173,6 +172,5 @@ button:active {
             flex: 1;
         } 
     }
-    
 }
 </style>
