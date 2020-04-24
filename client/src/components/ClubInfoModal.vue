@@ -84,7 +84,7 @@
                             <v-divider/>
                             <v-card-actions>
                                 <v-spacer/>
-                                <button @click="memberInfoDialog = false"> Back </button>
+                                <button @click="memberDialog = false"> Back </button>
                                 <v-spacer/>
                             </v-card-actions>
                         </v-card>
@@ -185,5 +185,20 @@ button:hover {
 button:active {
     box-shadow: 0 1px silver;
     transform: translateY(3px);
+}
+.v-card-text-content {
+    height: 200px;
+    overflow: auto;
+    div {
+        padding: 10px;
+        display: flex;
+        span {
+            flex: 2;
+        }
+        i {
+            font-size: 17px;
+            flex: 1;
+        } 
+    }
 }
 </style>
