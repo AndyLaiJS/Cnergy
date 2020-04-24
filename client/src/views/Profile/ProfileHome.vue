@@ -63,7 +63,10 @@
                                     <b> {{ club.name }} </b>                                    
                                 </div>
                                 <div class="Title">
-                                    <ClubInfoModal/>
+                                    <ClubInfoModal
+                                        v-bind:name="club.name"
+                                        v-bind:description="club.description"
+                                    />
                                 </div>
                             </div>
                         </div>
