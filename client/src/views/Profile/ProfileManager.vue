@@ -5,7 +5,7 @@
             <div class="profile-container">
                 <div class="overlay">
                     <div class="pic">
-                        <img style="height: 145px; width: 145px;" :src="require('../../assets/'+img)">
+                        <img style="height: 145px; width: 145px;" :src="require('../../assets/' + this.img)">
                         <div class="name">
                             <h3>{{ getFormattedName(user.firstName, user.lastName) }}</h3>
                         </div>

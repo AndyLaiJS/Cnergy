@@ -66,7 +66,7 @@ class ClubService {
 
      rejectClubRequest(userId, requestUserId, requestClubId) {
           return axios
-               .delete(`${API_URL}/reject`, {
+               .post(`${API_URL}/reject`, {
                     userId: requestUserId,
                     clubId: requestClubId
                }, {
