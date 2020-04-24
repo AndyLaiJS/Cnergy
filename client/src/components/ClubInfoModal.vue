@@ -41,7 +41,7 @@
                             >   
                                 <!-- show the name of the member -->
                                 <div
-                                    v-for="(member, index) in this.activityMembers"
+                                    v-for="(member, index) in this.clubMembers"
                                     :key="index"
                                 > 
                                     <span> {{ getFormattedName(member.firstName, member.lastName) }} </span>
@@ -110,7 +110,7 @@ export default {
             user: new User(),
             dialog: false,
             dialogMember: false,
-            activityMembers: []
+            clubMembers: []
         }
     },
     props: {
@@ -121,12 +121,24 @@ export default {
         getCurrentUser() {
             return this.$store.state.auth.status.loggedIn &&
                    this.$store.state.auth.user.user; 
-        }
+        },
+        setSelectedMember(user) {
+            this.selectedUser = user;
+            this.dialogMember = true;
+        },
     },
     methods: {
         opendialog() {
             this.dialog = true;
         },
+    },
+    async handleMembers() {
+        let response =
+            await ClubService
+                .getClubMembers(this.clubId)
+                .then(response => this.clubMembers = response.data);
+
+        this.dialogMember = true
     },
     mounted() {
         this.user = this.getCurrentUser;
