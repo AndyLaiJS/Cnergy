@@ -67,6 +67,7 @@
                                     <ActivityModalManager
                                         v-bind:activityId="activity.id"
                                         v-bind:activityName="activity.name"
+                                        v-bind:activityType="activity.type"
                                     />
                                 </div>
                             </div>

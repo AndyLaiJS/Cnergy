@@ -23,16 +23,88 @@
                 <v-card-actions>
                     <v-spacer/>
                     <button
+                        @click="dialogMember = true">
+                            <i class="el-icon-user"></i> 
+                    </button>
+                    <!-- Who is member -->
+                    <v-dialog
+                        v-model="dialogMember"
+                        width="500"
+                    >
+                        <v-card>
+                            <v-card-title
+                                class="headline"
+                                primary-title
+                            > 
+                                Current members
+                            </v-card-title>
+                            <v-card-text 
+                                class="v-card-text-content"
+                            >   
+                                <!-- show the name of the member -->
+                                <div
+                                    v-for="(member, index) in this.activityMembers"
+                                    :key="index"
+                                > 
+                                    <span> {{ getFormattedName(member.firstName, member.lastName) }} </span>
+                                    <i
+                                        class="el-icon-info"
+                                        @click="setSelectedUser(member)"
+                                    />
+                                    <!-- show more info of that member -->
+                                     <v-dialog
+                                        v-model="memberInfoDialog"
+                                        width="500"
+                                    >
+                                        <v-card>
+                                            <v-card-title
+                                                class="headline"
+                                                primary-title
+                                            > 
+                                                {{ getFormattedName(selectedUser.firstName, selectedUser.lastName) }}
+                                            </v-card-title>
+                                            <v-card-text>
+                                                <b>College</b>: {{ selectedUser.college }}<br>
+                                                <b>Major</b>: {{ selectedUser.major }}<br>
+                                                <b>Email</b>: {{ selectedUser.email }}<br>
+                                            </v-card-text>
+                                            <v-divider/>
+                                            <v-card-actions>
+                                                <v-spacer/>
+                                                <button
+                                                    @click="dialogMember = false"
+                                                >
+                                                    Ok 
+                                                </button>
+                                                <v-spacer/>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-dialog>
+                                    <!-- show more info of that member/ -->
+                                </div>
+                            </v-card-text>
+                            <v-divider/>
+                            <v-card-actions>
+                                <v-spacer/>
+                                <button @click="dialogMember = false"> Back </button>
+                                <v-spacer/>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                    <!-- who is member/ -->
+                    <v-spacer/>
+                    <button
                         id="greenbtn"
                         @click="handleEdit">
                             <i class="el-icon-edit"></i> 
                     </button>
                     <v-spacer/>
                     <button 
+                        v-if="this.activityType == 'Private'"
                         @click="handleRequest"> 
                             <i class="el-icon-info"></i>
                     </button>
-                    <!-- See who joined the activity -->
+                    <!-- See who requested to join the activity -->
                     <v-dialog
                         v-model="joinRequestDialog"
                         width="500"
@@ -103,7 +175,8 @@
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
-                    <v-spacer/>
+                    <!-- Requested to join/ -->
+                    <v-spacer v-if="this.activityType == 'Private'"></v-spacer>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -126,13 +199,16 @@ export default {
             dialog: false,
             joinRequestDialog: false,
             dialogDecision: false,
+            dialogMember: false,
             joinRequestUsers: [],
             pos: "",
+            activityMembers: [],
         }
     },
     props: {
         activityId: { type: Number },
         activityName: { type: String },
+        activityType: { type: String }
     },
     computed: {
         getCurrentUser() {
@@ -227,6 +303,14 @@ export default {
                             )));
             
             this.dialogDecision = false
+        },
+        async handleMembers() {
+            let response =
+                await ClubService
+                    .getClubMembers(this.activityId)
+                    .then(response => this.activityMembers = response.data);
+
+            this.dialogMember = true
         }
     },
     mounted() {
