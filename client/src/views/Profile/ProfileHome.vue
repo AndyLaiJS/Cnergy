@@ -90,6 +90,7 @@
                                     <ActivityInfoModal
                                         v-bind:name="activity.name"
                                         v-bind:description="activity.description"
+                                        v-bind:participantsCount="activity.participantsCount"
                                         v-bind:minParticipants="activity.minParticipants"
                                         v-bind:maxParticipants="activity.maxParticipants"
                                         v-bind:type="activity.type"

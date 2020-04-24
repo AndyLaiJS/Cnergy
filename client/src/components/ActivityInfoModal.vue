@@ -15,6 +15,8 @@
                 <v-card-text>
                     <b>Description</b><br>
                     {{ description }}<br>
+                    <b>Total Participants</b><br>
+                    {{ participantsCount }}<br>
                     <b>Minimum Participants</b><br>
                     {{ minParticipants }}<br>
                     <b>Maximum Participants</b><br>
@@ -49,6 +51,7 @@ export default {
     props: {
         name: { type: String },
         description: { type: String },
+        participantsCount: { type: Number },
         minParticipants: { type: Number },
         maxParticipants: { type: Number },
         type: { type: String }
