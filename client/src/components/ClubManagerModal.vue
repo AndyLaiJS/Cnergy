@@ -238,7 +238,7 @@ export default {
                 return;
             }
             let response =
-                await clubService
+                await ClubService
                     .updateClub(
                         this.user.id,
                         this.clubId,

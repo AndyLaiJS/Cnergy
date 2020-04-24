@@ -8,7 +8,6 @@ import ClubRequestDto from "../dtos/clubRequestDto";
 import CreateClubDto from "../dtos/createClubDto";
 import JoinClubDto from "../dtos/joinClubDto";
 import UpdateClubDto from "../dtos/updateClubDto";
-import ActivityNotFoundException from "../exceptions/activityNotFoundException";
 import ClubNotFoundException from "../exceptions/clubNotFoundException";
 import UnauthorizedException from "../exceptions/unauthorizedException";
 import UserHasSignedUpException from "../exceptions/userHasSignedUpException";
@@ -261,7 +260,7 @@ class ClubController implements Controller {
           const results = await this.clubService
                                     .getClubPresident(clubId);
           if (results.length == 0) {
-               next(new ActivityNotFoundException());
+               next(new ClubNotFoundException());
                return;
           }
 
@@ -295,7 +294,7 @@ class ClubController implements Controller {
           const results = await this.clubService
                                     .getClubPresident(joinRequest.clubId);
           if (results.length == 0) {
-               next(new ActivityNotFoundException());
+               next(new ClubNotFoundException());
                return;
           }
 
@@ -353,7 +352,7 @@ class ClubController implements Controller {
           const results = await this.clubService
                                     .getClubPresident(joinRequest.clubId);
           if (results.length == 0) {
-               next(new ActivityNotFoundException());
+               next(new ClubNotFoundException());
                return;
           }
 
