@@ -1,5 +1,4 @@
 <template>
-    <!-- For ProfileHome.vue -->
     <div class="text-center">
         <button @click="opendialog()">Info</button>
         <v-dialog
@@ -14,10 +13,14 @@
                     {{ name }}
                 </v-card-title>
                 <v-card-text>
-                    Description: {{ description }}<br>
-                    Minimum Participants: {{ minParticipants }}<br>
-                    Maximum Participants: {{ maxParticipants }}<br>
-                    Activity Type: {{ type }}<br>
+                    <b>Description</b><br>
+                    {{ description }}<br>
+                    <b>Minimum Participants</b><br>
+                    {{ minParticipants }}<br>
+                    <b>Maximum Participants</b><br>
+                    {{ maxParticipants }}<br>
+                    <b>Activity Type</b><br>
+                    {{ type }}<br>
                 </v-card-text>
                 <v-divider/>
                 <v-card-actions>
@@ -133,31 +136,6 @@ export default {
         opendialog() {
             this.dialog = true;
         },
-        handleJoinClub() {
-            // TODO: Create another pop up to allow user to fill the required fields:
-            // Reason: Why the user want to join the club
-        },
-        async handleJoinActivity() {
-            let response = 
-                await ActivityService
-                    .joinActivity(this.user.id, this.data.id)
-                    .then(response => response.status == 200
-                        ?   this.$fire(alerter.successAlert(
-                                "Signed Up Success",
-                                response.data.message
-                            ))
-                        :   this.$fire(alerter.errorAlert(
-                                "Signed Up Failed",
-                                response.data.message
-                        )));
-        },
-        handleJoin() {
-            if (this.context == "club") {
-                this.handleJoinClub();
-                return;
-            }
-            this.handleJoinActivity();
-        }
     },
     mounted() {
         this.user = this.getCurrentUser;

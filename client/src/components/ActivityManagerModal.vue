@@ -297,7 +297,7 @@ export default {
                                 "Reject Request Success",
                                 response.data.message
                             ))
-                        :   this$fire(alerter.errorAlert(
+                        :   this.$fire(alerter.errorAlert(
                                 "Reject Request Failed",
                                 response.data.message
                             )));

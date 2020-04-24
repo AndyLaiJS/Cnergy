@@ -94,7 +94,7 @@ class ActivityService {
 
      rejectActivityRequest(userId, requestUserId, requestActivityId) {
           return axios
-               .delete(`${API_URL}/reject`, {
+               .post(`${API_URL}/reject`, {
                     userId: requestUserId,
                     activityId: requestActivityId
                }, {

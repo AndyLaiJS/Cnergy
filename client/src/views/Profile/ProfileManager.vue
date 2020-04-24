@@ -5,7 +5,7 @@
             <div class="profile-container">
                 <div class="overlay">
                     <div class="pic">
-                        <img style="height: 145px; width: 145px;" :src="require('../../assets/'+img)">
+                        <img style="height: 145px; width: 145px;" :src="require('../../assets/' + this.img)">
                         <div class="name">
                             <h3>{{ getFormattedName(user.firstName, user.lastName) }}</h3>
                         </div>
@@ -39,7 +39,7 @@
                                     
                                 </div>
                                 <div class="Title">
-                                    <ClubModalManager 
+                                    <ClubManagerModal 
                                         v-bind:clubId="club.id"
                                         v-bind:clubName="club.name"
                                     />
@@ -64,7 +64,7 @@
                                     Type: {{activity.type}}                                    
                                 </div>
                                 <div class="Title">
-                                    <ActivityModalManager
+                                    <ActivityManagerModal
                                         v-bind:activityId="activity.id"
                                         v-bind:activityName="activity.name"
                                         v-bind:activityType="activity.type"
@@ -84,8 +84,8 @@
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 import User from "../../models/User";
-import ClubModalManager from "../../components/ClubModalManager";
-import ActivityModalManager from "../../components/ActivityModalManager";
+import ClubManagerModal from "../../components/ClubManagerModal";
+import ActivityManagerModal from "../../components/ActivityManagerModal";
 import ActivityService from '../../services/activityService';
 import ClubService from '../../services/clubService';
 import formatter from "../../utils/formatter";
@@ -102,8 +102,8 @@ export default {
     components: {
         NavBar,
         Footer,
-        ActivityModalManager,
-        ClubModalManager,
+        ActivityManagerModal,
+        ClubManagerModal,
     },
     computed: {
         getCurrentUser() {
