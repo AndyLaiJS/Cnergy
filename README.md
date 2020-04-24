@@ -7,6 +7,8 @@ their desired club.
 The application is built using VueJS. 
 
 NodeJS, npm and MySQL are assumed to be already installed on your system
+
+I'm also assuming you have already git cloned the project, and have already changed directory in your terminal to it.
 ## For Frontend
 
 ### Installing VueJS
@@ -53,6 +55,7 @@ npm i element-ui -S
 ```
 
 ## For Backend
+Change your directory to /server then:
 
 ```
 npm install
