@@ -35,7 +35,7 @@ function onlyAcceptDateInFixedRange(date) {
 function onlyAcceptIntegers(context, ...fields) {
      for (let i = 0; i < fields.length; i ++) {
           if (!fields[i].match(/^\d+$/)) {
-               return `${context} field should be integer`;
+               return `${context} field should be positive integer`;
           }
      }
      return "";

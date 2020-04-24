@@ -32,13 +32,14 @@
                         <input
                             id="first-box"
                             class="form-control"
-                            v-model="activity.activityDate"
+                            v-model="date"
                             type="date"
                             max="9999-12-31"
                         />
                         <input
                             id="second-box"
                             class="form-control"
+                            v-model="time"
                             type="time"
                         />
                     </div>
@@ -89,6 +90,8 @@ import Activity from "../../models/Activity";
 import User from "../../models/User";
 import alerter from "../../utils/alerter";
 import validator from "../../utils/validator";
+import formatter from "../../utils/formatter";
+import { cuhk } from "../../utils/constants";
 
 export default {
     components: {
@@ -99,7 +102,9 @@ export default {
         return {
             activity: new Activity(),
             user: new User(),
-            options: ["Private", "Public"],
+            options: [],
+            date: "",
+            time: "",
         }
     },
     computed: {
@@ -110,6 +115,9 @@ export default {
     },
     methods: {
         createActivity() {
+            this.activity.activityDate = formatter.getDateWithTime(
+                this.date, this.time
+            );
             let err = validator.createActivityChecker(this.activity);
             if (err.length != 0) {
                 this.$fire(alerter.errorAlert(
@@ -140,6 +148,7 @@ export default {
             this.$router.push("/");
             return;
         }
+        this.options = cuhk.ACTIVITY_TYPE;
     }
 }
 </script>

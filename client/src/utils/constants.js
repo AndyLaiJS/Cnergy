@@ -37,6 +37,10 @@ const time =  {
 
 const cuhk = {
      EMAIL_REGEX: "^115511[0-9]{4,4}(@link.cuhk.edu.hk)$",
+     ACTIVITY_TYPE: [
+          "Private",
+          "Public"
+     ],
      COLLEGES: [
           "Chung Chi College",
           "C.W Chu College",
