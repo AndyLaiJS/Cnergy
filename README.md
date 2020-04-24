@@ -8,9 +8,22 @@ The application is built using VueJS.
 
 NodeJS, npm and MySQL are assumed to be already installed on your system
 
+On MySQL, we will instruct how to install on Linux and macOS systems:
+### macOS
+```
+brew update
+brew install mysql
+```
+
+### Linux
+```
+sudo apt-get update,
+sudo apt-get install mysql-server 
+```
+
 I'm also assuming you have already git cloned the project, and have already changed directory in your terminal to it.
 ## For Frontend
-
+Assuming you don't already have VueJS in the system, 
 ### Installing VueJS
 ```
 npm install -g vue
@@ -62,7 +75,7 @@ npm install
 ```
 
 ### Configure the .env (or create it)
-It should be in the root of the /server/ folder
+Create the file .env in the root of the /server/ folder and insert this into the file:
 ```
 JWT_SECRET=someTextCanBeAnything
 ```
