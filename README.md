@@ -93,7 +93,7 @@ USE database_name_in_ormconfig;
 
 And you're set! 
 
-Just exit that terminal, open two new ones under the /server/ directory:
+Just exit that terminal, open two new ones under the /server directory:
 First run:
 ```
 sudo npm run ts
