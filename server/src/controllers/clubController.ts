@@ -107,7 +107,10 @@ class ClubController implements Controller {
                await this.clubService
                          .postUserJoinClub(mockJoinData, uid, true);
                          
-               response.send(result);
+               response.send({
+                    message: "You have successfully created a club",
+                    status: 200
+               });
           } catch(e) {
                next(e);
           }
@@ -248,7 +251,7 @@ class ClubController implements Controller {
      }
 
      /**
-      * GET /club/pending?uid=...
+      * GET /club/pending?uid=...&cid=...
       * 
       * getPendingClubRequests() allow club president to check who signed up
       * as the member of the club and has not been accepted yet
@@ -341,7 +344,7 @@ class ClubController implements Controller {
      }
 
      /**
-      * POST /club/accept
+      * POST /club/accept?uid=...
       * 
       * acceptJoinClubRequest() allow club president to accept a sign up request from user
       */

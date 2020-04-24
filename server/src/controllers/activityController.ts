@@ -45,7 +45,7 @@ class ActivityController implements Controller {
           this.router
               .get(`${this.path}/join`, this.getJoinedActivities)
               .post(`${this.path}/join`, validationMiddleware(JoinActivityDto) ,this.joinActivity)
-              .delete(`${this.path}/join`, this.cancelJoinActivity);
+              .post(`${this.path}/join/cancel`, this.cancelJoinActivity);
 
           this.router
               .post(`${this.path}/accept`, validationMiddleware(ActivityRequestDto), this.acceptActivityRequest);
@@ -136,7 +136,10 @@ class ActivityController implements Controller {
                await this.activityService
                          .updateActivityParticipantsCount(result.id, 1);
 
-               response.send(result);
+               response.send({
+                    message: "You have successfully create an activity",
+                    status: 200
+               });
           } catch(e) {
                next(e);
           }
@@ -249,7 +252,7 @@ class ActivityController implements Controller {
      }
 
      /**
-      * POST /activity/join?uid=...
+      * POST /activity/join/cancel?uid=...
       * 
       * cancelJoinActivity() allow user to cancel the activity that he/she signed up for
       */
@@ -315,7 +318,7 @@ class ActivityController implements Controller {
      }
 
      /**
-      * GET /activity/pending?uid=...
+      * GET /activity/pending?uid=...&aid=...
       * 
       * getPendingActivityRequests() allow activity creator to check
       * who signed up to the activity and has not been accepted yet
@@ -344,7 +347,7 @@ class ActivityController implements Controller {
      }
 
      /**
-      * DELETE /activity/reject?uid=...
+      * POST /activity/reject?uid=...
       * 
       * rejectActivityRequest() allow activity creator to reject a join request from different user
       */

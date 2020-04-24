@@ -23,7 +23,7 @@ class ActivityService {
      public getActivitiesByUIDAndTimestamp = async (userId: string, timestamp: string, comparator: string = ">=") => {
           const activities = await this.activityRepository
                                        .createQueryBuilder("activity")
-                                       .innerJoinAndSelect("activity.creator", "creator")
+                                       .innerJoin("activity.creator", "creator")
                                        .where(`creator.id = :userId AND
                                                activity.activityDate ${comparator} :time`, {
                                                   userId: userId,
