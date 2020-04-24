@@ -64,6 +64,7 @@
                                 </div>
                                 <div class="Title">
                                     <ClubInfoModal
+                                        v-bind:id="club.id"
                                         v-bind:name="club.name"
                                         v-bind:description="club.description"
                                     />

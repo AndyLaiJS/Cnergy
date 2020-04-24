@@ -20,13 +20,13 @@
                 <v-card-actions>
                     <v-spacer/>
                     <button
-                        @click="dialogMember = true">
-                            <i class="el-icon-user"></i> 
+                        @click="handleMembers">
+                        <i class="el-icon-user"/> 
                     </button>
                     <v-spacer/>
                     <!-- Who is member -->
                     <v-dialog
-                        v-model="dialogMember"
+                        v-model="memberDialog"
                         width="500"
                     >
                         <v-card>
@@ -34,20 +34,20 @@
                                 class="headline"
                                 primary-title
                             > 
-                                Current members
+                                Current Members
                             </v-card-title>
                             <v-card-text 
                                 class="v-card-text-content"
                             >   
                                 <!-- show the name of the member -->
                                 <div
-                                    v-for="(member, index) in this.clubMembers"
+                                    v-for="(member, index) in clubMembers"
                                     :key="index"
                                 > 
-                                    <span> {{ getFormattedName(member.firstName, member.lastName) }} </span>
+                                    <span> {{ getFormattedName(member.user.firstName, member.user.lastName) }} </span>
                                     <i
                                         class="el-icon-info"
-                                        @click="setSelectedUser(member)"
+                                        @click="setSelectedMember(member.user)"
                                     />
                                     <!-- show more info of that member -->
                                      <v-dialog
@@ -70,7 +70,7 @@
                                             <v-card-actions>
                                                 <v-spacer/>
                                                 <button
-                                                    @click="dialogMember = false"
+                                                    @click="memberInfoDialog = false"
                                                 >
                                                     Ok 
                                                 </button>
@@ -84,7 +84,7 @@
                             <v-divider/>
                             <v-card-actions>
                                 <v-spacer/>
-                                <button @click="dialogMember = false"> Back </button>
+                                <button @click="memberInfoDialog = false"> Back </button>
                                 <v-spacer/>
                             </v-card-actions>
                         </v-card>
@@ -103,17 +103,22 @@ import ActivityService from "../services/activityService";
 import ClubService from "../services/clubService";
 import User from "../models/User";
 import alerter from '../utils/alerter';
+import formatter from "../utils/formatter";
 
 export default {
     data () {
         return {
             user: new User(),
+            selectedUser: new User(),
+            clubMembers: [],
+
             dialog: false,
-            dialogMember: false,
-            clubMembers: []
+            memberDialog: false,
+            memberInfoDialog: false,
         }
     },
     props: {
+        id: { type: Number },
         name: { type: String },
         description: { type: String },
     },
@@ -122,23 +127,24 @@ export default {
             return this.$store.state.auth.status.loggedIn &&
                    this.$store.state.auth.user.user; 
         },
-        setSelectedMember(user) {
-            this.selectedUser = user;
-            this.dialogMember = true;
-        },
     },
     methods: {
+        getFormattedName: (firstName, lastName) => formatter.getFormattedName(firstName, lastName),
         opendialog() {
             this.dialog = true;
         },
-    },
-    async handleMembers() {
-        let response =
-            await ClubService
-                .getClubMembers(this.clubId)
-                .then(response => this.clubMembers = response.data);
+        setSelectedMember(user) {
+            this.selectedUser = user;
+            this.memberInfoDialog = true;
+        },
+        async handleMembers() {
+            let response =
+                await ClubService
+                    .getClubMembers(this.id)
+                    .then(response => this.clubMembers = response.data);
 
-        this.dialogMember = true
+            this.memberDialog = true
+        },
     },
     mounted() {
         this.user = this.getCurrentUser;
