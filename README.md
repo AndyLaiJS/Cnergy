@@ -68,10 +68,11 @@ JWT_SECRET=someTextCanBeAnything
 mysql -u root -p
 
 // or mysql, as long as you can get to the mysql terminal shell
+// database configuration can be checked in /server/ormconfig.json
+// feel free to configure as you like, but remember to create the database first
 
-CREATE DATABASE yourDatabase;
-
-USE yourDatabase;
+CREATE DATABASE database_name_in_ormconfig;
+USE database_name_in_ormconfig;
 ```
 
 And you're set! 
@@ -79,18 +80,18 @@ And you're set!
 Just exit that terminal, open two new ones under the /server/ directory:
 First run:
 ```
-npm run ts
+sudo npm run ts
 ```
 ...then:
 ```
-npm run dev
+sudo npm run dev
 ```
+By default, the port used in running the backend is :3000, feel free to change it in /server/src/index.ts
 Now you're backend is running, open the URL (with :3000) suggested by the terminal and you're done with Backend.
 
-Once VueJS and the dependencies are installed and the repository is cloned onto your system, open up a Terminal and navigate towards the directory
-holding the repository and type the following command:
+Once VueJS and the dependencies are installed and the repository is cloned onto your system, open up a Terminal and navigate towards the directory holding the repository and type the following command:
 
 ```
 cd client
-npm run serve
+sudo npm run serve
 ```

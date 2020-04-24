@@ -2,35 +2,30 @@
     <v-app>
         <NavBar/>
         <div class="home">
-
             <div class="profile-container">
-
                 <div class="overlay">
                     <div class="pic">
-                        <img style="height: 145px; width: 145px;" :src="require('../../assets/'+img)">
+                        <img style="height: 145px; width: 145px;" :src="require('../../assets/'+ this.img)">
                         <div class="name">
                             <h3>{{ getFormattedName(user.firstName, user.lastName) }}</h3>
                         </div>
                     </div>
                 </div>
-
                 <div class="nav-bar-setting">
-                    <router-link to="/profile"><i class="el-icon-user"></i></router-link><!-- clubs n activities -->
-                    <router-link to="/manager"><i class="el-icon-folder"></i></router-link> <!-- manage cna -->
-                    <router-link to="/profile-edit"><i class="el-icon-edit"></i></router-link> <!-- edit profile -->
-                    <router-link to="/profile-settings"><i class="el-icon-setting" id="actif"></i></router-link><!-- self-explanatory-->
+                    <router-link to="/profile"><i class="el-icon-user"></i></router-link>
+                    <router-link to="/manager"><i class="el-icon-folder"></i></router-link>
+                    <router-link to="/profile-edit"><i class="el-icon-edit"></i></router-link>
+                    <router-link to="/profile-settings"><i class="el-icon-setting" id="actif"></i></router-link>
                     <a id="log-out" @click="logout()">
                         <v-icon size="20px"> mdi-logout </v-icon>
                     </a>
-                    <!-- log out via vuetify icons -->
                 </div>
-                
                 <div class="content-container">
                     <div class="flex-container">
                         <div class="card-container" id="edit">
                             <h2> Password Setting</h2>
                             <div class="content-lists">
-                                <label for="fname">Password </label>
+                                <label for="fname"> Password </label>
                                 <input 
                                     v-model="password"
                                     type="password"
@@ -40,7 +35,7 @@
                                 >
                             </div>
                             <div class="content-lists">
-                                <label for="fname">Confirm Password </label>
+                                <label for="fname"> Confirm Password </label>
                                 <input
                                     v-model="confirmPassword" 
                                     type="password" 
@@ -49,13 +44,16 @@
                                     placeholder="Confirm new password"
                                 >
                             </div>
-                            <button id="one" @click="changePassword">Change</button>
+                            <button
+                                id="change-button"
+                                @click="changePassword"
+                            >
+                                Change
+                            </button>
                         </div>
                     </div>
                 </div>
-
             </div>
-            
         </div>
         <Footer/>
     </v-app>
@@ -128,10 +126,13 @@ export default {
             return;
         }
 
-        if (this.user.gender == "Female") {
-            this.img = 'FemaleAvatar.jpeg'
-        } else {
-            this.img = 'avatar.png'
+        switch(this.user.gender) {
+            case "Female":
+                this.img = "femaleAvatar.png";
+                break;
+            default:
+                this.img = "maleAvatar.png";
+                break;
         }
     }
 }
@@ -147,7 +148,7 @@ export default {
     padding: 20px;
     padding-left: 30px;
 }
-#one {
+#change-button {
     margin-top: 10px;
     width: 100px;
 }

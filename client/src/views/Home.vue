@@ -4,40 +4,13 @@
 
         <div class="card-box">
             <p>
-                    <span id="dscvr">SEEK.</span> <b>SEARCH YOUR PASSION.</b> <span id="join">JOIN.</span>
+                <span id="dscvr">
+                    SEEK.</span> <b>SEARCH YOUR PASSION.</b> <span id="join">JOIN.
+                </span>
             </p> 
             <div class="cards-container">
                 <ViewPanel/>
             </div> 
-
-            <!-- <div class="cards">
-                <div class="card-title">
-                    <h1>Clubs</h1>
-                </div>
-                <div 
-                    class="card"
-                    v-for="(club, index) in clubs"
-                    v-bind:key="index"
-                >
-                    <b>{{ club.name }}</b>
-                    {{ club.description }}
-                    <PopupModal/>
-                </div>
-            </div>
-            <div class="cards">
-                <div class="card-title">
-                    <h1>Activities</h1>
-                </div>
-                <div
-                    class="card"
-                    v-for="(activity, index) in activities"
-                    v-bind:key="index"
-                >
-                    <b>{{ activity.name }}</b>
-                    {{ activity.description }}
-                    <PopupModal/>
-                </div>
-            </div> -->
         </div>
         <Footer/>
     </div>

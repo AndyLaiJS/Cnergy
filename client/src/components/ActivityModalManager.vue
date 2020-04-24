@@ -1,35 +1,40 @@
 <template>
-    <!-- For Club Owner manage -->
+    <!-- For Activity Owner manage -->
     <div class="text-center">
         <button @click="openDialog()">Edit</button>
         <v-dialog
             v-model="dialog"
             width="500"
-            scrollable
         >
             <v-card>
                 <v-card-title
                     class="headline"
                     primary-title
-                > 
-                    {{ this.clubName }}
-                </v-card-title>       
+                    > 
+                    {{ this.activityName }}
+                </v-card-title>
                 <textarea 
                     rows="6"
                     v-model="updatedDescription"
-                    placeholder="Enter your updated description here" 
-                />
+                    placeholder="Enter your updated description here"
+                >
+                </textarea>
                 <v-divider/>
                 <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <button @click="handleMembers"><i class="el-icon-user"></i></button>
                     <v-spacer/>
-                    <button @click="handleEdit" id="greenbtn"><i class="el-icon-edit"></i></button>
-                    <v-spacer></v-spacer>
-                    <button @click="handleRequest"> <i class="el-icon-info"></i> </button>
-                    <!-- See who joined the club -->
+                    <button
+                        id="greenbtn"
+                        @click="handleEdit">
+                            <i class="el-icon-edit"></i> 
+                    </button>
+                    <v-spacer/>
+                    <button 
+                        @click="handleRequest"> 
+                            <i class="el-icon-info"></i>
+                    </button>
+                    <!-- See who joined the activity -->
                     <v-dialog
-                        v-model="dialogP"
+                        v-model="joinRequestDialog"
                         width="500"
                     >
                         <v-card>
@@ -49,9 +54,10 @@
                                     <span> {{ getFormattedName(user.firstName, user.lastName) }} </span>
                                     <i
                                         class="el-icon-info"
-                                        @click="dialogDecision = true, pos = index">
-                                    </i>
-                                    <v-dialog
+                                        @click="setSelectedUser(user)"
+                                    />
+
+                                     <v-dialog
                                         v-model="dialogDecision"
                                         width="500"
                                     >
@@ -60,29 +66,28 @@
                                                 class="headline"
                                                 primary-title
                                             > 
-                                                {{ getFormattedName(user.firstName, user.lastName) }}
+                                                {{ getFormattedName(selectedUser.firstName, selectedUser.lastName) }}
                                             </v-card-title>
                                             <v-card-text>
-                                                College: {{ user.college }}<br>
-                                                Major: {{ user.major }}<br>
-                                                Email: {{ user.email }}<br>
-                                                Reason: {{ user.reason }}<br>
+                                                <b>College</b>: {{ selectedUser.college }}<br>
+                                                <b>Major</b>: {{ selectedUser.major }}<br>
+                                                <b>Email</b>: {{ selectedUser.email }}<br>
                                             </v-card-text>
                                             <v-divider/>
                                             <v-card-actions>
                                                 <v-spacer/>
                                                 <button
                                                     id="greenbtn"
-                                                    @click="handleAcceptRequest(user.id)"
+                                                    @click="handleAcceptRequest(selectedUser.id)"
                                                 >
-                                                    Accept
+                                                    Accept 
                                                 </button>
                                                 <v-spacer/>
                                                 <button
                                                     id="redbtn"
-                                                    @click="handleRejectRequest(user.id)"
+                                                    @click="handleRejectRequest(selectedUser.id)"
                                                 >
-                                                    Reject
+                                                    Reject 
                                                 </button>
                                                 <v-spacer/>
                                             </v-card-actions>
@@ -93,95 +98,11 @@
                             <v-divider/>
                             <v-card-actions>
                                 <v-spacer/>
-                                <button @click="dialogP = false"> Back </button>
+                                <button @click="joinRequestDialog = false"> Back </button>
                                 <v-spacer/>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
-                    <!-- See who joined the club/ -->
-                    <v-dialog
-                        v-model="dialogMember"
-                        width="500"
-                    >
-                        <v-card>
-                            <v-card-title
-                                class="headline"
-                                primary-title
-                            > 
-                                Current members
-                            </v-card-title>
-                            <v-card-text 
-                                class="v-card-text-content"
-                            >   
-                                <div v-for="(member, index) in clubMembers" :key="index"> 
-                                    <span> {{ getFormattedName(member.user.firstName, member.user.lastName) }} </span>
-                                    <i @click="dialogMemberInfo = true" class="el-icon-info"></i>
-                                    <!-- Andrew here, the new oneeeee  -->
-                                    <v-dialog
-                                        v-model="dialogMemberInfo"
-                                        width="500"
-                                    >
-                                        <v-card>
-                                            <v-card-title
-                                                class="headline"
-                                                primary-title
-                                            > 
-                                                {{ getFormattedName(user.firstName, user.lastName) }}
-                                            </v-card-title>
-                                            <v-card-text>
-                                                College: {{ user.college }}<br>
-                                                Major: {{ user.major }}<br>
-                                                Email: {{ user.email }}<br>
-                                                Reason: {{ user.reason }}<br>
-                                            </v-card-text>
-                                            <v-divider/>
-                                            <v-card-actions>
-                                                <v-spacer/>
-                                                <button
-                                                    @click="dialogMemberInfo = false"
-                                                >
-                                                    Ok
-                                                </button>
-                                                <v-spacer/>
-                                            </v-card-actions>
-                                        </v-card>
-                                    </v-dialog>
-                                    <!-- sampai ke sini -->
-                                </div>
-                            </v-card-text>
-
-                            <v-divider/>
-                            <v-card-actions>
-                                <v-spacer/>
-                                <button @click="dialogMember = false"> Back </button>
-                                <v-spacer/>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                    <v-spacer></v-spacer>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-        <v-dialog
-            v-model="dialogDecision"
-            width="500"
-        >
-            <v-card>
-                <v-card-title
-                    class="headline"
-                    primary-title
-                > 
-                    The participant's name (no idea how to do that here :( )
-                </v-card-title>
-                <v-card-text>
-                    His/Her reason to joining
-                </v-card-text>
-                <v-divider/>
-                <v-card-actions>
-                    <v-spacer/>
-                    <button @click="dialogDecision = false" id="greenbtn"> Accept </button>
-                    <v-spacer/>
-                    <button @click="dialogDecision = false" id="redbtn"> Reject </button>
                     <v-spacer/>
                 </v-card-actions>
             </v-card>
@@ -190,39 +111,41 @@
 </template>
 
 <script>
+import ActivityService from "../services/activityService";
 import User from "../models/User";
-import ClubService from '../services/clubService';
 import alerter from '../utils/alerter';
-import formatter from "../utils/formatter";
 import validator from '../utils/validator';
+import formatter from "../utils/formatter";
 
 export default {
     data () {
         return {
             user: new User(),
+            selectedUser: new User(),
             updatedDescription: "",
             dialog: false,
-            dialogP: false,
-            dialogMember: false,
-            dialogMemberInfo: false,
+            joinRequestDialog: false,
             dialogDecision: false,
             joinRequestUsers: [],
-            clubMembers: [],
             pos: "",
         }
     },
     props: {
-        clubId: { type: Number },
-        clubName: { type: String },
+        activityId: { type: Number },
+        activityName: { type: String },
     },
     computed: {
         getCurrentUser() {
             return this.$store.state.auth.status.loggedIn &&
-                   this.$store.state.auth.user.user;
+                   this.$store.state.auth.user.user; 
         }
     },
     methods: {
         getFormattedName: (firstName, lastName) => formatter.getFormattedName(firstName, lastName),
+        setSelectedUser(user) {
+            this.selectedUser = user;
+            this.dialogDecision = true;
+        },
         openDialog() {
             this.dialog = true;
         },
@@ -238,10 +161,10 @@ export default {
                 return;
             }
             let response =
-                await clubService
-                    .updateClub(
+                await ActivityService
+                    .updateActivity(
                         this.user.id,
-                        this.clubId,
+                        this.activityId,
                         this.updatedDescription
                     )
                     .then(response => response.status == 200
@@ -256,22 +179,23 @@ export default {
             this.closeDialog();
         },
         async handleRequest() {
-            let response =
-                await ClubService
-                    .getPendingClubRequest(
+            let response = 
+                await ActivityService
+                    .getPendingActivityRequest(
                         this.user.id,
-                        this.clubId
+                        this.activityId
                     )
                     .then(response => this.joinRequestUsers = response.data);
-            this.dialogP = true;
+
+                this.joinRequestDialog = true;
         },
         async handleAcceptRequest(requestUserId) {
             let response = 
-                await ClubService
-                    .acceptClubRequest(
+                await ActivityService
+                    .acceptActivityRequest(
                         this.user.id,
                         requestUserId,
-                        this.clubId
+                        this.activityId
                     )
                     .then(response => response.status == 200
                         ?   this.$fire(alerter.successAlert(
@@ -286,11 +210,11 @@ export default {
         },
         async handleRejectRequest(requestUserId) {
             let response = 
-                await ClubService
-                    .rejectClubRequest(
+                await ActivityService
+                    .rejectActivityRequest(
                         this.user.id,
                         requestUserId,
-                        this.clubId
+                        this.activityId
                     )
                     .then(response => response.status == 200
                         ?   this.$fire(alerter.successAlert(
@@ -303,15 +227,6 @@ export default {
                             )));
             
             this.dialogDecision = false
-        },
-        async handleMembers() {
-            let response =
-                await ClubService
-                    .getClubMembers(this.clubId)
-                    .then(response => this.clubMembers = response.data);
-                console.log(this.clubMembers);
-
-            this.dialogMember = true
         }
     },
     mounted() {

@@ -35,12 +35,11 @@
                     <v-spacer/>
                     <button
                         id="greenbtn"
-                        @click="dialogR = true"
+                        @click="reasonDialog = true"
                     > Join
                     </button>
-                    <!-- Reason for joining club -->
                     <v-dialog
-                        v-model="dialogR"
+                        v-model="reasonDialog"
                         width="500"
                     >
                         <v-card>
@@ -65,18 +64,15 @@
                                     Submit
                                 </button>
                                 <v-spacer/>
-                                <button @click="dialogR = false"> Back </button>
+                                <button @click="reasonDialog = false"> Back </button>
                                 <v-spacer/>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
-                    <!-- Reason for joinning club/ -->
-
                     <v-spacer/>
                     <button @click="dialog = false"> Ok </button>
                     <v-spacer/>
                 </v-card-actions>
-                
                 <v-card-actions 
                     v-else>
                     <v-spacer/>
@@ -107,7 +103,7 @@ export default {
             user: new User(),
             reason: "",
             dialog: false,
-            dialogR: false,
+            reasonDialog: false,
         }
     },
     props: {
@@ -138,7 +134,7 @@ export default {
                                 "Signed Up Failed",
                                 response.data.message
                             )));
-            this.dialogR = true
+            this.reasonDialog = true
         },
         async handleJoinActivity() {
             let response = 
@@ -153,7 +149,7 @@ export default {
                                 "Signed Up Failed",
                                 response.data.message
                         )));
-            this.dialogR = true
+            this.reasonDialog = true
         },
         handleJoin() {
             if (this.context == "club") {

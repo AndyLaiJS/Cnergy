@@ -2,9 +2,7 @@
     <v-app>
         <NavBar/>
         <div class="home">
-
             <div class="profile-container">
-
                 <div class="overlay">
                     <div class="pic">
                         <img style="height: 145px; width: 145px;" :src="require('../../assets/'+img)">
@@ -41,7 +39,7 @@
                                     
                                 </div>
                                 <div class="Title">
-                                    <COPopupModal 
+                                    <ClubModalManager 
                                         v-bind:clubId="club.id"
                                         v-bind:clubName="club.name"
                                     />
@@ -66,7 +64,7 @@
                                     Type: {{activity.type}}                                    
                                 </div>
                                 <div class="Title">
-                                    <AOPopupModal
+                                    <ActivityModalManager
                                         v-bind:activityId="activity.id"
                                         v-bind:activityName="activity.name"
                                     />
@@ -75,9 +73,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-            
         </div>
         <Footer/>
     </v-app>
@@ -87,8 +83,8 @@
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 import User from "../../models/User";
-import COPopupModal from "../../components/COPopupModal";   // club manage
-import AOPopupModal from "../../components/AOPopupModal";   //activity manage
+import ClubModalManager from "../../components/ClubModalManager";
+import ActivityModalManager from "../../components/ActivityModalManager";
 import ActivityService from '../../services/activityService';
 import ClubService from '../../services/clubService';
 import formatter from "../../utils/formatter";
@@ -105,8 +101,8 @@ export default {
     components: {
         NavBar,
         Footer,
-        AOPopupModal,
-        COPopupModal,
+        ActivityModalManager,
+        ClubModalManager,
     },
     computed: {
         getCurrentUser() {
@@ -128,10 +124,13 @@ export default {
             this.$router.push("/");
             return;
         }
-        if (this.user.gender == "Female") {
-            this.img = 'FemaleAvatar.jpeg'
-        } else {
-            this.img = 'avatar.png'
+        switch(this.user.gender) {
+            case "Female":
+                this.img = "femaleAvatar.png";
+                break;
+            default:
+                this.img = "maleAvatar.png";
+                break;
         }
         this.createdActivities = 
             await ActivityService.getOngoingActivities(this.user.id);

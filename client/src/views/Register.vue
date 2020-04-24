@@ -144,7 +144,7 @@ export default {
                 ));
                 return;
             }
-            console.log(this.user);
+
             this.$store
                 .dispatch("auth/register", this.user)
                 .then(

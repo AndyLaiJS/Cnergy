@@ -7,7 +7,7 @@
                     <div class="pic">
                         <img
                             style="height: 145px; width: 145px;"
-                            :src="require('../../assets/'+img)"
+                            :src="require('../../assets/'+ this.img)"
                         />
                         <div class="name">
                             <h3>
@@ -20,23 +20,18 @@
                     <router-link to="/profile">
                         <i class="el-icon-user" id="actif"></i>
                     </router-link>
-                    <!-- clubs n activities -->
                     <router-link to="/manager">
                         <i class="el-icon-folder"></i>
                     </router-link> 
-                    <!-- manage cna -->
                     <router-link to="/profile-edit">
                         <i class="el-icon-edit"></i>
                     </router-link>
-                    <!-- edit profile -->
                     <router-link to="/profile-settings">
                         <i class="el-icon-setting"></i>
                     </router-link>
-                    <!-- self-explanatory-->
                     <a id="log-out" @click="logout()">
                         <v-icon size="20px"> mdi-logout </v-icon>
                     </a>
-                    <!-- log out via vuetify icons -->
                 </div>
                 <div class="content-container">
                     <h1> Profile </h1>
@@ -53,7 +48,6 @@
                             {{ this.user.about }}
                         </div>
                     </div>
-                    <!-- <div class="flex-container"> -->
                     <div class="card-title">
                         <h2>Clubs</h2>
                     </div>
@@ -65,21 +59,15 @@
                                 v-for="(club, index) in joinedClubs"
                                 v-bind:key="index"
                             >
-                                <!-- TODO: Create an additional component to store this -->
-                                <!-- Consider using Icon instead of words -->
                                 <div class="card-content">
-                                    <b> {{ club.name }} </b>
-                                    <!-- Description: {{ club.description }}<br> -->
-                                    
+                                    <b> {{ club.name }} </b>                                    
                                 </div>
                                 <div class="Title">
-                                    <ClubModal/>
+                                    <ClubInfoModal/>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
                     <div class="card-title">
                         <h2>Activities</h2>
                     </div>
@@ -91,19 +79,12 @@
                                 v-for="(activity, index) in joinedActivities"
                                 v-bind:key="index"
                             >
-                                <!-- TODO: Create an additional component to store this -->
-                                <!-- Consider using Icon instead of words -->
                                 <div class="card-content">
                                     <b> {{ activity.name }} </b><br>
-                                    <!-- Description: {{ activity.description }}<br>
-                                    {{ activity.activityDate }}
-                                    Min. Participants: {{ activity.minParticipants }}<br>
-                                    Max. Participants: {{ activity.maxParticipants }}<br> -->
-                                    Type: {{ activity.type }}<br> 
-                                    
+                                    Type: {{ activity.type }}<br>                                     
                                 </div>
                                 <div class="Title">
-                                    <ActivityModal
+                                    <ActivityInfoModal
                                         v-bind:name="activity.name"
                                         v-bind:description="activity.description"
                                         v-bind:minParticipants="activity.minParticipants"
@@ -125,8 +106,8 @@
 import NavBar from "../NavBar";
 import Footer from "../Footer";
 import User from "../../models/User";
-import ActivityModal from "../../components/ActivityModal"
-import ClubModal from "../../components/ClubModal"
+import ActivityInfoModal from "../../components/ActivityInfoModal"
+import ClubInfoModal from "../../components/ClubInfoModal"
 import ActivityService from "../../services/activityService";
 import ClubService from "../../services/clubService";
 import formatter from  "../../utils/formatter";
@@ -143,8 +124,8 @@ export default {
     components: {
         NavBar,
         Footer,
-        ActivityModal,
-        ClubModal,
+        ActivityInfoModal,
+        ClubInfoModal,
     },
     computed: {
         getCurrentUser() {
@@ -168,18 +149,19 @@ export default {
             return;
         }
 
-        if (this.user.gender == "Female") {
-            this.img = 'FemaleAvatar.jpeg'
-        } else {
-            this.img = 'avatar.png'
+        switch(this.user.gender) {
+            case "Female":
+                this.img = "femaleAvatar.png";
+                break;
+            default:
+                this.img = "maleAvatar.png";
+                break;
         }
 
         this.joinedActivities =
-            await ActivityService
-                .getJoinedActivities(this.user.id);
+            await ActivityService.getJoinedActivities(this.user.id);
         this.joinedClubs =
-            await ClubService
-                .getJoinedClubs(this.user.id);
+            await ClubService.getJoinedClubs(this.user.id);
     },
 };
 </script>

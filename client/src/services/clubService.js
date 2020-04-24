@@ -14,9 +14,6 @@ class ClubService {
      }
 
      joinClub(userId, clubId, reason) {
-          console.log(`userId = ${userId}`);
-          console.log(`clubId = ${clubId}`)
-          console.log(`reason = ${reason}`);
           return axios
                .post(`${API_URL}/join`, {
                     id: clubId,
@@ -24,16 +21,8 @@ class ClubService {
                }, {
                     params: { uid: userId }
                })
-               .then(response => {
-                    console.log("ini response");
-                    console.log(response);
-                    return response;
-               })
-               .catch(err => {
-                    console.log("error coy");
-                    console.log(err);
-                    return err.response;
-               })
+               .then(response => response)
+               .catch(err => err.response)
      }
 
      getClubs(userId = "") {
@@ -52,9 +41,6 @@ class ClubService {
      }
 
      getPendingClubRequest(userId, clubId) {
-          console.log("in service");
-          console.log(userId);
-          console.log(clubId);
           return axios
                .get(`${API_URL}/pending`, {
                     params: {
