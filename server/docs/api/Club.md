@@ -1,4 +1,4 @@
-# Activity
+# CLUB
 
 ### GET `/club`
 Return list of clubs
