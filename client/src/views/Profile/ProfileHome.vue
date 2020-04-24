@@ -121,7 +121,7 @@ export default {
             user: new User(),
             joinedClubs: [],
             joinedActivities: [],
-            img: 'avatar.png',
+            img: '',
         };
     },
     components: {
