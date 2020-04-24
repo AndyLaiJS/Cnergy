@@ -50,7 +50,7 @@ class ActivityController implements Controller {
           this.router
               .post(`${this.path}/accept`, validationMiddleware(ActivityRequestDto), this.acceptActivityRequest);
           this.router
-              .delete(`${this.path}/reject`, validationMiddleware(ActivityRequestDto), this.rejectActivityRequest);
+              .post(`${this.path}/reject`, validationMiddleware(ActivityRequestDto), this.rejectActivityRequest);
           this.router
               .get(`${this.path}/pending`, this.getPendingActivityRequests);
      }
@@ -203,6 +203,16 @@ class ActivityController implements Controller {
           if (activity.type == "Private") {
                hasApproved = false;
           }
+
+          const hasJoined = await this.activityService
+                                        .getUserJoinActivityHasApprovedStatus(
+                                             activityData.id,
+                                             user.id
+                                        );
+          if (hasJoined) {
+               next(new UserHasJoinedException(this.context));
+               return;
+          }
           
           const hasSignedUp = await this.activityService
                                         .getJoinActivityCount(activityData.id, user.id);
@@ -239,7 +249,7 @@ class ActivityController implements Controller {
      }
 
      /**
-      * DELETE /activity/join?uid=...
+      * POST /activity/join?uid=...
       * 
       * cancelJoinActivity() allow user to cancel the activity that he/she signed up for
       */

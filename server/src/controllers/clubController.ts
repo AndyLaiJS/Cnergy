@@ -48,7 +48,7 @@ class ClubController implements Controller {
           this.router
               .get(`${this.path}/pending`, this.getPendingClubRequests); 
           this.router
-              .delete(`${this.path}/reject`, validationMiddleware(ClubRequestDto), this.rejectJoinClubRequest); 
+              .post(`${this.path}/reject`, this.rejectJoinClubRequest); 
           this.router
               .post(`${this.path}/accept`, validationMiddleware(ClubRequestDto), this.acceptJoinClubRequest); 
      }
@@ -277,7 +277,7 @@ class ClubController implements Controller {
      }
 
      /**
-      * DELETE /club/reject?uid=...
+      * POST /club/reject?uid=...
       * 
       * rejectJoinClubRequest() allow club president to reject a sign up request from user
       */
