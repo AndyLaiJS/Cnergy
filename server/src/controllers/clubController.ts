@@ -101,6 +101,13 @@ class ClubController implements Controller {
                // By default, the president of the club is the creator
                const result = await this.clubService
                                         .postClub(clubInfo, president);
+               const mockJoinData: JoinClubDto = {
+                    id: result.id,
+                    reason: "",
+               };
+               await this.clubService
+                         .postUserJoinClub(mockJoinData, uid, true);
+                         
                response.send(result);
           } catch(e) {
                next(e);

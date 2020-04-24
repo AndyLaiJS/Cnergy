@@ -5,7 +5,7 @@ class JoinClubDto {
      public id: number;
 
      @IsString()
-     public reason: Text;
+     public reason: string;
 }
 
 export default JoinClubDto;
