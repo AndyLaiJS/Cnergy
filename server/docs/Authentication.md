@@ -1,4 +1,4 @@
-# Activity
+# AUTHENTICATION
 
 ### POST `/auth/register`
 Handle user registration
