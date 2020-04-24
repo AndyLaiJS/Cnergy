@@ -88,7 +88,9 @@ class ActivityService {
                                      .createQueryBuilder()
                                      .update(Activity)
                                      .set({ description: `${activityData.description}`})
-                                     .where(`id = 10`)
+                                     .where(`id = :activityId`, {
+                                          activityId: activityData.id
+                                     })
                                      .execute();
           return activity;
      }
