@@ -18,8 +18,6 @@
                     effect="dark"
                     content="Club view"
                     placement="bottom-start"
-                    open-delay=450
-                    hide-after=1650
                 >
                     <i class="el-icon-sort" @click="viewClick()"></i>
                 </el-tooltip>
@@ -33,8 +31,6 @@
                     effect="dark"
                     content="Activity view"
                     placement="bottom-start"
-                    open-delay=450
-                    hide-after=1650
                 >
                     <i class="el-icon-sort" @click="viewClick()"></i>
                 </el-tooltip>
