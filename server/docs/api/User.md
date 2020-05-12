@@ -1,4 +1,4 @@
-# USER
+# User
 
 ### PUT `/user/pwd?uid`
 User with id `uid` change password

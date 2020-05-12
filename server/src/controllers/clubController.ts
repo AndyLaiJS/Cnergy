@@ -16,7 +16,6 @@ import UserHasJoinedException from "../exceptions/userHasJoinedException";
 import UserNotFoundException from "../exceptions/userNotFoundException";
 import JoinRequestNotFoundException from "../exceptions/joinRequestNotFoundException";
 
-import authenticationMiddleware from "../middlewares/authenticationMiddleware";
 import validationMiddleware from "../middlewares/validationMiddleware";
 
 class ClubController implements Controller {
@@ -209,8 +208,9 @@ class ClubController implements Controller {
 
           const hasSignedUp = await this.clubService
                                         .getUserJoinClubCount(clubInfo.id, user.id);
+
+          // User has not signed up for the club, thus can't cancel the request
           if (hasSignedUp == 0) {
-               // User has not signed up for the club, thus can't cancel the request
                next(new UserHasNotSignedUpException(this.context));
           } else {
                try {
@@ -313,6 +313,7 @@ class ClubController implements Controller {
                                              joinRequest.clubId,
                                              joinRequest.userId
                                         );
+          // If no join request record found
           if (hasSignedUp == 0) {
                next(new JoinRequestNotFoundException(this.context));
                return;
@@ -323,6 +324,7 @@ class ClubController implements Controller {
                                            joinRequest.clubId,
                                            joinRequest.userId
                                       );
+          // If user has joined club
           if (hasJoined) {
                next(new UserHasJoinedException(this.context));
                return;
@@ -371,6 +373,7 @@ class ClubController implements Controller {
                                              joinRequest.clubId,
                                              joinRequest.userId
                                         );
+          // If no join request record found
           if (hasSignedUp == 0) {
                next(new JoinRequestNotFoundException(this.context));
                return;
@@ -381,6 +384,7 @@ class ClubController implements Controller {
                                            joinRequest.clubId,
                                            joinRequest.userId
                                       );
+          // If user has joined club
           if (hasJoined) {
                next(new UserHasJoinedException(this.context));
                return;

@@ -15,7 +15,6 @@ class AuthenticationService {
           if (userHasExisted) {
                throw new UserWithEmailExistsException(userData.email);
           }
-          // TODO: Implement SendEmailVerification
 
           const hashedPassword = await bcrypt.hash(userData.password, 10);
           const user = await this.userService
