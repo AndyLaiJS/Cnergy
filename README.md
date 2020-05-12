@@ -113,7 +113,7 @@ sudo npm run serve
 ```
 
 ## Screenshots
-![Registration Page](./Screenshots/Registration.png)
-![Home](./Screenshots/Home.png)
-![Create Clubs](./Screenshots/Club.png)
-![Create Activities](./Screenshots/Activity.png)
+![Registration Page](./screenshots/Registration.png)
+![Home](./screenshots/Home.png)
+![Create Clubs](./screenshots/Club.png)
+![Create Activities](./screenshots/Activity.png)
