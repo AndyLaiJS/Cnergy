@@ -48,58 +48,243 @@
                             {{ this.user.about }}
                         </div>
                     </div>
-                    <div class="card-title">
-                        <h2>Clubs</h2>
-                    </div>
-                    <div class="main-container">
-                        <div class="cna-view">
-                            <div
-                                class="card"
-                                id="smaller-card"
-                                v-for="(club, index) in joinedClubs"
-                                v-bind:key="index"
+
+                   
+                    <span v-if="viewType == true">
+                        <div class="card-title">
+                            <h2>Clubs</h2>
+                            <!-- the icon to switch view -->
+                            <div 
+                                v-if="viewType == true"
+                                class="view-icon" 
                             >
-                                <div class="card-content">
-                                    <b> {{ club.name }} </b>                                    
-                                </div>
-                                <div class="Title">
-                                    <ClubInfoModal
-                                        v-bind:id="club.id"
-                                        v-bind:name="club.name"
-                                        v-bind:description="club.description"
-                                    />
+                                <el-tooltip
+                                    class="item"
+                                    effect="dark"
+                                    content="Activity view"
+                                    placement="bottom-start"
+                                >
+                                    <i class="el-icon-sort" @click="viewClick()"></i>
+                                </el-tooltip>
+                            </div>
+                            <div
+                                v-else
+                                class="view-icon"
+                            >
+                                <el-tooltip
+                                    class="item"
+                                    effect="dark"
+                                    content="Club view"
+                                    placement="bottom-start"
+                                >
+                                    <i class="el-icon-sort" @click="viewClick()"></i>
+                                </el-tooltip>
+                            </div>
+                            <!-- until here -->
+                        </div>
+                        
+                        <div class="main-container">
+
+                            <div class="cna-view">
+                                <div
+                                    class="card"
+                                    id="smaller-card"
+                                    v-for="(club, index) in joinedClubs"
+                                    v-bind:key="index"
+                                >
+                                    <div class="card-content">
+                                        <b> {{ club.name }} </b>                                    
+                                    </div>
+                                    <div class="Title">
+                                        <ClubInfoModal
+                                            v-bind:id="club.id"
+                                            v-bind:name="club.name"
+                                            v-bind:description="club.description"
+                                        />
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
-                    </div>
-                    <div class="card-title">
-                        <h2>Activities</h2>
-                    </div>
-                    <div class="main-container">
-                        <div class="cna-view">
-                            <div
-                                class="card"
-                                id="smaller-card"
-                                v-for="(activity, index) in joinedActivities"
-                                v-bind:key="index"
+                    </span>
+
+                    <span v-else>
+                        <div class="card-title">
+                            <h2>Activities</h2>
+                            <!-- the icon to switch view -->
+                            <div 
+                                v-if="viewType == true"
+                                class="view-icon" 
                             >
-                                <div class="card-content">
-                                    <b> {{ activity.name }} </b><br>
-                                    Type: {{ activity.type }}<br>                                     
-                                </div>
-                                <div class="Title">
-                                    <ActivityInfoModal
-                                        v-bind:name="activity.name"
-                                        v-bind:description="activity.description"
-                                        v-bind:participantsCount="activity.participantsCount"
-                                        v-bind:minParticipants="activity.minParticipants"
-                                        v-bind:maxParticipants="activity.maxParticipants"
-                                        v-bind:type="activity.type"
-                                    />
+                                <el-tooltip
+                                    class="item"
+                                    effect="dark"
+                                    content="Activity view"
+                                    placement="bottom-start"
+                                >
+                                    <i class="el-icon-sort" @click="viewClick()"></i>
+                                </el-tooltip>
+                            </div>
+                            <div
+                                v-else
+                                class="view-icon"
+                            >
+                                <el-tooltip
+                                    class="item"
+                                    effect="dark"
+                                    content="Club view"
+                                    placement="bottom-start"
+                                >
+                                    <i class="el-icon-sort" @click="viewClick()"></i>
+                                </el-tooltip>
+                            </div>
+                            <!-- until here -->
+                        </div>
+                        <div class="main-container">
+
+                            <div class="cna-view">
+                                <div
+                                    class="card"
+                                    id="smaller-card"
+                                    v-for="(activity, index) in joinedActivities"
+                                    v-bind:key="index"
+                                >
+                                    <div class="card-content">
+                                        <b> {{ activity.name }} </b><br>
+                                        Type: {{ activity.type }}<br>                                     
+                                    </div>
+                                    <div class="Title">
+                                        <ActivityInfoModal
+                                            v-bind:name="activity.name"
+                                            v-bind:description="activity.description"
+                                            v-bind:participantsCount="activity.participantsCount"
+                                            v-bind:minParticipants="activity.minParticipants"
+                                            v-bind:maxParticipants="activity.maxParticipants"
+                                            v-bind:type="activity.type"
+                                        />
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
-                    </div>
+                    </span>
+
+                    <!-- Pending View Panel -->
+                    <span v-if="pendingView == true">
+                        <div class="card-title">
+                            <h2>Pending Clubs</h2>
+                            <!-- the icon to switch view -->
+                            <div 
+                                v-if="pendingType == true"
+                                class="view-icon" 
+                            >
+                                <el-tooltip
+                                    class="item"
+                                    effect="dark"
+                                    content="Activity view"
+                                    placement="bottom-start"
+                                >
+                                    <i class="el-icon-sort" @click="pendingClick()"></i>
+                                </el-tooltip>
+                            </div>
+                            <div
+                                v-else
+                                class="view-icon"
+                            >
+                                <el-tooltip
+                                    class="item"
+                                    effect="dark"
+                                    content="Club view"
+                                    placement="bottom-start"
+                                >
+                                    <i class="el-icon-sort" @click="pendingClick()"></i>
+                                </el-tooltip>
+                            </div>
+                            <!-- until here -->
+                        </div>
+                        <div class="main-container">
+
+                            <div class="cna-view">
+                                <div
+                                    class="card"
+                                    id="smaller-card"
+                                    v-for="(club, index) in joinedClubs"
+                                    v-bind:key="index"
+                                >
+                                    <div class="card-content">
+                                        <b> {{ club.name }} </b>                                    
+                                    </div>
+                                    <div class="Title">
+                                        <button class="delbutton"> Delete </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </span>
+
+                    <span v-else>
+                        <div class="card-title">
+                            <h2>Pending Activities</h2>
+                            <!-- the icon to switch view -->
+                            <div 
+                                v-if="pendingType == true"
+                                class="view-icon" 
+                            >
+                                <el-tooltip
+                                    class="item"
+                                    effect="dark"
+                                    content="Activity view"
+                                    placement="bottom-start"
+                                >
+                                    <i class="el-icon-sort" @click="pendingClick()"></i>
+                                </el-tooltip>
+                            </div>
+                            <div
+                                v-else
+                                class="view-icon"
+                            >
+                                <el-tooltip
+                                    class="item"
+                                    effect="dark"
+                                    content="Club view"
+                                    placement="bottom-start"
+                                >
+                                    <i class="el-icon-sort" @click="pendingClick()"></i>
+                                </el-tooltip>
+                            </div>
+                            <!-- until here -->
+                        </div>
+                        <div class="main-container">
+
+                            <div class="cna-view">
+                                <div
+                                    class="card"
+                                    id="smaller-card"
+                                    v-for="(activity, index) in joinedActivities"
+                                    v-bind:key="index"
+                                >
+                                    <div class="card-content">
+                                        <b> {{ activity.name }} </b><br>
+                                        Type: {{ activity.type }}<br>                                     
+                                    </div>
+                                    <div class="Title">
+                                        <!-- <ActivityInfoModal
+                                            v-bind:name="activity.name"
+                                            v-bind:description="activity.description"
+                                            v-bind:participantsCount="activity.participantsCount"
+                                            v-bind:minParticipants="activity.minParticipants"
+                                            v-bind:maxParticipants="activity.maxParticipants"
+                                            v-bind:type="activity.type"
+                                        /> -->
+                                        <button class="delbutton"> Delete </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </span>
+
                 </div>
             </div>
         </div>
@@ -124,6 +309,9 @@ export default {
             joinedClubs: [],
             joinedActivities: [],
             img: '',
+            viewType: true,
+            pendingType: true,  // for the tooltip. What a naming scheme amirite?
+            pendingView: true,  // to view Activity or Club
         };
     },
     components: {
@@ -146,6 +334,13 @@ export default {
             this.$store.dispatch("auth/logout");
             this.$router.push("/");
         },
+        viewClick() {
+            this.viewType = !this.viewType;
+        },
+        pendingClick() {
+            this.pendingType = !this.pendingType;
+            this.pendingView = !this.pendingView;
+        }
     },
     async mounted() {
         this.user = this.getCurrentUser;
@@ -323,5 +518,23 @@ i:hover, v-icon:hover {
     bottom: 0;
     border-radius: 0 0 10px 10px;
     position: absolute;
+}
+.delbutton{
+    padding: 5px 30px;
+    border-radius: 50px;
+    outline: none;
+    border: 2px solid #F56C6C;
+    box-shadow:  0px 3px silver;
+    color: #F56C6C;
+    cursor: pointer;
+    transition: .1s;
+}
+.delbutton:hover {
+    background-color: #F56C6C;
+    color: #fff;
+}
+.delbutton:active {
+    box-shadow: 0 1px silver;
+    transform: translateY(3px);
 }
 </style>
