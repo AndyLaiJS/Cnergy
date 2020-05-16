@@ -103,7 +103,7 @@ sudo npm run ts
 sudo npm run dev
 ```
 By default, the port used in running the backend is :3000, feel free to change it in /server/src/index.ts
-Now you're backend is running, open the URL (with :3000) suggested by the terminal and you're done with Backend.
+Now you're backend is running, and you're done with Backend!!
 
 Once VueJS and the dependencies are installed and the repository is cloned onto your system, open up a Terminal and navigate towards the directory holding the repository and type the following command:
 
@@ -111,3 +111,9 @@ Once VueJS and the dependencies are installed and the repository is cloned onto 
 cd client
 sudo npm run serve
 ```
+
+## Screenshots
+![Registration Page](./screenshots/Registration.png)
+![Home](./screenshots/Home.png)
+![Create Clubs](./screenshots/Club.png)
+![Create Activities](./screenshots/Activity.png)

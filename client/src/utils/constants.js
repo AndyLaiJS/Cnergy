@@ -36,7 +36,7 @@ const time =  {
 };
 
 const cuhk = {
-     EMAIL_REGEX: "^115511[0-9]{4,4}(@link.cuhk.edu.hk)$",
+     EMAIL_REGEX: "^1155[0-9]{6,6}(@link.cuhk.edu.hk)$",
      ACTIVITY_TYPE: [
           "Private",
           "Public"

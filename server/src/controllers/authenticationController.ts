@@ -29,6 +29,11 @@ class AuthenticationController implements Controller {
           this.router.post(`${this.path}/logout`, this.handleLogout);
      }
 
+     /**
+      * POST /auth/register
+      * 
+      * handleRegistration() allow users to create an account. User should pass required credentials.
+      */
      private handleRegistration = async(request: Request, response: Response, next: NextFunction) => {
           const userData: UserDto = request.body;
           try {
@@ -45,16 +50,24 @@ class AuthenticationController implements Controller {
           }
      }
 
+     /**
+      * POST /auth/login
+      * 
+      * handleLogin() handle user request to login
+      */
      private handleLogin = async(request: Request, response: Response, next: NextFunction) => {
-          const loginData: LoginDto = request.body;
-          
+          const loginData: LoginDto = request.body;          
           const user = await this.userService
                                  .getUserByEmail(loginData.email);
+
+          // If user with given email exists
           if (user) {
                const passwordIsMatch = await bcrypt.compare(
                     loginData.password,
                     user.password
                );
+
+               // If password is match
                if (passwordIsMatch) {
                     const secret = process.env.JWT_SECRET!
                     const tokenData = utils.createToken(user, secret);
@@ -73,6 +86,11 @@ class AuthenticationController implements Controller {
           }
      }
 
+      /**
+      * POST /auth/logout
+      * 
+      * handleLogout() handle user request to logout
+      */
      private handleLogout = async (_: Request, response: Response) => {
           response.setHeader("Set-Cookie", ["Authorization=;Max-age=0"]);
           response.send(200);

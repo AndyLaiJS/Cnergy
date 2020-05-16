@@ -1,7 +1,7 @@
 function passwordShouldBeSame(...passwords) {
      if (passwords.length == 2) {
           return (passwords[0] != passwords[1]
-               ? "Password does not matched"
+               ? "Password does not match"
                : "");
      }
      return "";

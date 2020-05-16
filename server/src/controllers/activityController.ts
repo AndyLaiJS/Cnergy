@@ -2,7 +2,6 @@ import { Router, Request, Response, NextFunction } from "express";
 
 import ActivityService from "../services/activityService";
 import UserService from "../services/userService";
-import RequestWithUser from "../interfaces/requestWithUserInterface";
 import Controller from "../interfaces/controllerInterface";
 import User from "../interfaces/userInterface";
 import ActivityRequestDto from "../dtos/activityRequestDto";
@@ -225,6 +224,7 @@ class ActivityController implements Controller {
                next(new UserHasSignedUpException(this.context, hasApproved));
                return;
           }
+          // If participants count has reach the limit
           if (activity.participantsCount == activity.maxParticipants) {
                next(new ParticipantsCountLimitExceededException());
                return;
@@ -264,39 +264,42 @@ class ActivityController implements Controller {
           const activityData: JoinActivityDto = request.body;
           const hasSignedUp = await this.activityService
                                         .getJoinActivityCount(activityData.id, user.id);
+          // If no join request record found
           if (hasSignedUp == 0) {
                next(new UserHasNotSignedUpException(this.context))
-          } else {
-               try {
-                    const creator = await this.userService
-                                              .getActivityCreatorByActivityId(activityData.id);
-                    if (uid == creator?.id) {
-                         next(new CreatorLeaveActivityException());
-                         return;
-                    }
-
-                    const hasApproved = await this.activityService
-                                                  .getUserJoinActivityHasApprovedStatus(activityData.id, user.id);
-                    const type = await this.activityService
-                                           .getActivityTypeById(activityData.id);
-
-                    await this.activityService
-                              .deleteUserJoinActivity(activityData.id, user.id);
-                         
-                    if ( type == "Public" || (
-                         type == "Private" && hasApproved
-                    )) {
-                         await this.activityService
-                                   .updateActivityParticipantsCount(activityData.id, -1);
-                    }
-                    response.send({
-                         message: "You have successfully unregistered the activity",
-                         status: 200
-                    });
-
-               } catch(e) {
-                    next(e);
+               return;
+          } 
+          
+          try {
+               const creator = await this.userService
+                                             .getActivityCreatorByActivityId(activityData.id);
+               // Creator of the activity can't leave his/her created activity
+               if (uid == creator?.id) {
+                    next(new CreatorLeaveActivityException());
+                    return;
                }
+
+               const hasApproved = await this.activityService
+                                             .getUserJoinActivityHasApprovedStatus(activityData.id, user.id);
+               const type = await this.activityService
+                                        .getActivityTypeById(activityData.id);
+
+               await this.activityService
+                         .deleteUserJoinActivity(activityData.id, user.id);
+                    
+               if ( type == "Public" || (
+                    type == "Private" && hasApproved
+               )) {
+                    await this.activityService
+                              .updateActivityParticipantsCount(activityData.id, -1);
+               }
+               response.send({
+                    message: "You have successfully unregistered the activity",
+                    status: 200
+               });
+
+          } catch(e) {
+               next(e);
           }
      }
 
@@ -329,6 +332,7 @@ class ActivityController implements Controller {
 
           const results = await this.activityService
                                     .getActivityCreatorId(activityId);
+          // No activity found with the corresponding activityId
           if (results.length == 0) {
                next(new ActivityNotFoundException());
                return;
@@ -357,6 +361,7 @@ class ActivityController implements Controller {
 
           const results = await this.activityService
                                     .getActivityCreatorId(joinRequest.activityId);
+          // No join activity request found with the corresponding activityId
           if (results.length == 0) {
                next(new ActivityNotFoundException());
                return;
